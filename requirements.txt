@@ -1,0 +1,12 @@
+# utility libs
+prettytable
+
+# Code analysis
+cohesion
+flake8
+flake8-docstrings
+flake8-polyfill
+pylint
+
+# test packages
+coverage

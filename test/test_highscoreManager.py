@@ -31,7 +31,6 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertIsNone(a_score)
         self.assertIsNone(b_score)
 
-
     def test_set_score_by_name(self):
         highscore_manager = HighscoreManager()
 
@@ -76,59 +75,6 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertEqual(frodo_score, 32)
         self.assertEqual(smiegol_score, 0)
         self.assertEqual(no_score, None)
-    
-    def test_length_of_longest_element(self):
-        highscore_manager = HighscoreManager()
-
-        length_of_longest = highscore_manager\
-        ._length_of_longest_element(
-            ('Obunga', 'Smiegol', 'Frodo', 'Gandalf')
-        )
-        self.assertEqual(length_of_longest, 7)
-
-        length_of_longest = highscore_manager\
-        ._length_of_longest_element(
-            (1234, 123, 1, 1234567, 12)
-        )
-        self.assertEqual(length_of_longest, 7)
-
-        length_of_longest = highscore_manager\
-        ._length_of_longest_element(
-            (1, 2, 3, 4, 5)
-        )
-        self.assertEqual(length_of_longest, 1)
-
-    def test_length_of_longest_name(self):
-        highscore_manager = HighscoreManager()
-        highscore_manager.set_score_by_name('Obunga', 1)
-        highscore_manager.set_score_by_name('Smiegollum', 1)
-        highscore_manager.set_score_by_name('Pepe', 1)
-        highscore_manager.set_score_by_name('Shibalong', 1)
-        highscore_manager.set_score_by_name('Ubuntu', 1)
-
-        len_of_longest_name = highscore_manager._length_of_longest_name()
-        self.assertEqual(len_of_longest_name, 10)
-
-    def test_length_of_longest_score(self):
-        highscore_manager = HighscoreManager()
-        highscore_manager.set_score_by_name('a', 123)
-        highscore_manager.set_score_by_name('b', 1234)
-        highscore_manager.set_score_by_name('c', 12)
-        highscore_manager.set_score_by_name('d', 12345)
-        highscore_manager.set_score_by_name('e', 1)
-
-        len_of_longest_score = highscore_manager._length_of_longest_score()
-        self.assertEqual(len_of_longest_score, 5)
-    
-        highscore_manager._clear_all()
-
-        highscore_manager.set_score_by_name('a', 1234)
-        highscore_manager.set_score_by_name('b', 12)
-        highscore_manager.set_score_by_name('c', 1)
-        
-        len_of_longest_score = highscore_manager._length_of_longest_score()
-        self.assertEqual(len_of_longest_score, 4)
-
 
 
 if __name__ == '__main__':

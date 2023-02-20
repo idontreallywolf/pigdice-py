@@ -47,7 +47,6 @@ clean-doc:
 clean-all: clean clean-doc
 	rm -rf .venv
 
-
 # ---------------------------------------------------------
 # Test all the code at once.
 #

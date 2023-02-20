@@ -117,6 +117,37 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertEqual(pleb_score, 3321)
         self.assertEqual(jimmy_score, 12)
         self.assertEqual(frodo_score, 32)
+    
+    def test_get_top_scores(self):
+        highscore_manager = HighscoreManager()
+
+        highscore_manager.set_score_by_name('Obunga', 123)
+        highscore_manager.set_score_by_name('Pleb', 3321)
+        highscore_manager.set_score_by_name('Jimmy', 12)
+        highscore_manager.set_score_by_name('Frodo', 3)
+
+        top_three_scores = highscore_manager.get_top_scores()
+
+        self.assertTrue(type(top_three_scores) is list)
+        self.assertTrue(len(top_three_scores) == 3)
+
+        self.assertEqual(top_three_scores[0][0], 'Pleb')
+        self.assertEqual(top_three_scores[1][0], 'Obunga')
+        self.assertEqual(top_three_scores[2][0], 'Jimmy')
+    
+    def test_get_average_score(self):
+        highscore_manager = HighscoreManager()
+
+        highscore_manager.set_score_by_name('Obunga', 123)
+        highscore_manager.set_score_by_name('Pleb', 3321)
+        highscore_manager.set_score_by_name('Jimmy', 12)
+        highscore_manager.set_score_by_name('Frodo', 3)
+
+        scores = highscore_manager._highscores.values()
+        total_score = sum(scores)
+
+        average_score = highscore_manager.get_average_score()
+        self.assertEqual(average_score, total_score / len(scores))
 
 
 if __name__ == '__main__':

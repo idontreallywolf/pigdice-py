@@ -38,6 +38,22 @@ class HighscoreManager:
 
         return True
 
+    def get_top_scores(self, n: int = 3):
+        """Return top `n` scores. `n = 3` by default."""
+        sorted_highscores = sorted(
+            self._highscores.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
+
+        return sorted_highscores[:n]
+
+    def get_average_score(self):
+        """Return the average of scores."""
+        current_scores = self._highscores.values()
+        total_of_scores = sum(current_scores)
+        return total_of_scores / len(current_scores)
+
     def display_score_list(self):
         table = PrettyTable(['Name', 'Score'])
 

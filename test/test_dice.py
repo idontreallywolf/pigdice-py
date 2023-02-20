@@ -18,13 +18,13 @@ class TestDice(unittest.TestCase):
 
         # Test 1 value
         result = d.roll()
-        self.assertEqual(0 < result <= 6)
+        self.assertTrue(0 < result <= 6)
 
         # Test multiple values 
         result = d.roll(5)
         self.assertEqual(len(result), 5)
         for num in result:
-            self.assertTrue(0 < result <= 6)
+            self.assertTrue(0 < num <= 6)
 
 
 if __name__ == '__main__':

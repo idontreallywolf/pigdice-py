@@ -2,7 +2,7 @@
 import unittest
 from src.highscoreManager import HighscoreManager 
 from src.config import config
-import os, time
+import os
 
 class Test_highscoreManager(unittest.TestCase):
     """Docs for public class."""

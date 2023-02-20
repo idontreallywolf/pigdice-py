@@ -67,3 +67,6 @@ test:
 #	$(MAKE) flake8
 	coverage run -m unittest discover
 	coverage report
+
+run:
+	python ./src/main.py

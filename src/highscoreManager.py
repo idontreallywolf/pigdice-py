@@ -1,5 +1,6 @@
 from prettytable import PrettyTable, DOUBLE_BORDER, ALL
 import pickle
+import os
 
 class HighscoreManager:
     def __init__(self):
@@ -23,6 +24,9 @@ class HighscoreManager:
 
     def load_scores(self, file_path) -> bool:
         """Load scores from file."""
+
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError()
 
         # Prevent existing or updated scores from being overriden.
         if (self._scores_loaded):

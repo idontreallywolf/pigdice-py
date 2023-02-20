@@ -9,9 +9,6 @@ MESSAGE = printf "\033[32;01m---> $(1)\033[0m\n"
 # path to source files
 SRC = ./src
 
-all:
-
-
 # ---------------------------------------------------------
 # Setup a venv and install packages.
 #

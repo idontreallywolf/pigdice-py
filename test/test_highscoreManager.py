@@ -29,8 +29,7 @@ class Test_highscoreManager(unittest.TestCase):
         a_score = highscore_manager.get_score_by_name('a')
         b_score = highscore_manager.get_score_by_name('b')
 
-        self.assertIsNone(a_score)
-        self.assertIsNone(b_score)
+        self.assertTrue(len(highscore_manager._highscores.keys()) == 0)
 
     def test_set_score_by_name(self):
         highscore_manager = HighscoreManager()

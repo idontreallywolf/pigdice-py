@@ -1,7 +1,7 @@
 """Here is a docstring."""
 import unittest
 from src.highscoreManager import HighscoreManager 
-from src.config import config
+from src.config import SCORES_FILE_PATH
 import os
 
 class Test_highscoreManager(unittest.TestCase):
@@ -94,19 +94,19 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertEqual(jimmy_score, 12)
         self.assertEqual(frodo_score, 32)
 
-        highscore_manager.save_scores(config['SCORES_FILE_PATH'])
-        self.assertTrue(os.path.exists(config['SCORES_FILE_PATH']))
+        highscore_manager.save_scores(SCORES_FILE_PATH)
+        self.assertTrue(os.path.exists(SCORES_FILE_PATH))
 
     def test_load_scores(self):
         highscore_manager = HighscoreManager()
 
         # should raise FileNotFoundError when the file doesn't exist.
-        if not os.path.exists(config['SCORES_FILE_PATH']):
+        if not os.path.exists(SCORES_FILE_PATH):
             with self.assertRaises(FileNotFoundError):
-                highscore_manager.load_scores(config['SCORES_FILE_PATH'])
+                highscore_manager.load_scores(SCORES_FILE_PATH)
             return
 
-        highscore_manager.load_scores(config['SCORES_FILE_PATH'])
+        highscore_manager.load_scores(SCORES_FILE_PATH)
 
         obunga_score = highscore_manager.get_score_by_name('Obunga')
         pleb_score = highscore_manager.get_score_by_name('Pleb')

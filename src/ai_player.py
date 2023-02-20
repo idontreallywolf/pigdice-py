@@ -1,8 +1,5 @@
 from player import Player
-
-class Choice:
-    HOLD: int = 1
-    ROLL: int = 2
+from config import CHOICE_ROLL, CHOICE_HOLD
 
 class AIPlayer(Player):
     def __init__(self):
@@ -10,4 +7,4 @@ class AIPlayer(Player):
     
     def make_choice(self) -> int:
         # TODO: Implement AI strategy
-        return Choice.ROLL
+        return CHOICE_ROLL

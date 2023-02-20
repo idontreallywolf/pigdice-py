@@ -1,21 +1,22 @@
-from prettytable import PrettyTable, DOUBLE_BORDER, ALL
+"""Manages highscores."""
+
 import pickle
 import os
+
+from prettytable import PrettyTable, DOUBLE_BORDER, ALL
+
 
 class HighscoreManager:
     def __init__(self):
         self._highscores = {}
         self._scores_loaded = False
 
-    def set_score_by_name(self, playerName, score):
-        if (score < 0):
-            score = 0
+    def set_score_by_name(self, player_name, score):
+        self._highscores[player_name] = max(score, 0)
 
-        self._highscores[playerName] = score
-
-    def get_score_by_name(self, playerName):
+    def get_score_by_name(self, player_name):
         """Return player score if exists, otherwise None."""
-        return self._highscores.get(playerName)
+        return self._highscores.get(player_name)
 
     def save_scores(self, file_path):
         """Save scores to a file, old data is overriden."""
@@ -29,7 +30,7 @@ class HighscoreManager:
             raise FileNotFoundError()
 
         # Prevent existing or updated scores from being overriden.
-        if (self._scores_loaded):
+        if self._scores_loaded:
             return False
 
         with open(file_path, 'rb') as file:
@@ -38,15 +39,15 @@ class HighscoreManager:
 
         return True
 
-    def get_top_scores(self, n: int = 3):
-        """Return top `n` scores. `n = 3` by default."""
+    def get_top_scores(self, top_n: int = 3):
+        """Return top `n` scores. `top_n = 3` by default."""
         sorted_highscores = sorted(
             self._highscores.items(),
             key=lambda x: x[1],
             reverse=True
         )
 
-        return sorted_highscores[:n]
+        return sorted_highscores[:top_n]
 
     def get_average_score(self):
         """Return the average of scores."""
@@ -55,6 +56,7 @@ class HighscoreManager:
         return total_of_scores / len(current_scores)
 
     def display_score_list(self):
+        """Display highscores in a fancy ascii table."""
         table = PrettyTable(['Name', 'Score'])
 
         table.set_style(DOUBLE_BORDER)

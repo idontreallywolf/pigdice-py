@@ -1,3 +1,6 @@
+"""Player class represents a human player."""
+
+
 class Player:
     def __init__(self, name: str, score: int = 0):
         if len(name) == 0 or name.isspace():
@@ -6,7 +9,7 @@ class Player:
         self.name = name
         self.score = score
         self.temporary_score = 0
-    
+
     def set_name(self, new_name: str) -> None:
         self.name = new_name
 
@@ -17,11 +20,15 @@ class Player:
         self.score = new_score
 
     def get_score(self) -> int:
+        """Return player's current score."""
         return self.score
 
     def add_temporary_score(self, score: int) -> None:
         """Add `score` to temporary score."""
         self.temporary_score += score
+
+    def get_temporary_score(self) -> int:
+        return self.temporary_score
 
     def reset_temporary_score(self) -> None:
         """Reset temporary score."""

@@ -1,8 +1,9 @@
 """Here is a docstring."""
 import unittest
-from src.highscoreManager import HighscoreManager 
+from src.highscore_manager import HighscoreManager
 from src.config import SCORES_FILE_PATH
 import os
+
 
 class Test_highscoreManager(unittest.TestCase):
     """Docs for public class."""
@@ -53,7 +54,7 @@ class Test_highscoreManager(unittest.TestCase):
         highscore_manager.set_score_by_name('Pleb', 123)
         currentScore = highscore_manager.get_score_by_name('Pleb')
         self.assertEqual(currentScore, 123)
-    
+
     def test_get_score_by_name(self):
         highscore_manager = HighscoreManager()
         highscore_manager.set_score_by_name('Obunga', 123)
@@ -117,7 +118,7 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertEqual(pleb_score, 3321)
         self.assertEqual(jimmy_score, 12)
         self.assertEqual(frodo_score, 32)
-    
+
     def test_get_top_scores(self):
         highscore_manager = HighscoreManager()
 
@@ -134,7 +135,7 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertEqual(top_three_scores[0][0], 'Pleb')
         self.assertEqual(top_three_scores[1][0], 'Obunga')
         self.assertEqual(top_three_scores[2][0], 'Jimmy')
-    
+
     def test_get_average_score(self):
         highscore_manager = HighscoreManager()
 

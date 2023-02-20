@@ -62,6 +62,8 @@ flake8:
 
 lint: flake8 pylint
 
+.PHONY: test
+
 test:
 	$(MAKE) pylint
 #	$(MAKE) flake8

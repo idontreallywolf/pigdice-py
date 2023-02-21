@@ -8,6 +8,12 @@ PLAYER_O = 'o'
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
 
+GAME_RULES = (
+    'Game Rules:',
+    '1. Rule one.',
+    '2. Rule one.',
+    '3. Rule one.',
+)
 current_file_path = pathlib\
     .Path(__file__)\
     .parent.resolve()

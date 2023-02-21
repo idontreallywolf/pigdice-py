@@ -4,7 +4,11 @@
 class Player:
     """Player class."""
 
-    def __init__(self, name: str, score: int = 0):
+    def __init__(
+        self,
+        name: str,
+        score: int = 0
+    ):
         """
         Initialize player's name, score and temporary score.
 

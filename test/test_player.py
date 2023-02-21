@@ -121,10 +121,10 @@ class Test_Player(unittest.TestCase):
 
     def test_name_is_valid(self):
         """Test _name_is_valid."""
-        self.assertFalse(Player._name_is_valid(''))
-        self.assertFalse(Player._name_is_valid(' '))
-        self.assertFalse(Player._name_is_valid('  '))
+        self.assertFalse(Player.name_is_valid(''))
+        self.assertFalse(Player.name_is_valid(' '))
+        self.assertFalse(Player.name_is_valid('  '))
 
-        self.assertTrue(Player._name_is_valid('John'))
-        self.assertTrue(Player._name_is_valid('Frodo'))
-        self.assertTrue(Player._name_is_valid('Grandalf The Gray'))
+        self.assertTrue(Player.name_is_valid('John'))
+        self.assertTrue(Player.name_is_valid('Frodo'))
+        self.assertTrue(Player.name_is_valid('Grandalf The Gray'))

@@ -19,7 +19,7 @@ class Player:
         `name` - Player's name.\n
         `score` - Player's initial score. Default `0`
         """
-        if not Player._name_is_valid(name):
+        if not Player.name_is_valid(name):
             raise ValueError('Invalid player name.')
 
         self._name = name
@@ -67,7 +67,7 @@ class Player:
         """Increment player score by current temporary score."""
         self._score += self._temporary_score
 
-    def _name_is_valid(name: str) -> bool:
+    def name_is_valid(name: str) -> bool:
         """
         Check whether `name` is valid.
 

@@ -15,32 +15,37 @@ class Player:
         `name` - Player's name.\n
         `score` - Player's initial score. Default `0`
         """
-        if not Player.nameIsValid(name):
+        if not Player._name_is_valid(name):
             raise ValueError('Invalid player name.')
 
-        self.name = name
-        self.score = max(score, 0)
-        self.temporary_score = 0
+        self._name = name
+        self._score = max(score, 0)
+        self._temporary_score = 0
+        self._isAI = (name == "AI" and True) or False
+
+    def isAI(self) -> bool:
+        """Return `True` if player is Computer/AI."""
+        return self._isAI
 
     def set_name(self, new_name: str) -> None:
         """Set player's name to `new_name`."""
-        self.name = new_name
+        self._name = new_name
 
     def get_name(self) -> str:
         """Get player's name."""
-        return self.name
+        return self._name
 
     def set_score(self, new_score: int) -> None:
         """Set player's name to `new_score`."""
-        self.score = new_score
+        self._score = max(new_score, 0)
 
     def get_score(self) -> int:
         """Return player's current score."""
-        return self.score
+        return self._score
 
     def add_temporary_score(self, score: int) -> None:
         """Add `score` to temporary score."""
-        self.temporary_score += score
+        self._temporary_score += max(score, 0)
 
     def get_temporary_score(self) -> int:
         """
@@ -48,15 +53,15 @@ class Player:
 
         Temporary score is the score which is stored for each roll.
         """
-        return self.temporary_score
+        return self._temporary_score
 
     def reset_temporary_score(self) -> None:
         """Reset temporary score."""
-        self.temporary_score = 0
+        self._temporary_score = 0
 
     def hold_score(self) -> None:
         """Increment player score by current temporary score."""
-        self.score += self.temporary_score
+        self._score += self._temporary_score
 
     def _name_is_valid(name: str) -> bool:
         """
@@ -65,4 +70,4 @@ class Player:
         It is valid if it has a length greater than 0 and
         doesn't consist of only spaces.
         """
-        return len(name) == 0 or name.isspace()
+        return (len(name) > 0) and (not name.isspace())

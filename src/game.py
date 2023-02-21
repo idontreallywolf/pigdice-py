@@ -1,5 +1,6 @@
 """Module docstring."""
 
+from player import Player
 from highscore_manager import HighscoreManager
 # pylint: disable=too-few-public-methods
 
@@ -30,6 +31,10 @@ class Game:
         # highscore_manager's save_scores method
         # with the argument SCORES_FILE_PATH constant (from config)
         pass
+
+    def add_player(self, name):
+        """Add new player to the game."""
+        self.players.append(Player(name))
 
     def get_current_player(self):
         """Get current player."""

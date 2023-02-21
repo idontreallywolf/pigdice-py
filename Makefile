@@ -9,9 +9,6 @@ MESSAGE = printf "\033[32;01m---> $(1)\033[0m\n"
 # path to source files
 SRC = ./src
 
-all:
-
-
 # ---------------------------------------------------------
 # Setup a venv and install packages.
 #
@@ -50,7 +47,6 @@ clean-doc:
 clean-all: clean clean-doc
 	rm -rf .venv
 
-
 # ---------------------------------------------------------
 # Test all the code at once.
 #
@@ -62,8 +58,13 @@ flake8:
 
 lint: flake8 pylint
 
+.PHONY: test
+
 test:
 	$(MAKE) pylint
 #	$(MAKE) flake8
 	coverage run -m unittest discover
 	coverage report
+
+run:
+	python ./src/main.py

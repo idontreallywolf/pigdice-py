@@ -19,6 +19,13 @@ GAME_RULES = (
     '2. Rule one.',
     '3. Rule one.',
 )
+GAMEPLAY_OPTIONS_MENU = (
+    '1) HOLD ✊',
+    '2) ROLL 🎲',
+    '3) CHEAT ⏩',
+    '4) END GAME ❌',
+    '5) CHANGE NAME ✏️'
+)
 current_file_path = pathlib\
     .Path(__file__)\
     .parent.resolve()

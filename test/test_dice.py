@@ -32,7 +32,6 @@ class TestDice(unittest.TestCase):
             self.assertGreaterEqual(value, 1)
             self.assertLessEqual(value, self.dice.num_sides)
 
-
     def test_exceptions(self):
         """Test input is not an integer\n"""
         with self.assertRaises(TypeError):

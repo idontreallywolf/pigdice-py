@@ -17,6 +17,20 @@ class Game:
         # Stores the index for current player.
         self.current_player = 0
 
+    def load(self):
+        # TODO: This method should be called during initialization.
+        #
+        # Call highscore_manager's load_scores method
+        # with the argument SCORES_FILE_PATH constant (from config)
+        # note: method can raise FileNotFoundError
+        pass
+
+    def save(self):
+        # TODO: This method should save highscores by calling
+        # highscore_manager's save_scores method
+        # with the argument SCORES_FILE_PATH constant (from config)
+        pass
+
     def get_current_player(self):
         """Get current player."""
         # TODO: This method should return the current player.

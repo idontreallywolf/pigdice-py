@@ -6,18 +6,15 @@ processing user input while maintaining a loop.
 import cmd
 import game
 from config import\
+    GAME_INTRO,\
     GAME_RULES
 
 
 class Console(cmd.Cmd):
     """Docs for Console Class."""
 
-    intro = (
-        "Welcome to the Tic-Tac-Toe. "
-        "Type `help` or `?` to list commands.\n"
-    )
-
-    prompt = "~ Console: "
+    intro = GAME_INTRO
+    prompt = '~ Console: '
 
     def __init__(self):
         """Initialize game and command API."""

@@ -8,6 +8,11 @@ PLAYER_O = 'o'
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
 
+GAME_INTRO = (
+    "Welcome to the Tic-Tac-Toe. "
+    "Type `help` or `?` to list commands.\n"
+)
+
 GAME_RULES = (
     'Game Rules:',
     '1. Rule one.',

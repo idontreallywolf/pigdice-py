@@ -20,3 +20,7 @@ class Dice:
         if count == 1:
             return rolls[0]
         return rolls
+
+    def __str__(self):
+        """Override str method"""
+        return f"Dice with {self.num_sides} sides"

@@ -19,12 +19,14 @@ GAME_RULES = (
     '2. Rule one.',
     '3. Rule one.',
 )
+
 GAME_MODE_MENU = (
     'Choose game mode.',
     '1) Player vs Player',
     '2) Player vs AI',
     '3) Cancel',
 )
+
 GAMEPLAY_OPTIONS_MENU = (
     '1) HOLD ✊',
     '2) ROLL 🎲',
@@ -32,6 +34,7 @@ GAMEPLAY_OPTIONS_MENU = (
     '4) END GAME ❌',
     '5) CHANGE NAME ✏️'
 )
+
 current_file_path = pathlib\
     .Path(__file__)\
     .parent.resolve()

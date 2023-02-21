@@ -25,7 +25,7 @@ class Console(cmd.Cmd):
     def do_start(self):
         """Start the game."""
         return True
-    
+
     def do_highscore(self):
         """Show highscores."""
         return True

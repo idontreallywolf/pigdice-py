@@ -7,11 +7,15 @@ from prettytable import PrettyTable, DOUBLE_BORDER, ALL
 
 
 class HighscoreManager:
+    """Manages highscores."""
+
     def __init__(self):
+        """Initialize internal highscore table."""
         self._highscores = {}
         self._scores_loaded = False
 
     def set_score_by_name(self, player_name, score):
+        """Add a player and their score to the highscore table."""
         self._highscores[player_name] = max(score, 0)
 
     def get_score_by_name(self, player_name):
@@ -25,7 +29,6 @@ class HighscoreManager:
 
     def load_scores(self, file_path) -> bool:
         """Load scores from file."""
-
         if not os.path.isfile(file_path):
             raise FileNotFoundError()
 

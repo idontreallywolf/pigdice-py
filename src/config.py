@@ -1,3 +1,5 @@
+"""Contains configurations."""
+
 import pathlib
 
 PLAYER_X = 'x'
@@ -15,8 +17,8 @@ DATA_PATH =\
     .joinpath('../data/')\
     .resolve()
 
-SCORES_FILE_PATH = str(\
-    DATA_PATH\
-    .joinpath('scores.bin')\
+SCORES_FILE_PATH = str(
+    DATA_PATH
+    .joinpath('scores.bin')
     .resolve()
 )

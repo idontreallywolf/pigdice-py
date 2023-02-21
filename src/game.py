@@ -1,6 +1,4 @@
-"""
-Module docstring
-"""
+"""Module docstring."""
 
 # pylint: disable=too-few-public-methods
 

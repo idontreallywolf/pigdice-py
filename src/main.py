@@ -1,6 +1,4 @@
-"""
-Module docstring
-"""
+"""Module docstring."""
 
 import console
 

@@ -64,3 +64,10 @@ class Game:
         # TODO: This method should change the name
         # of the current player to `new_name`.
         pass
+
+    def quit_game(self):
+        # TODO: This method should
+        # 1) ask the player to confirm.
+        #    if player confirms, then proceed.
+        # 2) call save method in order to save anything that should be saved.
+        pass

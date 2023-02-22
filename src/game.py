@@ -75,7 +75,7 @@ class Game:
         # of the current player to `new_name`.
         pass
 
-    def quit_game(self):
+    def quit(self):
         # TODO: This method should
         # 1) ask the player to confirm.
         #    if player confirms, then proceed.

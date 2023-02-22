@@ -1,6 +1,7 @@
 """Module docstring."""
 
 from player import Player
+from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
 # pylint: disable=too-few-public-methods
 
@@ -35,6 +36,11 @@ class Game:
     def add_player(self, name):
         """Add new player to the game."""
         self.players.append(Player(name))
+
+    def add_ai_player(self):
+        """Add new AI player to the game."""
+        self.players.append(AIPlayer())
+        print(self.players)
 
     def get_current_player(self):
         """Get current player."""

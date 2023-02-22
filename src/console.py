@@ -71,7 +71,7 @@ class Console(cmd.Cmd):
     def _setup_pva(self):
         """Player vs AI setup."""
         self._prepare_player(1)
-        self.game.add_player('AI')
+        self.game.add_ai_player()
         self._game_loop()
 
     def _prepare_player(self, ordinal):

@@ -40,7 +40,6 @@ class Game:
     def add_ai_player(self):
         """Add new AI player to the game."""
         self.players.append(AIPlayer())
-        print(self.players)
 
     def get_current_player(self):
         """Get current player."""

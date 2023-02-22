@@ -2,8 +2,7 @@
 
 import pathlib
 
-PLAYER_X = 'x'
-PLAYER_O = 'o'
+MAX_PLAYERS = 2
 
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
@@ -26,6 +25,9 @@ GAME_MODE_MENU = (
     '2) Player vs AI',
     '3) Cancel',
 )
+
+GAME_MODE_VS_PLAYER = 1
+GAME_MODE_VS_AI = 2
 
 GAMEPLAY_OPTIONS_MENU = (
     '1) HOLD ✊',

@@ -81,3 +81,14 @@ class Game:
         #    if player confirms, then proceed.
         # 2) call save method in order to save anything that should be saved.
         pass
+
+    def make_table(title, columns: list[str]) -> PrettyTable:
+        """Build and return an ASCII table."""
+        table = PrettyTable(columns)
+
+        table.set_style(DOUBLE_BORDER)
+        table.header = False
+        table.title = title or "Title"
+        table.hrules = ALL
+
+        return table

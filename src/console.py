@@ -4,7 +4,7 @@ processing user input while maintaining a loop.
 """
 
 import cmd
-import game
+from game import Game
 from player import Player
 
 from config import\
@@ -24,11 +24,16 @@ class Console(cmd.Cmd):
     def __init__(self):
         """Initialize game and command API."""
         super().__init__()
-        self.game = game.Game()
+        self.game = Game()
 
     def do_start(self, _):
         """Start the game."""
-        print(*GAME_MODE_MENU, sep='\n')
+        table = Game.make_table(
+            'Choose a game mode',
+            ['ID', 'Option', 'Icon']
+        )
+        table.add_rows(GAME_MODE_MENU)
+        print(table)
 
         selected_game_mode = self._select_game_mode()
         self._setup_game(selected_game_mode)
@@ -37,8 +42,13 @@ class Console(cmd.Cmd):
         """Show highscores."""
         return True
 
-    def do_read_rules(self):
-        print(*GAME_RULES)
+    def do_rules(self, _):
+        table = Game.make_table(
+            'Game Rules',
+            ['ID', 'Rule', 'Icon']
+        )
+        table.add_rows(GAME_RULES)
+        print(table)
 
     def do_exit(self, _):
         """Leave the game."""

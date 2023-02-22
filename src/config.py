@@ -13,17 +13,15 @@ GAME_INTRO = (
 )
 
 GAME_RULES = (
-    'Game Rules:',
-    '1. Rule one.',
-    '2. Rule one.',
-    '3. Rule one.',
+    (1, 'Rule one.', '⚠️ '),
+    (2, 'Rule two.', '⚠️ '),
+    (3, 'Rule three.', '⚠️ ')
 )
 
 GAME_MODE_MENU = (
-    'Choose game mode.',
-    '1) Player vs Player',
-    '2) Player vs AI',
-    '3) Cancel',
+    (1, 'Player vs Player', '😀'),
+    (2, 'Player vs AI', '🤖'),
+    (3, 'Cancel', '❌')
 )
 
 GAME_MODE_VS_PLAYER = 1

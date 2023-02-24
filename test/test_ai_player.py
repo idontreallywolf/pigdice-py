@@ -52,7 +52,7 @@ class TestAIplayer(unittest.TestCase):
         result = self.player._get_expected_score(5)
         self.assertEqual(expected, result)
 
-    def test_get_expected_score_2(self):
+    def test_get_expected_score_3(self):
         """Test the value of return of this function."""
         expected = 13.499999999999998
         result = self.player._get_expected_score(10)

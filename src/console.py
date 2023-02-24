@@ -114,3 +114,9 @@ class Console(cmd.Cmd):
         current_player = self.game.get_current_player()
         print('{}\'s turn.'.format(current_player))
 
+    def _request_player_choice(self):
+        while True:
+            try:
+                return int(input('Option > '))
+            except ValueError:
+                print('Invalid input. Try a number.')

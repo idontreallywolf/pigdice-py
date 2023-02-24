@@ -109,3 +109,8 @@ class Console(cmd.Cmd):
         """Show options available to the current player."""
         print(self.game.options_menu)
 
+    def _display_current_player_turn(self):
+        """Display text indicating current player's turn."""
+        current_player = self.game.get_current_player()
+        print('{}\'s turn.'.format(current_player))
+

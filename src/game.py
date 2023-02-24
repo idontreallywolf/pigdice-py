@@ -92,3 +92,15 @@ class Game:
         table.hrules = ALL
 
         return table
+
+    def _prepare_options_menu():
+        """Return an ASCII table containing gameplay options menu."""
+        table = Game.make_table(
+            title="Options",
+            columns=['ID', 'Label', 'Icon']
+        )
+
+        for option in GAMEPLAY_OPTIONS_MENU:
+            table.add_row(option)
+
+        return table

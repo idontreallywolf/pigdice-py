@@ -104,3 +104,8 @@ class Console(cmd.Cmd):
         # TODO: Implement game loop.
         print('GAME LOOP. To be Implemented.')
         return True
+
+    def _display_gameplay_options(self):
+        """Show options available to the current player."""
+        print(self.game.options_menu)
+

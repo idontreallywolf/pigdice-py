@@ -38,8 +38,7 @@ class Game:
 
     def get_current_player(self):
         """Get current player."""
-        # TODO: This method should return the current player.
-        pass
+        return self.player[self.current_player]
 
     def roll(self):
         """Roll dice."""

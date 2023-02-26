@@ -26,6 +26,7 @@ class Console(cmd.Cmd):
     def __init__(self):
         """Initialize game and command API."""
         super().__init__()
+        self.do_help(None)
         self.game = Game()
 
     def do_start(self, _):

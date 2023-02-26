@@ -3,7 +3,16 @@
 from player import Player
 from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
+
+from prettytable import\
+    PrettyTable,\
+    DOUBLE_BORDER,\
+    ALL
+
 from config import\
+    GAMEPLAY_OPTIONS_MENU,\
+    GAMEPLAY_CHOICE_ROLL,\
+    GAMEPLAY_CHOICE_HOLD,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL
@@ -27,6 +36,14 @@ class Game:
             GAME_TURN_NEUTRAL\
             = GAME_TURN_NEUTRAL
 
+    def parse_choice(self, choice):
+        if choice == GAMEPLAY_CHOICE_ROLL:
+            self.roll()
+            return
+
+        if choice == GAMEPLAY_CHOICE_HOLD:
+            self.hold()
+            return
 
     def load(self):
         # TODO: This method should be called during initialization.

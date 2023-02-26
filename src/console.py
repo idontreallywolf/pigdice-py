@@ -98,7 +98,7 @@ class Console(cmd.Cmd):
         name = ''
         name_is_valid = Player.name_is_valid(name)
         while not name_is_valid:
-            name = input('Player {}\'s name: '.format(ordinal))
+            name = input(f'Player {ordinal}\'s name: ')
             name_is_valid = Player.name_is_valid(name)
 
         return name
@@ -132,13 +132,13 @@ class Console(cmd.Cmd):
         # It might be "won", "lost" or "neither".
         turn_status = self.game.get_turn_status()
 
-        if (turn_status == GAME_TURN_WON):
+        if turn_status == GAME_TURN_WON:
             print('🎉 Congratulations! You have won 🎉')
             self.game.save()
             self.game.quit()
             return True
 
-        if (turn_status == GAME_TURN_LOST):
+        if turn_status == GAME_TURN_LOST:
             print('😔 You rolled a 1!\n')
 
         self._game_loop()
@@ -166,7 +166,7 @@ class Console(cmd.Cmd):
         """Display text indicating current player's turn."""
         current_player: Player = self.game.get_current_player()
         name = current_player.get_name()
-        print('{}\'s turn.'.format(name))
+        print(f'{name}\'s turn.')
 
     def _request_player_choice(self):
         while True:

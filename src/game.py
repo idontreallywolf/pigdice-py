@@ -38,6 +38,7 @@ class Game:
             = GAME_TURN_NEUTRAL
 
     def parse_choice(self, choice):
+        """Parse player's choice."""
         if choice == GAMEPLAY_CHOICE_ROLL:
             self.roll()
             return
@@ -47,18 +48,18 @@ class Game:
             return
 
     def load(self):
-        # TODO: This method should be called during initialization.
+        """Load things before the game starts."""
+        # This method should be called during initialization.
         #
         # Call highscore_manager's load_scores method
         # with the argument SCORES_FILE_PATH constant (from config)
         # note: method can raise FileNotFoundError
-        pass
 
     def save(self):
-        # TODO: This method should save highscores by calling
+        """Save players and their scores."""
+        # This method should save highscores by calling
         # highscore_manager's save_scores method
         # with the argument SCORES_FILE_PATH constant (from config)
-        pass
 
     def add_player(self, name):
         """Add new player to the game."""
@@ -89,34 +90,32 @@ class Game:
 
     def roll(self):
         """Roll dice."""
-        # TODO: This method should implement
+        # This method should implement
         # rolling dice for current player.
-        pass
 
     def hold(self):
         """Hold current score."""
-        # TODO: This method should implement
+        # This method should implement
         # holding dice for current player.
-        pass
 
     def cheat(self):
         """Grant maximum score to current player."""
-        # TODO: This method should let
+        # This method should let
         # the player reach maximum score to win.
-        pass
 
     def change_name(self, new_name):
-        # TODO: This method should change the name
+        """Change player's name."""
+        # This method should change the name
         # of the current player to `new_name`.
-        pass
 
     def quit(self):
-        # TODO: This method should
+        """Prepare the quit process."""
+        # This method should
         # 1) ask the player to confirm.
         #    if player confirms, then proceed.
         # 2) call save method in order to save anything that should be saved.
-        pass
 
+    @staticmethod
     def make_table(title, columns: list[str]) -> PrettyTable:
         """Build and return an ASCII table."""
         table = PrettyTable(columns)
@@ -128,6 +127,7 @@ class Game:
 
         return table
 
+    @staticmethod
     def _prepare_options_menu():
         """Return an ASCII table containing gameplay options menu."""
         table = Game.make_table(

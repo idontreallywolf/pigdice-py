@@ -26,6 +26,7 @@ class Game:
         self.highscore_manager = HighscoreManager()
         self.options_menu = Game._prepare_options_menu()
         self.players = []
+        self.current_player = 0
 
         # The purpose of this state is to remember whether
         # the current player has won, lost, or neither.

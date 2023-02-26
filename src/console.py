@@ -21,7 +21,6 @@ from config import\
 class Console(cmd.Cmd):
     """Docs for Console Class."""
 
-    intro = GAME_INTRO
     prompt = '~ Console: '
 
     def __init__(self):

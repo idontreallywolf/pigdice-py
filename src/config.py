@@ -7,11 +7,6 @@ MAX_PLAYERS = 2
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
 
-GAME_INTRO = (
-    "Welcome to the Tic-Tac-Toe. "
-    "Type `help` or `?` to list commands.\n"
-)
-
 GAME_RULES = (
     (1, 'Rule one.', '⚠️ '),
     (2, 'Rule two.', '⚠️ '),

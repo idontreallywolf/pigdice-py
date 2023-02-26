@@ -3,7 +3,10 @@
 from player import Player
 from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
-# pylint: disable=too-few-public-methods
+from config import\
+    GAME_TURN_WON,\
+    GAME_TURN_LOST,\
+    GAME_TURN_NEUTRAL
 
 
 class Game:
@@ -15,8 +18,15 @@ class Game:
         self.options_menu = Game._prepare_options_menu()
         self.players = []
 
-        # Stores the index for current player.
-        self.current_player = 0
+        # The purpose of this state is to remember whether
+        # the current player has won, lost, or neither.
+        # Default: GAME_TURN_NEUTRAL
+        self.turn_status:\
+            GAME_TURN_WON |\
+            GAME_TURN_LOST |\
+            GAME_TURN_NEUTRAL\
+            = GAME_TURN_NEUTRAL
+
 
     def load(self):
         # TODO: This method should be called during initialization.
@@ -44,6 +54,21 @@ class Game:
         """Get current player."""
         # TODO: This method should return the current player.
         pass
+
+    def set_turn_status(self, status):
+        """
+        Set game `turn_status`.
+        Possible values: `GAME_TURN_WON | GAME_TURN_LOST | GAME_TURN_NEUTRAL`
+        """
+        self.turn_status = status
+
+    def get_turn_status(self):
+        """
+        Return curren turn's status.
+
+        `GAME_TURN WON | GAME_TURN_LOST | GAME_TURN_NEUTRAL`
+        """
+        return self.turn_status
 
     def roll(self):
         """Roll dice."""

@@ -35,6 +35,10 @@ GAMEPLAY_OPTIONS_MENU = (
     '5) CHANGE NAME ✏️'
 )
 
+GAME_TURN_WON = 1
+GAME_TURN_LOST = 2
+GAME_TURN_NEUTRAL = 3
+
 current_file_path = pathlib\
     .Path(__file__)\
     .parent.resolve()

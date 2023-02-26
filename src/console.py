@@ -11,7 +11,6 @@ from config import\
     GAME_MODE_MENU,\
     GAME_MODE_VS_PLAYER,\
     GAME_MODE_VS_AI,\
-    GAME_INTRO,\
     GAME_RULES,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\

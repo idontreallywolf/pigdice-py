@@ -46,6 +46,7 @@ class Console(cmd.Cmd):
         return True
 
     def do_rules(self, _):
+        """Show game rules."""
         table = Game.make_table(
             'Game Rules',
             ['ID', 'Rule', 'Icon']

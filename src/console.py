@@ -111,8 +111,9 @@ class Console(cmd.Cmd):
 
     def _display_current_player_turn(self):
         """Display text indicating current player's turn."""
-        current_player = self.game.get_current_player()
-        print('{}\'s turn.'.format(current_player))
+        current_player: Player = self.game.get_current_player()
+        name = current_player.get_name()
+        print('{}\'s turn.'.format(name))
 
     def _request_player_choice(self):
         while True:

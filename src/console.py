@@ -12,7 +12,10 @@ from config import\
     GAME_MODE_VS_PLAYER,\
     GAME_MODE_VS_AI,\
     GAME_INTRO,\
-    GAME_RULES
+    GAME_RULES,\
+    GAME_TURN_WON,\
+    GAME_TURN_LOST,\
+    GAMEPLAY_CHOICE_END_GAME
 
 
 class Console(cmd.Cmd):
@@ -101,9 +104,59 @@ class Console(cmd.Cmd):
         return name
 
     def _game_loop(self):
-        # TODO: Implement game loop.
-        print('GAME LOOP. To be Implemented.')
-        return True
+        self._display_current_player_turn()
+
+        # This is the menu of options that will be shown to the player
+        # while they are playing. A player may choose to roll, hold, quit etc.
+        self._display_gameplay_options()
+
+        # After displaying the options, the player is requested to provide
+        # an input.
+        choice = self._request_player_choice()
+
+        # Player's input is then read by Game.parse_choice
+        # and some decision is made based on that.
+        self.game.parse_choice(choice)
+
+        # In case the choice is to quit the game,
+        # the player will be asked to confirm whether they
+        # want to quit. When confirmed, the game will quit
+        # and the player will see the initial interface.
+        if choice == GAMEPLAY_CHOICE_END_GAME:
+            confirmed = self._confirm('Are you sure?')
+            if confirmed:
+                self.game.quit()
+                return True
+
+        # After a player's turn, the turn status will be set.
+        # It might be "won", "lost" or "neither".
+        turn_status = self.game.get_turn_status()
+
+        if (turn_status == GAME_TURN_WON):
+            print('🎉 Congratulations! You have won 🎉')
+            self.game.save()
+            self.game.quit()
+            return True
+
+        if (turn_status == GAME_TURN_LOST):
+            print('😔 You rolled a 1!\n')
+
+        self._game_loop()
+
+    def _confirm(self, message):
+        """
+        Request confirmation from player.
+
+        Parameters:
+        `message`: The text which should be displayed in the prompt. e.g "Are you sure?"
+        """
+        print(message)
+
+        choice = input('[Y/N] > ').lower()
+        if choice in ('y', 'yes'):
+            return True
+
+        return False
 
     def _display_gameplay_options(self):
         """Show options available to the current player."""

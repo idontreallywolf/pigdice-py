@@ -1,13 +1,13 @@
 """Module docstring."""
 
-from player import Player
-from ai_player import AIPlayer
-from highscore_manager import HighscoreManager
-
 from prettytable import\
     PrettyTable,\
     DOUBLE_BORDER,\
     ALL
+
+from player import Player
+from ai_player import AIPlayer
+from highscore_manager import HighscoreManager
 
 from config import\
     GAMEPLAY_OPTIONS_MENU,\

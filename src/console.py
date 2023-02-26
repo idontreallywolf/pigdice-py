@@ -67,10 +67,12 @@ class Console(cmd.Cmd):
 
     def _setup_game(self, selected_game_mode):
         if selected_game_mode == GAME_MODE_VS_PLAYER:
-            return self._setup_pvp()
+            self._setup_pvp()
+            return
 
         if selected_game_mode == GAME_MODE_VS_AI:
-            return self._setup_pva()
+            self._setup_pva()
+            return
 
         print('😔 Cancel setup.')
 
@@ -141,14 +143,15 @@ class Console(cmd.Cmd):
         if turn_status == GAME_TURN_LOST:
             print('😔 You rolled a 1!\n')
 
-        self._game_loop()
+        return self._game_loop()
 
     def _confirm(self, message):
         """
         Request confirmation from player.
 
         Parameters:
-        `message`: The text which should be displayed in the prompt. e.g "Are you sure?"
+        `message`: The text which should be displayed in the prompt.
+        e.g "Are you sure?"
         """
         print(message)
 

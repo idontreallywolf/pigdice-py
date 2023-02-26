@@ -13,5 +13,5 @@ class AIPlayer(Player):
 
     def make_choice(self) -> int:
         """Make a choice using pigdice game strategies."""
-        # TODO: Implement AI strategy
+        # Implement AI strategy
         return CHOICE_ROLL

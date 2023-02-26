@@ -2,38 +2,43 @@
 
 import pathlib
 
-PLAYER_X = 'x'
-PLAYER_O = 'o'
+MAX_PLAYERS = 2
 
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
 
-GAME_INTRO = (
-    "Welcome to the Tic-Tac-Toe. "
-    "Type `help` or `?` to list commands.\n"
-)
-
 GAME_RULES = (
-    'Game Rules:',
-    '1. Rule one.',
-    '2. Rule one.',
-    '3. Rule one.',
+    (1, 'Rule one.', '⚠️ '),
+    (2, 'Rule two.', '⚠️ '),
+    (3, 'Rule three.', '⚠️ ')
 )
 
 GAME_MODE_MENU = (
-    'Choose game mode.',
-    '1) Player vs Player',
-    '2) Player vs AI',
-    '3) Cancel',
+    (1, 'Player vs Player', '😀'),
+    (2, 'Player vs AI', '🤖'),
+    (3, 'Cancel', '❌')
 )
 
+GAME_MODE_VS_PLAYER = 1
+GAME_MODE_VS_AI = 2
+
+GAMEPLAY_CHOICE_HOLD = 1
+GAMEPLAY_CHOICE_ROLL = 2
+GAMEPLAY_CHOICE_CHEAT = 3
+GAMEPLAY_CHOICE_END_GAME = 4
+GAMEPLAY_CHOICE_CHANGE_NAME = 5
+
 GAMEPLAY_OPTIONS_MENU = (
-    '1) HOLD ✊',
-    '2) ROLL 🎲',
-    '3) CHEAT ⏩',
-    '4) END GAME ❌',
-    '5) CHANGE NAME ✏️'
+    (GAMEPLAY_CHOICE_HOLD, 'HOLD', '✊'),
+    (GAMEPLAY_CHOICE_ROLL, 'ROLL', '🎲'),
+    (GAMEPLAY_CHOICE_CHEAT, 'CHEAT', '⏩'),
+    (GAMEPLAY_CHOICE_END_GAME, 'END GAME', '❌'),
+    (GAMEPLAY_CHOICE_CHANGE_NAME, 'CHANGE NAME', '✏️')
 )
+
+GAME_TURN_WON = 1
+GAME_TURN_LOST = 2
+GAME_TURN_NEUTRAL = 3
 
 current_file_path = pathlib\
     .Path(__file__)\

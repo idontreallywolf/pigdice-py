@@ -4,6 +4,13 @@ processing user input while maintaining a loop.
 """
 
 import cmd
+
+from colorama import\
+    just_fix_windows_console,\
+    Fore, Back, Style
+
+just_fix_windows_console()
+
 from game import Game
 from player import Player
 
@@ -20,7 +27,7 @@ from config import\
 class Console(cmd.Cmd):
     """Docs for Console Class."""
 
-    prompt = '~ Console: '
+    prompt = Fore.CYAN + '~ Console: ' + Style.RESET_ALL
 
     def __init__(self):
         """Initialize game and command API."""
@@ -55,7 +62,7 @@ class Console(cmd.Cmd):
 
     def do_exit(self, _):
         """Leave the game."""
-        print("Exit Game.")
+        print(Back.LIGHTRED_EX + "Exit Game." + Style.RESET_ALL)
         return True
 
     def _select_game_mode(self):

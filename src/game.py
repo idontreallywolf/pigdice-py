@@ -5,6 +5,12 @@ from prettytable import\
     DOUBLE_BORDER,\
     ALL
 
+from colorama import\
+    just_fix_windows_console,\
+    Fore, Back, Style
+
+just_fix_windows_console()
+
 from player import Player
 from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
@@ -122,7 +128,10 @@ class Game:
 
         table.set_style(DOUBLE_BORDER)
         table.header = False
-        table.title = title or "Title"
+        table.title =\
+            Fore.CYAN +\
+            (title or "Title") +\
+            Style.RESET_ALL
         table.hrules = ALL
 
         return table

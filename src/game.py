@@ -77,7 +77,7 @@ class Game:
 
     def get_current_player(self):
         """Get current player."""
-        return self.player[self.current_player]
+        return self.players[self.current_player]
 
     def set_turn_status(self, status):
         """

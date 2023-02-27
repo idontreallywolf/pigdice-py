@@ -47,7 +47,7 @@ class Console(cmd.Cmd):
         selected_game_mode = self._select_game_mode()
         self._setup_game(selected_game_mode)
 
-    def do_highscore(self):
+    def do_highscore(self, _):
         """Show highscores."""
         return True
 

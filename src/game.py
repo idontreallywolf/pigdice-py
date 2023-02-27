@@ -3,6 +3,9 @@
 from player import Player
 from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
+from dice import Dice
+from config import SCORES_FILE_PATH
+# pylint: disable=too-few-public-methods
 
 from prettytable import\
     PrettyTable,\
@@ -47,18 +50,15 @@ class Game:
             return
 
     def load(self):
-        # TODO: This method should be called during initialization.
-        #
-        # Call highscore_manager's load_scores method
-        # with the argument SCORES_FILE_PATH constant (from config)
-        # note: method can raise FileNotFoundError
-        pass
+        """Load score."""
+        try:
+            self.highscore_manager.load_scores(SCORES_FILE_PATH)
+        except FileExistsError:
+            print("The scores file could not be found!")
 
     def save(self):
-        # TODO: This method should save highscores by calling
-        # highscore_manager's save_scores method
-        # with the argument SCORES_FILE_PATH constant (from config)
-        pass
+        """Save highscores of current player."""
+        self.highscore_manager.save_scores(SCORES_FILE_PATH)
 
     def add_player(self, name):
         """Add new player to the game."""
@@ -70,7 +70,7 @@ class Game:
 
     def get_current_player(self):
         """Get current player."""
-        return self.player[self.current_player]
+        return self.players[self.current_player]
 
     def set_turn_status(self, status):
         """
@@ -88,10 +88,12 @@ class Game:
         return self.turn_status
 
     def roll(self):
-        """Roll dice."""
-        # TODO: This method should implement
-        # rolling dice for current player.
-        pass
+        """Roll a dice."""
+        player: Player = self.get_current_player()
+        roll_result = Dice().roll()
+        if roll_result == 1:
+            return player.reset_temporary_score()
+        return player.add_temporary_score(roll_result)
 
     def hold(self):
         """Hold current score."""
@@ -101,9 +103,8 @@ class Game:
 
     def cheat(self):
         """Grant maximum score to current player."""
-        # TODO: This method should let
-        # the player reach maximum score to win.
-        pass
+        player: Player = self.get_current_player()
+        player.set_score(100)
 
     def change_name(self, new_name):
         # TODO: This method should change the name

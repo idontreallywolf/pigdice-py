@@ -27,12 +27,9 @@ class Game:
         except FileExistsError:
             print("The scores file could not be found!")
 
-
     def save(self):
-        # TODO: This method should save highscores by calling
-        # highscore_manager's save_scores method
-        # with the argument SCORES_FILE_PATH constant (from config)
-        pass
+        """Save highscores of current player."""
+        self.highscore_manager.save_scores(SCORES_FILE_PATH)
 
     def add_player(self, name):
         """Add new player to the game."""

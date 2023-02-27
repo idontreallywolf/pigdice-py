@@ -113,11 +113,11 @@ class Console(cmd.Cmd):
         return name
 
     def _game_loop(self):
-        self._display_current_player_turn()
-
         # This is the menu of options that will be shown to the player
         # while they are playing. A player may choose to roll, hold, quit etc.
         self._display_gameplay_options()
+
+        self._display_current_player_turn()
 
         # After displaying the options, the player is requested to provide
         # an input.

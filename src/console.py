@@ -2,14 +2,11 @@
 Console module is responsible for receiving and
 processing user input while maintaining a loop.
 """
-
 import cmd
 
 from colorama import\
     just_fix_windows_console,\
     Fore, Back, Style
-
-just_fix_windows_console()
 
 from game import Game
 from player import Player
@@ -22,6 +19,8 @@ from config import\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
     GAMEPLAY_CHOICE_END_GAME
+
+just_fix_windows_console()
 
 
 class Console(cmd.Cmd):

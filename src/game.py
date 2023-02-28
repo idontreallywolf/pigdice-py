@@ -1,5 +1,4 @@
 """Module docstring."""
-
 from prettytable import\
     PrettyTable,\
     DOUBLE_BORDER,\
@@ -7,9 +6,7 @@ from prettytable import\
 
 from colorama import\
     just_fix_windows_console,\
-    Fore, Back, Style
-
-just_fix_windows_console()
+    Fore, Style
 
 from player import Player
 from ai_player import AIPlayer
@@ -22,6 +19,8 @@ from config import\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL
+
+just_fix_windows_console()
 
 
 class Game:

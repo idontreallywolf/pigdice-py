@@ -12,13 +12,13 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(player._name, 'Smiegol')
         self.assertEqual(player._score, 0)
         self.assertEqual(player._temporary_score, 0)
-        self.assertFalse(player._isAI)
+        self.assertFalse(player._is_ai)
 
         player = Player('AI')
         self.assertEqual(player._name, 'AI')
         self.assertEqual(player._score, 0)
         self.assertEqual(player._temporary_score, 0)
-        self.assertTrue(player._isAI)
+        self.assertTrue(player._is_ai)
 
     def test_get_name(self):
         """Test get_name."""
@@ -47,13 +47,13 @@ class Test_Player(unittest.TestCase):
         with self.assertRaises(ValueError):
             Player(name='  ')
 
-    def test_isAI(self):
+    def test_is_ai(self):
         """Test isAI."""
         player = Player(name='Jack')
-        self.assertFalse(player.isAI())
+        self.assertFalse(player.is_ai())
 
         player = Player(name='AI')
-        self.assertTrue(player.isAI())
+        self.assertTrue(player.is_ai())
 
     def test_get_score(self):
         """Test get score."""

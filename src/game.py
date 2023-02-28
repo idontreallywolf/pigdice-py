@@ -11,6 +11,7 @@ from colorama import\
 from player import Player
 from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
+from dice import Dice
 
 from config import\
     GAMEPLAY_OPTIONS_MENU,\
@@ -18,7 +19,8 @@ from config import\
     GAMEPLAY_CHOICE_HOLD,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
-    GAME_TURN_NEUTRAL
+    GAME_TURN_NEUTRAL,\
+    SCORES_FILE_PATH
 
 just_fix_windows_console()
 
@@ -53,18 +55,15 @@ class Game:
             return
 
     def load(self):
-        """Load things before the game starts."""
-        # This method should be called during initialization.
-        #
-        # Call highscore_manager's load_scores method
-        # with the argument SCORES_FILE_PATH constant (from config)
-        # note: method can raise FileNotFoundError
+        """Load score."""
+        try:
+            self.highscore_manager.load_scores(SCORES_FILE_PATH)
+        except FileExistsError:
+            print("The scores file could not be found!")
 
     def save(self):
-        """Save players and their scores."""
-        # This method should save highscores by calling
-        # highscore_manager's save_scores method
-        # with the argument SCORES_FILE_PATH constant (from config)
+        """Save highscores of current player."""
+        self.highscore_manager.save_scores(SCORES_FILE_PATH)
 
     def add_player(self, name):
         """Add new player to the game."""
@@ -94,9 +93,12 @@ class Game:
         return self.turn_status
 
     def roll(self):
-        """Roll dice."""
-        # This method should implement
-        # rolling dice for current player.
+        """Roll a dice."""
+        player: Player = self.get_current_player()
+        roll_result = Dice().roll()
+        if roll_result == 1:
+            return player.reset_temporary_score()
+        return player.add_temporary_score(roll_result)
 
     def hold(self):
         """Hold current score."""
@@ -105,8 +107,8 @@ class Game:
 
     def cheat(self):
         """Grant maximum score to current player."""
-        # This method should let
-        # the player reach maximum score to win.
+        player: Player = self.get_current_player()
+        player.set_score(100)
 
     def change_name(self, new_name):
         """Change player's name."""

@@ -66,11 +66,7 @@ class Console(cmd.Cmd):
         return True
 
     def _select_game_mode(self):
-        while True:
-            try:
-                return int(input('> '))
-            except ValueError:
-                print('[Error]: Invalid input. Try a number.')
+        return self._request_player_choice()
 
     def _setup_game(self, selected_game_mode):
         if selected_game_mode == GAME_MODE_VS_PLAYER:

@@ -80,6 +80,7 @@ class Game:
     def set_turn_status(self, status):
         """
         Set game `turn_status`.
+
         Possible values: `GAME_TURN_WON | GAME_TURN_LOST | GAME_TURN_NEUTRAL`
         """
         self.turn_status = status
@@ -95,15 +96,24 @@ class Game:
     def roll(self):
         """Roll a dice."""
         player: Player = self.get_current_player()
+
         roll_result = Dice().roll()
         if roll_result == 1:
+            self.set_turn_status(GAME_TURN_LOST)
             return player.reset_temporary_score()
+        
+        if player.get_temporary_score() + player.get_score() >= 100:
+            self.set_turn_status(GAME_TURN_WON)
+            return
+
+        self.set_turn_status(GAME_TURN_NEUTRAL)
         return player.add_temporary_score(roll_result)
 
     def hold(self):
         """Hold current score."""
-        # This method should implement
-        # holding dice for current player.
+        player: Player = self.get_current_player()
+        self.set_turn_status(GAME_TURN_NEUTRAL)
+        player.hold_score()
 
     def cheat(self):
         """Grant maximum score to current player."""
@@ -111,16 +121,19 @@ class Game:
         player.set_score(100)
 
     def change_name(self, new_name):
-        """Change player's name."""
-        # This method should change the name
-        # of the current player to `new_name`.
+        """Change player's name during the game."""
+        player: Player = self.get_current_player()
+        player.set_name(new_name)
 
     def quit(self):
-        """Prepare the quit process."""
-        # This method should
+        """Quit the game by save the scores."""
+        # TODO: This method should
         # 1) ask the player to confirm.
         #    if player confirms, then proceed.
         # 2) call save method in order to save anything that should be saved.
+        self.save()
+        self.players = []
+        
 
     @staticmethod
     def make_table(title, columns: list[str]) -> PrettyTable:

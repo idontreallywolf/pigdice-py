@@ -10,6 +10,7 @@ from colorama import\
 
 from game import Game
 from player import Player
+from ai_player import AIPlayer
 
 from config import\
     GAME_MODE_MENU,\
@@ -65,11 +66,7 @@ class Console(cmd.Cmd):
         return True
 
     def _select_game_mode(self):
-        while True:
-            try:
-                return int(input('> '))
-            except ValueError:
-                print('[Error]: Invalid input. Try a number.')
+        return self._request_player_choice()
 
     def _setup_game(self, selected_game_mode):
         if selected_game_mode == GAME_MODE_VS_PLAYER:
@@ -120,7 +117,12 @@ class Console(cmd.Cmd):
 
         # After displaying the options, the player is requested to provide
         # an input.
-        choice = self._request_player_choice()
+        current_player: Player | AIPlayer = self.game.get_current_player()
+        choice = None
+        if current_player.is_ai():
+            choice = current_player.make_choice()
+        else:
+            choice = self._request_player_choice()
 
         # Player's input is then read by Game.parse_choice
         # and some decision is made based on that.

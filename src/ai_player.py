@@ -1,6 +1,7 @@
 """Represents the AI (Computer) player."""
 
 from src.player import Player
+from src.dice import Dice
 from src.config import CHOICE_ROLL, CHOICE_HOLD
 
 class AIPlayer(Player):
@@ -36,9 +37,9 @@ class AIPlayer(Player):
         Returns:
         float which is the exptedted score of the current turn.
         """
-        num_sides = 6
         # the parameter is from dice class, but i don't know how to fix it
         except_scord = 0.0
+        num_sides = Dice().num_sides
         for i in range(1, num_sides + 1):
             p = 1 / num_sides
             #  Claculate the pdrobabilty of each possible outcome

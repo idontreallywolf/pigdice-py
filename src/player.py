@@ -25,11 +25,11 @@ class Player:
         self._name = name
         self._score = max(score, 0)
         self._temporary_score = 0
-        self._isAI = (name == "AI" and True) or False
+        self._is_ai = name == "AI"
 
-    def isAI(self) -> bool:
+    def is_ai(self) -> bool:
         """Return `True` if player is Computer/AI."""
-        return self._isAI
+        return self._is_ai
 
     def set_name(self, new_name: str) -> None:
         """Set player's name to `new_name`."""
@@ -67,6 +67,7 @@ class Player:
         """Increment player score by current temporary score."""
         self._score += self._temporary_score
 
+    @staticmethod
     def name_is_valid(name: str) -> bool:
         """
         Check whether `name` is valid.

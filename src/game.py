@@ -1,16 +1,17 @@
 """Module docstring."""
+from prettytable import\
+    PrettyTable,\
+    DOUBLE_BORDER,\
+    ALL
+
+from colorama import\
+    just_fix_windows_console,\
+    Fore, Style
 
 from player import Player
 from ai_player import AIPlayer
 from highscore_manager import HighscoreManager
 from dice import Dice
-from config import SCORES_FILE_PATH
-# pylint: disable=too-few-public-methods
-
-from prettytable import\
-    PrettyTable,\
-    DOUBLE_BORDER,\
-    ALL
 
 from config import\
     GAMEPLAY_OPTIONS_MENU,\
@@ -18,7 +19,10 @@ from config import\
     GAMEPLAY_CHOICE_HOLD,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
-    GAME_TURN_NEUTRAL
+    GAME_TURN_NEUTRAL,\
+    SCORES_FILE_PATH
+
+just_fix_windows_console()
 
 
 class Game:
@@ -41,6 +45,7 @@ class Game:
             = GAME_TURN_NEUTRAL
 
     def parse_choice(self, choice):
+        """Parse player's choice."""
         if choice == GAMEPLAY_CHOICE_ROLL:
             self.roll()
             return
@@ -130,17 +135,22 @@ class Game:
         self.players = []
         
 
+    @staticmethod
     def make_table(title, columns: list[str]) -> PrettyTable:
         """Build and return an ASCII table."""
         table = PrettyTable(columns)
 
         table.set_style(DOUBLE_BORDER)
         table.header = False
-        table.title = title or "Title"
+        table.title =\
+            Fore.CYAN +\
+            (title or "Title") +\
+            Style.RESET_ALL
         table.hrules = ALL
 
         return table
 
+    @staticmethod
     def _prepare_options_menu():
         """Return an ASCII table containing gameplay options menu."""
         table = Game.make_table(

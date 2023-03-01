@@ -2,10 +2,15 @@
 Console module is responsible for receiving and
 processing user input while maintaining a loop.
 """
-
 import cmd
+
+from colorama import\
+    just_fix_windows_console,\
+    Fore, Back, Style
+
 from game import Game
 from player import Player
+from ai_player import AIPlayer
 
 from config import\
     GAME_MODE_MENU,\
@@ -16,11 +21,13 @@ from config import\
     GAME_TURN_LOST,\
     GAMEPLAY_CHOICE_END_GAME
 
+just_fix_windows_console()
+
 
 class Console(cmd.Cmd):
     """Docs for Console Class."""
 
-    prompt = '~ Console: '
+    prompt = Fore.CYAN + '~ Console: ' + Style.RESET_ALL
 
     def __init__(self):
         """Initialize game and command API."""
@@ -40,7 +47,7 @@ class Console(cmd.Cmd):
         selected_game_mode = self._select_game_mode()
         self._setup_game(selected_game_mode)
 
-    def do_highscore(self):
+    def do_highscore(self, _):
         """Show highscores."""
         return True
 
@@ -55,22 +62,20 @@ class Console(cmd.Cmd):
 
     def do_exit(self, _):
         """Leave the game."""
-        print("Exit Game.")
+        print(Back.LIGHTRED_EX + "Exit Game." + Style.RESET_ALL)
         return True
 
     def _select_game_mode(self):
-        while True:
-            try:
-                return int(input('> '))
-            except ValueError:
-                print('[Error]: Invalid input. Try a number.')
+        return self._request_player_choice()
 
     def _setup_game(self, selected_game_mode):
         if selected_game_mode == GAME_MODE_VS_PLAYER:
-            return self._setup_pvp()
+            self._setup_pvp()
+            return
 
         if selected_game_mode == GAME_MODE_VS_AI:
-            return self._setup_pva()
+            self._setup_pva()
+            return
 
         print('😔 Cancel setup.')
 
@@ -98,21 +103,26 @@ class Console(cmd.Cmd):
         name = ''
         name_is_valid = Player.name_is_valid(name)
         while not name_is_valid:
-            name = input('Player {}\'s name: '.format(ordinal))
+            name = input(f'Player {ordinal}\'s name: ')
             name_is_valid = Player.name_is_valid(name)
 
         return name
 
     def _game_loop(self):
-        self._display_current_player_turn()
-
         # This is the menu of options that will be shown to the player
         # while they are playing. A player may choose to roll, hold, quit etc.
         self._display_gameplay_options()
 
+        self._display_current_player_turn()
+
         # After displaying the options, the player is requested to provide
         # an input.
-        choice = self._request_player_choice()
+        current_player: Player | AIPlayer = self.game.get_current_player()
+        choice = None
+        if current_player.is_ai():
+            choice = current_player.make_choice()
+        else:
+            choice = self._request_player_choice()
 
         # Player's input is then read by Game.parse_choice
         # and some decision is made based on that.
@@ -132,23 +142,24 @@ class Console(cmd.Cmd):
         # It might be "won", "lost" or "neither".
         turn_status = self.game.get_turn_status()
 
-        if (turn_status == GAME_TURN_WON):
+        if turn_status == GAME_TURN_WON:
             print('🎉 Congratulations! You have won 🎉')
             self.game.save()
             self.game.quit()
             return True
 
-        if (turn_status == GAME_TURN_LOST):
+        if turn_status == GAME_TURN_LOST:
             print('😔 You rolled a 1!\n')
 
-        self._game_loop()
+        return self._game_loop()
 
     def _confirm(self, message):
         """
         Request confirmation from player.
 
         Parameters:
-        `message`: The text which should be displayed in the prompt. e.g "Are you sure?"
+        `message`: The text which should be displayed in the prompt.
+        e.g "Are you sure?"
         """
         print(message)
 
@@ -166,7 +177,7 @@ class Console(cmd.Cmd):
         """Display text indicating current player's turn."""
         current_player: Player = self.game.get_current_player()
         name = current_player.get_name()
-        print('{}\'s turn.'.format(name))
+        print(f'{name}\'s turn.')
 
     def _request_player_choice(self):
         while True:

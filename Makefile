@@ -62,7 +62,7 @@ lint: flake8 pylint
 
 test:
 	$(MAKE) pylint
-#	$(MAKE) flake8
+	$(MAKE) flake8
 	coverage run -m unittest discover
 	coverage report
 

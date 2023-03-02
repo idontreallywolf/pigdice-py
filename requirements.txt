@@ -2,7 +2,7 @@
 prettytable
 
 # Code analysis
-cohesion
+# cohesion      -- breaks flake8
 flake8
 flake8-docstrings
 flake8-polyfill

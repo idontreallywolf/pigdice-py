@@ -121,14 +121,10 @@ class Game:
         player.set_name(new_name)
 
     def quit(self):
-        """Quit the game by save the scores."""
-        # TODO: This method should
-        # 1) ask the player to confirm.
-        #    if player confirms, then proceed.
-        # 2) call save method in order to save anything that should be saved.
-        self.save()
+        """Quit the game."""
         self.players = []
-        
+        self.current_player = 0
+        self.turn_status = GAME_TURN_NEUTRAL
 
     @staticmethod
     def make_table(title, columns: list[str]) -> PrettyTable:

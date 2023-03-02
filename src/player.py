@@ -15,9 +15,9 @@ class Player:
         Raises ValueError if length of `name` equals 0
         or `name` consists of spaces only.
 
-        Parameters:\n
-        `name` - Player's name.\n
-        `score` - Player's initial score. Default `0`
+        Parameters:
+        `name`: Player's name.
+        `score`: Player's initial score. Default `0`
         """
         if not Player.name_is_valid(name):
             raise ValueError('Invalid player name.')
@@ -78,10 +78,9 @@ class Player:
         return (len(name) > 0) and (not name.isspace())
 
     def make_ai_choice(self) -> int | None:
-        """This method is for AI player."""
+        """Make a choice as AI player."""
         if not self.is_ai():
             return None
 
-        """Make a choice for ."""
         # Implement AI strategy
         return CHOICE_ROLL

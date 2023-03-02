@@ -131,3 +131,17 @@ class Test_Game(unittest.TestCase):
         current_player = game.get_current_player()
         self.assertEqual(current_player.get_name(), 'p1_new_name')
 
+    def test_quit(self):
+        game = Game()
+        game.add_player('p1')
+        game.add_player('p2')
+
+        self.assertEqual(len(game.players), 2)
+
+        self.assertEqual(game.current_player, 0)
+        game.change_turn()
+        self.assertEqual(game.current_player, 1)
+
+        game.quit()
+        self.assertEqual(len(game.players), 0)
+        self.assertEqual(game.current_player, 0)

@@ -10,7 +10,6 @@ from colorama import\
 
 from game import Game
 from player import Player
-from ai_player import AIPlayer
 
 from config import\
     GAME_MODE_MENU,\
@@ -89,7 +88,7 @@ class Console(cmd.Cmd):
     def _setup_pva(self):
         """Player vs AI setup."""
         self._prepare_player(ordinal=1)
-        self.game.add_ai_player()
+        self.game.add_player(name='AI')
         self._game_loop()
 
     def _prepare_player(self, ordinal):
@@ -117,10 +116,10 @@ class Console(cmd.Cmd):
 
         # After displaying the options, the player is requested to provide
         # an input.
-        current_player: Player | AIPlayer = self.game.get_current_player()
+        current_player: Player = self.game.get_current_player()
         choice = None
         if current_player.is_ai():
-            choice = current_player.make_choice()
+            choice = current_player.make_ai_choice()
         else:
             choice = self._request_player_choice()
 

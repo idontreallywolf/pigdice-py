@@ -114,6 +114,7 @@ class Game:
         """Grant maximum score to current player."""
         player: Player = self.get_current_player()
         player.set_score(100)
+        self.set_turn_status(GAME_TURN_WON)
 
     def change_name(self, new_name):
         """Change player's name during the game."""

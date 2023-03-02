@@ -68,8 +68,15 @@ class Game:
         """Add new player to the game."""
         self.players.append(Player(name))
 
-    def get_current_player(self):
-        """Get current player."""
+    def get_current_player(self) -> Player | None:
+        """
+        Get current player.
+
+        Returns None if there are no players.
+        """
+        if len(self.players) == 0:
+            return None
+
         return self.players[self.current_player]
 
     def set_turn_status(self, status):

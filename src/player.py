@@ -76,3 +76,12 @@ class Player:
         doesn't consist of only spaces.
         """
         return (len(name) > 0) and (not name.isspace())
+
+    def make_ai_choice(self) -> int | None:
+        """This method is for AI player."""
+        if not self.is_ai():
+            return None
+
+        """Make a choice for ."""
+        # Implement AI strategy
+        return CHOICE_ROLL

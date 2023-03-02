@@ -97,12 +97,13 @@ class Game:
             self.set_turn_status(GAME_TURN_LOST)
             player.reset_temporary_score()
             return
+
+        player.add_temporary_score(roll_result)
         if player.get_temporary_score() + player.get_score() >= 100:
             self.set_turn_status(GAME_TURN_WON)
             return
 
         self.set_turn_status(GAME_TURN_NEUTRAL)
-        return player.add_temporary_score(roll_result)
 
     def hold(self):
         """Hold current score."""

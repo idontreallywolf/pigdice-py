@@ -1,5 +1,7 @@
 """Player class represents a human player."""
 
+from config import GAMEPLAY_CHOICE_ROLL
+
 
 class Player:
     """Player class."""
@@ -83,4 +85,4 @@ class Player:
             return None
 
         # Implement AI strategy
-        return CHOICE_ROLL
+        return GAMEPLAY_CHOICE_ROLL

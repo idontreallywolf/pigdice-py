@@ -149,7 +149,7 @@ class Console(cmd.Cmd):
             return True
 
         if turn_status == GAME_TURN_LOST:
-            print('😔 You rolled a 1!\n')
+            print(f'{current_player.get_name()} rolled a 1!\n')
 
         return self._game_loop()
 

@@ -68,6 +68,14 @@ class Game:
         """Add new player to the game."""
         self.players.append(Player(name))
 
+    def change_turn(self):
+        """Change player's turn."""
+        if self.current_player == 0:
+            self.current_player = 1
+            return
+
+        self.current_player = 0
+
     def get_current_player(self) -> Player | None:
         """
         Get current player.

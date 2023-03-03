@@ -53,6 +53,9 @@ class Game:
             self.hold()
             return
 
+        if choice == GAMEPLAY_CHOICE_CHEAT:
+            self.cheat()
+
     def load(self):
         """Load score."""
         try:

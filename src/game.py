@@ -1,4 +1,10 @@
 """Module docstring."""
+import os
+import sys
+
+# Add the parent directory of the current file to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from prettytable import\
     PrettyTable,\
     DOUBLE_BORDER,\
@@ -8,14 +14,15 @@ from colorama import\
     just_fix_windows_console,\
     Fore, Style
 
-from player import Player
-from highscore_manager import HighscoreManager
-from dice import Dice
+from src.player import Player
+from src.highscore_manager import HighscoreManager
+from src.dice import Dice
 
-from config import\
+from src.config import\
     GAMEPLAY_OPTIONS_MENU,\
     GAMEPLAY_CHOICE_ROLL,\
     GAMEPLAY_CHOICE_HOLD,\
+    GAMEPLAY_CHOICE_CHEAT,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL,\
@@ -53,6 +60,9 @@ class Game:
             self.hold()
             return
 
+        if choice == GAMEPLAY_CHOICE_CHEAT:
+            self.cheat()
+
     def load(self):
         """Load score."""
         try:
@@ -68,8 +78,23 @@ class Game:
         """Add new player to the game."""
         self.players.append(Player(name))
 
-    def get_current_player(self):
-        """Get current player."""
+    def change_turn(self):
+        """Change player's turn."""
+        if self.current_player == 0:
+            self.current_player = 1
+            return
+
+        self.current_player = 0
+
+    def get_current_player(self) -> Player | None:
+        """
+        Get current player.
+
+        Returns None if there are no players.
+        """
+        if len(self.players) == 0:
+            return None
+
         return self.players[self.current_player]
 
     def set_turn_status(self, status):
@@ -95,25 +120,30 @@ class Game:
         roll_result = Dice().roll()
         if roll_result == 1:
             self.set_turn_status(GAME_TURN_LOST)
-            return player.reset_temporary_score()
-        
+            self.change_turn()
+            player.reset_temporary_score()
+            return
+
+        player.add_temporary_score(roll_result)
         if player.get_temporary_score() + player.get_score() >= 100:
             self.set_turn_status(GAME_TURN_WON)
             return
 
         self.set_turn_status(GAME_TURN_NEUTRAL)
-        return player.add_temporary_score(roll_result)
 
     def hold(self):
         """Hold current score."""
         player: Player = self.get_current_player()
-        self.set_turn_status(GAME_TURN_NEUTRAL)
         player.hold_score()
+        player.reset_temporary_score()
+        self.set_turn_status(GAME_TURN_NEUTRAL)
+        self.change_turn()
 
     def cheat(self):
         """Grant maximum score to current player."""
         player: Player = self.get_current_player()
         player.set_score(100)
+        self.set_turn_status(GAME_TURN_WON)
 
     def change_name(self, new_name):
         """Change player's name during the game."""
@@ -121,14 +151,10 @@ class Game:
         player.set_name(new_name)
 
     def quit(self):
-        """Quit the game by save the scores."""
-        # TODO: This method should
-        # 1) ask the player to confirm.
-        #    if player confirms, then proceed.
-        # 2) call save method in order to save anything that should be saved.
-        self.save()
+        """Quit the game."""
         self.players = []
-        
+        self.current_player = 0
+        self.turn_status = GAME_TURN_NEUTRAL
 
     @staticmethod
     def make_table(title, columns: list[str]) -> PrettyTable:

@@ -1,11 +1,17 @@
 """Module docstring."""
 
-import console
+import os
+import sys
+
+# Add the parent directory of the current file to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from console import Console
 
 
 def main():
     """Initialize terminal loop."""
-    console.Console().cmdloop()
+    Console().cmdloop()
 
 
 if __name__ == '__main__':

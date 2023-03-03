@@ -1,4 +1,6 @@
 """
+Console module.
+
 Console module is responsible for receiving and
 processing user input while maintaining a loop.
 """

@@ -1,8 +1,9 @@
 """Here is a docstring."""
 import unittest
+import os
+
 from src.highscore_manager import HighscoreManager
 from src.config import SCORES_FILE_PATH
-import os
 
 
 class Test_highscoreManager(unittest.TestCase):

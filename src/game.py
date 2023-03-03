@@ -8,11 +8,11 @@ from colorama import\
     just_fix_windows_console,\
     Fore, Style
 
-from src.player import Player
-from src.highscore_manager import HighscoreManager
-from src.dice import Dice
+from player import Player
+from highscore_manager import HighscoreManager
+from dice import Dice
 
-from src.config import\
+from config import\
     GAMEPLAY_OPTIONS_MENU,\
     GAMEPLAY_CHOICE_ROLL,\
     GAMEPLAY_CHOICE_HOLD,\

@@ -110,6 +110,7 @@ class Game:
         roll_result = Dice().roll()
         if roll_result == 1:
             self.set_turn_status(GAME_TURN_LOST)
+            self.change_turn()
             player.reset_temporary_score()
             return
 
@@ -123,8 +124,10 @@ class Game:
     def hold(self):
         """Hold current score."""
         player: Player = self.get_current_player()
-        self.set_turn_status(GAME_TURN_NEUTRAL)
         player.hold_score()
+        player.reset_temporary_score()
+        self.set_turn_status(GAME_TURN_NEUTRAL)
+        self.change_turn()
 
     def cheat(self):
         """Grant maximum score to current player."""

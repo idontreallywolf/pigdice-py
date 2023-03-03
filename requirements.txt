@@ -1,5 +1,6 @@
 # utility libs
 prettytable
+colorama
 
 # Code analysis
 # cohesion      -- breaks flake8

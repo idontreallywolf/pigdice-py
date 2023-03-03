@@ -22,6 +22,11 @@ class HighscoreManager:
         """Add a player and their score to the highscore table."""
         self._highscores[player_name] = max(score, 0)
 
+    def update_name(self, old_name, new_name):
+        """Update the player's name in highscore's dictionary."""
+        if old_name in self._highscores:
+            self._highscores[new_name] = self._highscores.pop(old_name, 0)
+
     def get_score_by_name(self, player_name):
         """Return player score if exists, otherwise None."""
         return self._highscores.get(player_name)

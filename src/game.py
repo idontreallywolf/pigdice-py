@@ -154,7 +154,7 @@ class Game:
         player: Player = self.get_current_player()
         name = player.get_name()
         player.set_name(new_name)
-        self.highscore_manager.update_score_by_name(name, new_name)
+        self.highscore_manager.update_name(name, new_name)
 
     def quit(self):
         """Quit the game."""

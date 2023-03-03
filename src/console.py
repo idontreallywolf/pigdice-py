@@ -19,7 +19,6 @@ from config import\
     GAME_MODE_VS_AI,\
     GAME_RULES,\
     GAME_TURN_WON,\
-    GAME_TURN_LOST,\
     GAMEPLAY_CHOICE_END_GAME
 
 just_fix_windows_console()
@@ -63,7 +62,7 @@ class Console(cmd.Cmd):
 
     def do_exit(self, _):
         """Leave the game."""
-        print(Back.LIGHTRED_EX + "Exit Game." + Style.RESET_ALL)
+        Console.print_danger('Exit Game.')
         return True
 
     def _select_game_mode(self):
@@ -149,8 +148,7 @@ class Console(cmd.Cmd):
             self.game.quit()
             return True
 
-        if turn_status == GAME_TURN_LOST:
-            print(f'{current_player.get_name()} rolled a 1!\n')
+        self._display_last_roll()
 
         return self._game_loop()
 
@@ -186,3 +184,38 @@ class Console(cmd.Cmd):
                 return int(input('Option > '))
             except ValueError:
                 print('Invalid input. Try a number.')
+
+    def _display_last_roll(self):
+        """Show which number the player rolled."""
+        last_roll = self.game.get_last_roll()
+        if not last_roll:
+            Console.print_default('You have chosen to hold.')
+            return
+
+        text = f'You rolled {last_roll}. 🎲'
+
+        if last_roll > 1:
+            Console.print_success(text)
+            return
+
+        Console.print_danger(text)
+
+    @staticmethod
+    def print_danger(text):
+        """Print text with red background."""
+        Console._print(f'{Back.RED}{Fore.WHITE}', text)
+
+    @staticmethod
+    def print_default(text):
+        """Print text with red background."""
+        Console._print(f'{Back.BLACK}{Fore.CYAN}', text)
+
+    @staticmethod
+    def print_success(text):
+        """Print text with green background."""
+        Console._print(Back.GREEN, text)
+
+    @staticmethod
+    def _print(style, text):
+        """Print with `style`."""
+        print(f'{style}\n\n{" " * 4}{text}\n{Style.RESET_ALL}\n')

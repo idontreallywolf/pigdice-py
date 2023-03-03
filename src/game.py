@@ -40,6 +40,7 @@ class Game:
         self.options_menu = Game._prepare_options_menu()
         self.players = []
         self.current_player = 0
+        self.last_roll = 0
 
         # The purpose of this state is to remember whether
         # the current player has won, lost, or neither.
@@ -118,6 +119,8 @@ class Game:
         player: Player = self.get_current_player()
 
         roll_result = Dice().roll()
+        self.set_last_roll(roll_result)
+
         if roll_result == 1:
             self.set_turn_status(GAME_TURN_LOST)
             self.change_turn()
@@ -137,6 +140,7 @@ class Game:
         player.hold_score()
         player.reset_temporary_score()
         self.set_turn_status(GAME_TURN_NEUTRAL)
+        self.set_last_roll(None)
         self.change_turn()
 
     def cheat(self):
@@ -155,6 +159,15 @@ class Game:
         self.players = []
         self.current_player = 0
         self.turn_status = GAME_TURN_NEUTRAL
+        self.last_roll = 0
+
+    def set_last_roll(self, number):
+        """Set the last dice number."""
+        self.last_roll = number
+
+    def get_last_roll(self):
+        """Get the latest dice number stored."""
+        return self.last_roll
 
     @staticmethod
     def make_table(title, columns: list[str]) -> PrettyTable:

@@ -17,6 +17,7 @@ class Test_Game(unittest.TestCase):
         self.assertTrue(type(game.players) is list)
         self.assertEqual(len(game.players), 0)
         self.assertEqual(game.current_player, 0)
+        self.assertEqual(game.last_roll, 0)
         self.assertEqual(game.turn_status, GAME_TURN_NEUTRAL)
         self.assertTrue(type(game.highscore_manager) is HighscoreManager)
 
@@ -146,6 +147,24 @@ class Test_Game(unittest.TestCase):
         game.quit()
         self.assertEqual(len(game.players), 0)
         self.assertEqual(game.current_player, 0)
+
+    def test_get_last_roll(self):
+        game = Game()
+
+        self.assertEqual(game.get_last_roll(), 0)
+        game.last_roll = 1
+        self.assertEqual(game.get_last_roll(), 1)
+        game.last_roll = 0
+        self.assertEqual(game.get_last_roll(), 0)
+
+    def test_set_last_roll(self):
+        game = Game()
+
+        self.assertEqual(game.last_roll, 0)
+        game.set_last_roll(1)
+        self.assertEqual(game.last_roll, 1)
+        game.set_last_roll(0)
+        self.assertEqual(game.last_roll, 0)
 
 if __name__ == '__main__':
     unittest.main()

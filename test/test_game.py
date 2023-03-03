@@ -1,4 +1,5 @@
 import unittest
+
 from unittest.mock import MagicMock, patch
 
 from src.game import Game
@@ -145,3 +146,6 @@ class Test_Game(unittest.TestCase):
         game.quit()
         self.assertEqual(len(game.players), 0)
         self.assertEqual(game.current_player, 0)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,4 +1,10 @@
 """Module docstring."""
+import os
+import sys
+
+# Add the parent directory of the current file to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from prettytable import\
     PrettyTable,\
     DOUBLE_BORDER,\
@@ -8,11 +14,11 @@ from colorama import\
     just_fix_windows_console,\
     Fore, Style
 
-from player import Player
-from highscore_manager import HighscoreManager
-from dice import Dice
+from src.player import Player
+from src.highscore_manager import HighscoreManager
+from src.dice import Dice
 
-from config import\
+from src.config import\
     GAMEPLAY_OPTIONS_MENU,\
     GAMEPLAY_CHOICE_ROLL,\
     GAMEPLAY_CHOICE_HOLD,\

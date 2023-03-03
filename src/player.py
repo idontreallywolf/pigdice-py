@@ -1,6 +1,11 @@
 """Player class represents a human player."""
+import os
+import sys
 
-from config import GAMEPLAY_CHOICE_ROLL
+# Add the parent directory of the current file to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from src.config import GAMEPLAY_CHOICE_ROLL
 
 
 class Player:

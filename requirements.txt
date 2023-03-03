@@ -3,7 +3,6 @@ prettytable
 colorama
 
 # Code analysis
-# cohesion      -- breaks flake8
 flake8
 flake8-docstrings
 flake8-polyfill

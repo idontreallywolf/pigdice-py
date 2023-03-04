@@ -68,3 +68,54 @@ test:
 
 run:
 	python ./src/main.py
+
+# ---------------------------------------------------------
+# Work with generating documentation.
+#
+.PHONY: pydoc
+pydoc:
+	@$(call MESSAGE,$@)
+	# This does not work on Windows installed Python
+	$(PYTHON) -m pydoc -w "$(PWD)"
+	install -d doc/pydoc
+	mv *.html doc/pydoc
+
+pdoc:
+	@$(call MESSAGE,$@)
+	pdoc --force --html --output-dir doc/pdoc .
+
+pyreverse:
+	@$(call MESSAGE,$@)
+	install -d doc/pyreverse
+	pyreverse *.py -a1 -s1
+	dot -Tpng classes.dot -o doc/pyreverse/classes.png
+	dot -Tpng packages.dot -o doc/pyreverse/packages.png
+	rm -f classes.dot packages.dot
+
+doc: pdoc pyreverse #pydoc sphinx
+
+# ---------------------------------------------------------
+# Calculate software metrics for your project.
+#
+radon-cc:
+	@$(call MESSAGE,$@)
+	radon cc --show-complexity --average .
+
+radon-mi:
+	@$(call MESSAGE,$@)
+	radon mi --show .
+
+radon-raw:
+	@$(call MESSAGE,$@)
+	radon raw .
+
+radon-hal:
+	@$(call MESSAGE,$@)
+	radon hal .
+
+cohesion:
+	@$(call MESSAGE,$@)
+	cohesion --directory .
+
+metrics: radon-cc radon-mi radon-raw radon-hal cohesion
+

@@ -1,4 +1,7 @@
-"""Module docstring."""
+"""Main module is responsible for starting the process.
+
+Calls Console's cmdloop method in order to start the command line input process.
+"""
 
 import os
 import sys
@@ -10,7 +13,7 @@ from console import Console
 
 
 def main():
-    """Initialize terminal loop."""
+    """Start console loop."""
     Console().cmdloop()
 
 

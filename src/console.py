@@ -12,6 +12,7 @@ from colorama import\
 
 from game import Game
 from player import Player
+from src.utils import make_table
 
 from config import\
     GAME_MODE_MENU,\
@@ -34,10 +35,11 @@ class Console(cmd.Cmd):
         super().__init__()
         self.do_help(None)
         self.game = Game()
+        self.game.load()
 
     def do_start(self, _):
         """Start the game."""
-        table = Game.make_table(
+        table = make_table(
             'Choose a game mode',
             ['ID', 'Option', 'Icon']
         )
@@ -49,11 +51,12 @@ class Console(cmd.Cmd):
 
     def do_highscore(self, _):
         """Show highscores."""
-        return True
+        scores_table = self.game.highscore_manager.get_scores_table()
+        print(scores_table)
 
     def do_rules(self, _):
         """Show game rules."""
-        table = Game.make_table(
+        table = make_table(
             'Game Rules',
             ['ID', 'Rule', 'Icon']
         )

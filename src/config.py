@@ -52,3 +52,9 @@ SCORES_FILE_PATH = str(
     .joinpath('scores.bin')
     .resolve()
 )
+
+TEST_SCORES_FILE_PATH = str(
+    DATA_PATH
+    .joinpath('scores_test.bin')
+    .resolve()
+)

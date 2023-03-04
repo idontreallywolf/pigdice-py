@@ -5,18 +5,10 @@ import sys
 # Add the parent directory of the current file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from prettytable import\
-    PrettyTable,\
-    DOUBLE_BORDER,\
-    ALL
-
-from colorama import\
-    just_fix_windows_console,\
-    Fore, Style
-
 from src.player import Player
 from src.highscore_manager import HighscoreManager
 from src.dice import Dice
+from src.utils import make_table
 
 from src.config import\
     GAMEPLAY_OPTIONS_MENU,\
@@ -27,8 +19,6 @@ from src.config import\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL,\
     SCORES_FILE_PATH
-
-just_fix_windows_console()
 
 
 class Game:
@@ -68,8 +58,8 @@ class Game:
         """Load score."""
         try:
             self.highscore_manager.load_scores(SCORES_FILE_PATH)
-        except FileExistsError:
-            print("The scores file could not be found!")
+        except FileNotFoundError:
+            pass
 
     def save(self):
         """Save highscores of current player."""
@@ -128,8 +118,11 @@ class Game:
             return
 
         player.add_temporary_score(roll_result)
-        if player.get_temporary_score() + player.get_score() >= 100:
+        total_score = player.get_temporary_score() + player.get_score()
+        if total_score >= 100:
+            player.set_score(total_score)
             self.set_turn_status(GAME_TURN_WON)
+            self.highscore_manager.create_record(self.players)
             return
 
         self.set_turn_status(GAME_TURN_NEUTRAL)
@@ -148,13 +141,18 @@ class Game:
         player: Player = self.get_current_player()
         player.set_score(100)
         self.set_turn_status(GAME_TURN_WON)
+        self.highscore_manager.create_record(self.players)
 
     def change_name(self, new_name):
         """Change player's name during the game."""
         player: Player = self.get_current_player()
         name = player.get_name()
+        changed = self.highscore_manager.change_name(name, new_name)
+        if not changed:
+            return False
+
         player.set_name(new_name)
-        self.highscore_manager.update_name(name, new_name)
+        return True
 
     def quit(self):
         """Quit the game."""
@@ -172,24 +170,9 @@ class Game:
         return self.last_roll
 
     @staticmethod
-    def make_table(title, columns: list[str]) -> PrettyTable:
-        """Build and return an ASCII table."""
-        table = PrettyTable(columns)
-
-        table.set_style(DOUBLE_BORDER)
-        table.header = False
-        table.title =\
-            Fore.CYAN +\
-            (title or "Title") +\
-            Style.RESET_ALL
-        table.hrules = ALL
-
-        return table
-
-    @staticmethod
     def _prepare_options_menu():
         """Return an ASCII table containing gameplay options menu."""
-        table = Game.make_table(
+        table = make_table(
             title="Options",
             columns=['ID', 'Label', 'Icon']
         )

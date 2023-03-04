@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.player import Player
 from src.highscore_manager import HighscoreManager
 from src.dice import Dice
+from src.utils import make_table
 
 from src.config import\
     GAMEPLAY_OPTIONS_MENU,\
@@ -159,24 +160,9 @@ class Game:
         return self.last_roll
 
     @staticmethod
-    def make_table(title, columns: list[str]) -> PrettyTable:
-        """Build and return an ASCII table."""
-        table = PrettyTable(columns)
-
-        table.set_style(DOUBLE_BORDER)
-        table.header = False
-        table.title =\
-            Fore.CYAN +\
-            (title or "Title") +\
-            Style.RESET_ALL
-        table.hrules = ALL
-
-        return table
-
-    @staticmethod
     def _prepare_options_menu():
         """Return an ASCII table containing gameplay options menu."""
-        table = Game.make_table(
+        table = make_table(
             title="Options",
             columns=['ID', 'Label', 'Icon']
         )

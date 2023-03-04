@@ -12,6 +12,7 @@ from colorama import\
 
 from game import Game
 from player import Player
+from src.utils import make_table
 
 from config import\
     GAME_MODE_MENU,\
@@ -37,7 +38,7 @@ class Console(cmd.Cmd):
 
     def do_start(self, _):
         """Start the game."""
-        table = Game.make_table(
+        table = make_table(
             'Choose a game mode',
             ['ID', 'Option', 'Icon']
         )
@@ -53,7 +54,7 @@ class Console(cmd.Cmd):
 
     def do_rules(self, _):
         """Show game rules."""
-        table = Game.make_table(
+        table = make_table(
             'Game Rules',
             ['ID', 'Rule', 'Icon']
         )

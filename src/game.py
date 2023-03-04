@@ -224,7 +224,9 @@ class Game:
         """
         Roll the dice and update the game state.
 
-        If the dice value is `1` the player loses and game turn is set to `GAME_TURN_LOST`.
+        If the dice value is `1` the player loses and
+        game turn is set to `GAME_TURN_LOST`.
+
         Otherwise, the status will remain as `GAME_TURN_NEUTRAL`
         unless the player's current score + total score >= 100,
         in which case the `turn_status` is set to `GAME_TURN_WON.`

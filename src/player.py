@@ -57,7 +57,8 @@ class Player:
         Returns True if the given name is valid.
 
         make_ai_choice(self) -> int | None:
-        Makes a choice as an AI player, returning `GAMEPLAY_CHOICE_ROLL` or `None`.
+        Makes a choice as an AI player,
+        returning `GAMEPLAY_CHOICE_ROLL` or `None`.
     """
 
     def __init__(

@@ -3,153 +3,151 @@ import unittest
 import os
 
 from src.highscore_manager import HighscoreManager
-from src.config import SCORES_FILE_PATH
+from src.config import TEST_SCORES_FILE_PATH
+from src.player import Player
+from prettytable import PrettyTable
 
 
 class Test_highscoreManager(unittest.TestCase):
     """Docs for public class."""
 
-    def test_highscore_container_type(self):
-        """Highscore container should be a dictionary."""
+    def test_init(self):
         highscore_manager = HighscoreManager()
-        highscores_type = type(highscore_manager._highscores)
-        self.assertTrue(highscores_type is dict)
+        self.assertFalse(highscore_manager._scores_loaded)
+        self.assertIsInstance(highscore_manager._highscores, list)
+        self.assertIsInstance(highscore_manager.table, PrettyTable)
+
+    def test_get_scores_table(self):
+        highscore_manager = HighscoreManager()
+        scores_table = highscore_manager.get_scores_table()
+        self.assertIsInstance(scores_table, str)
+
+    def test_create_record(self):
+        highscore_manager = HighscoreManager()
+
+        p1 = Player('p1')
+        p1.set_score(25)
+
+        p2 = Player('p2')
+        p2.set_score(44)
+
+        highscore_manager.create_record([p1, p2])
+        highscore_records = len(highscore_manager._highscores)
+        self.assertTrue(highscore_records > 0)
+
+        first_record = highscore_manager._highscores[0]
+
+        p1_score: int = first_record['p1']
+        p2_score: int = first_record['p2']
+
+        self.assertIsNotNone(p1_score)
+        self.assertIsNotNone(p2_score)
+        self.assertIsInstance(p1_score, int)
+        self.assertIsInstance(p2_score, int)
+        self.assertEqual(p1_score, 25)
+        self.assertEqual(p2_score, 44)
+
+    def test_name_exists_true(self):
+        highscore_manager = HighscoreManager()
+
+        p1 = Player('p1')
+        p2 = Player('p2')
+
+        highscore_manager.create_record([p1, p2])
+
+        p1_exists = highscore_manager.name_exists('p1')
+        p2_exists = highscore_manager.name_exists('p2')
+
+        self.assertTrue(p1_exists)
+        self.assertTrue(p2_exists)
+
+    def test_name_exists_false(self):
+        highscore_manager = HighscoreManager()
+
+        p1 = Player('p1')
+        p2 = Player('p2')
+
+        highscore_manager.create_record([p1, p2])
+
+        p3_exists = highscore_manager.name_exists('p3')
+        p4_exists = highscore_manager.name_exists('p4')
+
+        self.assertFalse(p3_exists)
+        self.assertFalse(p4_exists)
+
+    def test_change_name_success(self):
+        highscore_manager = HighscoreManager()
+
+        p1 = Player('p1')
+        p2 = Player('p2')
+
+        highscore_manager.create_record([p1, p2])
+        changed = highscore_manager.change_name('p1', 'p1_new')
+        self.assertTrue(changed)
+
+    def test_change_name_failure(self):
+        highscore_manager = HighscoreManager()
+
+        p1 = Player('p1')
+        p2 = Player('p2')
+
+        highscore_manager.create_record([p1, p2])
+        changed = highscore_manager.change_name('p1', 'p2')
+        self.assertFalse(changed)
 
     def test_clear_all(self):
         highscore_manager = HighscoreManager()
-        highscore_manager.set_score_by_name('a', 1)
-        highscore_manager.set_score_by_name('b', 2)
 
-        a_score = highscore_manager.get_score_by_name('a')
-        b_score = highscore_manager.get_score_by_name('b')
+        p1 = Player('p1')
+        p1.set_score(25)
 
-        self.assertTrue(a_score, 1)
-        self.assertTrue(b_score, 2)
+        p2 = Player('p2')
+        p2.set_score(44)
 
+        highscore_manager.create_record([p1, p2])
         highscore_manager._clear_all()
 
-        a_score = highscore_manager.get_score_by_name('a')
-        b_score = highscore_manager.get_score_by_name('b')
-
-        self.assertTrue(len(highscore_manager._highscores.keys()) == 0)
-
-    def test_set_score_by_name(self):
-        highscore_manager = HighscoreManager()
-
-        highscore_manager.set_score_by_name('Obunga', 1234)
-        currentScore = highscore_manager.get_score_by_name('Obunga')
-        self.assertEqual(currentScore, 1234)
-
-        highscore_manager.set_score_by_name('Obunga', 4444)
-        currentScore = highscore_manager.get_score_by_name('Obunga')
-        self.assertEqual(currentScore, 4444)
-
-        highscore_manager.set_score_by_name('Obunga', -123)
-        currentScore = highscore_manager.get_score_by_name('Obunga')
-        self.assertEqual(currentScore, 0)
-
-        highscore_manager.set_score_by_name('Obunga', 123)
-        currentScore = highscore_manager.get_score_by_name('Obunga')
-        self.assertEqual(currentScore, 123)
-
-        highscore_manager.set_score_by_name('Pleb', 123)
-        currentScore = highscore_manager.get_score_by_name('Pleb')
-        self.assertEqual(currentScore, 123)
-
-    def test_get_score_by_name(self):
-        highscore_manager = HighscoreManager()
-        highscore_manager.set_score_by_name('Obunga', 123)
-        highscore_manager.set_score_by_name('Pleb', 3321)
-        highscore_manager.set_score_by_name('Jimmy', 12)
-        highscore_manager.set_score_by_name('Frodo', 32)
-        highscore_manager.set_score_by_name('Smiegol', -32)
-
-        obunga_score = highscore_manager.get_score_by_name('Obunga')
-        pleb_score = highscore_manager.get_score_by_name('Pleb')
-        jimmy_score = highscore_manager.get_score_by_name('Jimmy')
-        frodo_score = highscore_manager.get_score_by_name('Frodo')
-        smiegol_score = highscore_manager.get_score_by_name('Smiegol')
-        no_score = highscore_manager.get_score_by_name('Unknown')
-
-        self.assertEqual(obunga_score, 123)
-        self.assertEqual(pleb_score, 3321)
-        self.assertEqual(jimmy_score, 12)
-        self.assertEqual(frodo_score, 32)
-        self.assertEqual(smiegol_score, 0)
-        self.assertEqual(no_score, None)
+        self.assertTrue(len(highscore_manager._highscores) == 0)
 
     def test_save_scores(self):
         highscore_manager = HighscoreManager()
 
-        highscore_manager.set_score_by_name('Obunga', 123)
-        highscore_manager.set_score_by_name('Pleb', 3321)
-        highscore_manager.set_score_by_name('Jimmy', 12)
-        highscore_manager.set_score_by_name('Frodo', 32)
+        p1 = Player('p1')
+        p1.set_score(25)
 
-        obunga_score = highscore_manager.get_score_by_name('Obunga')
-        pleb_score = highscore_manager.get_score_by_name('Pleb')
-        jimmy_score = highscore_manager.get_score_by_name('Jimmy')
-        frodo_score = highscore_manager.get_score_by_name('Frodo')
+        p2 = Player('p2')
+        p2.set_score(44)
 
-        self.assertEqual(obunga_score, 123)
-        self.assertEqual(pleb_score, 3321)
-        self.assertEqual(jimmy_score, 12)
-        self.assertEqual(frodo_score, 32)
+        highscore_manager.create_record([p1, p2])
+        highscore_manager.save_scores(TEST_SCORES_FILE_PATH)
 
-        highscore_manager.save_scores(SCORES_FILE_PATH)
-        self.assertTrue(os.path.exists(SCORES_FILE_PATH))
+        self.assertTrue(os.path.exists(TEST_SCORES_FILE_PATH))
 
     def test_load_scores(self):
         highscore_manager = HighscoreManager()
 
         # should raise FileNotFoundError when the file doesn't exist.
-        if not os.path.exists(SCORES_FILE_PATH):
+        if not os.path.exists(TEST_SCORES_FILE_PATH):
             with self.assertRaises(FileNotFoundError):
-                highscore_manager.load_scores(SCORES_FILE_PATH)
+                highscore_manager.load_scores(TEST_SCORES_FILE_PATH)
             return
 
-        highscore_manager.load_scores(SCORES_FILE_PATH)
+        highscore_manager.load_scores(TEST_SCORES_FILE_PATH)
 
-        obunga_score = highscore_manager.get_score_by_name('Obunga')
-        pleb_score = highscore_manager.get_score_by_name('Pleb')
-        jimmy_score = highscore_manager.get_score_by_name('Jimmy')
-        frodo_score = highscore_manager.get_score_by_name('Frodo')
+        highscore_records = len(highscore_manager._highscores)
+        self.assertTrue(highscore_records > 0)
 
-        self.assertEqual(obunga_score, 123)
-        self.assertEqual(pleb_score, 3321)
-        self.assertEqual(jimmy_score, 12)
-        self.assertEqual(frodo_score, 32)
+        first_record = highscore_manager._highscores[0]
 
-    def test_get_top_scores(self):
-        highscore_manager = HighscoreManager()
+        p1_score: int = first_record['p1']
+        p2_score: int = first_record['p2']
 
-        highscore_manager.set_score_by_name('Obunga', 123)
-        highscore_manager.set_score_by_name('Pleb', 3321)
-        highscore_manager.set_score_by_name('Jimmy', 12)
-        highscore_manager.set_score_by_name('Frodo', 3)
-
-        top_three_scores = highscore_manager.get_top_scores()
-
-        self.assertTrue(type(top_three_scores) is list)
-        self.assertTrue(len(top_three_scores) == 3)
-
-        self.assertEqual(top_three_scores[0][0], 'Pleb')
-        self.assertEqual(top_three_scores[1][0], 'Obunga')
-        self.assertEqual(top_three_scores[2][0], 'Jimmy')
-
-    def test_get_average_score(self):
-        highscore_manager = HighscoreManager()
-
-        highscore_manager.set_score_by_name('Obunga', 123)
-        highscore_manager.set_score_by_name('Pleb', 3321)
-        highscore_manager.set_score_by_name('Jimmy', 12)
-        highscore_manager.set_score_by_name('Frodo', 3)
-
-        scores = highscore_manager._highscores.values()
-        total_score = sum(scores)
-
-        average_score = highscore_manager.get_average_score()
-        self.assertEqual(average_score, total_score / len(scores))
+        self.assertIsNotNone(p1_score)
+        self.assertIsNotNone(p2_score)
+        self.assertIsInstance(p1_score, int)
+        self.assertIsInstance(p2_score, int)
+        self.assertEqual(p1_score, 25)
+        self.assertEqual(p2_score, 44)
 
 
 if __name__ == '__main__':

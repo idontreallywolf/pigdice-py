@@ -4,10 +4,11 @@ import pickle
 import os
 import sys
 
-from prettytable import PrettyTable, DOUBLE_BORDER, ALL
-
 # Add the parent directory of the current file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from src.utils import make_table
+from src.player import Player
 
 
 class HighscoreManager:
@@ -15,16 +16,64 @@ class HighscoreManager:
 
     def __init__(self):
         """Initialize internal highscore table."""
-        self._highscores = {}
+        self._highscores = []
         self._scores_loaded = False
+        self.table = make_table(
+            'Highscores',
+            ['P1', 'Score', 'P2', 'Score2']
+        )
 
-    def set_score_by_name(self, player_name, score):
-        """Add a player and their score to the highscore table."""
-        self._highscores[player_name] = max(score, 0)
+    def prepare_table(self):
+        """Prepare highscores table."""
+        self.table.align['P1'] = 'l'
+        self.table.align['Score'] = 'r'
+        self.table.align['P2'] = 'l'
+        self.table.align['Score2'] = 'r'
 
-    def get_score_by_name(self, player_name):
-        """Return player score if exists, otherwise None."""
-        return self._highscores.get(player_name)
+    def change_name(self, old_name, new_name):
+        """
+        Update player's name, including old games.
+
+        Return: `true` if successful.
+        """
+        if self.name_exists(new_name):
+            return False
+
+        temp_list = []
+
+        for game in self._highscores:
+            temp_game = {}
+            for name in game.keys():
+                if old_name == name:
+                    temp_game[new_name] = game[old_name]
+                    continue
+
+                temp_game[name] = game[name]
+
+            temp_list.append(temp_game)
+        self._highscores = temp_list
+        return True
+
+    def name_exists(self, player_name) -> bool:
+        """
+        Check whether player name exists/ is taken.
+
+        Return: `true` if exists.
+        """
+        for game in self._highscores:
+            for name, _ in game.items():
+                if player_name == name:
+                    return True
+        return False
+
+    def create_record(self, players: list[Player]):
+        """Create new highscore record."""
+        new_record = {}
+
+        for player in players:
+            new_record[player.get_name()] = player.get_score()
+
+        self._highscores.append(new_record)
 
     def save_scores(self, file_path):
         """Save scores to a file, old data is overriden."""
@@ -46,38 +95,27 @@ class HighscoreManager:
 
         return True
 
-    def get_top_scores(self, top_n: int = 3):
-        """Return top `n` scores. `top_n = 3` by default."""
-        sorted_highscores = sorted(
-            self._highscores.items(),
-            key=lambda x: x[1],
-            reverse=True
-        )
+    def get_scores_table(self):
+        """
+        Display highscores in a fancy ascii table.
 
-        return sorted_highscores[:top_n]
+        Return: String representation of the highscores table.
+        """
+        self.table.clear_rows()
 
-    def get_average_score(self):
-        """Return the average of scores."""
-        current_scores = self._highscores.values()
-        total_of_scores = sum(current_scores)
-        return total_of_scores / len(current_scores)
+        if len(self._highscores) == 0:
+            # temporary empty row
+            self.table.add_row((' ', ' ', ' ', ' '))
+            return self.table.get_string()
 
-    def display_score_list(self):
-        """Display highscores in a fancy ascii table."""
-        table = PrettyTable(['Name', 'Score'])
+        for game_round in self._highscores:
+            row = []
+            for name, score in game_round.items():
+                row.append(name)
+                row.append(score)
+            self.table.add_row(row)
 
-        table.set_style(DOUBLE_BORDER)
-
-        table.header = False
-        table.title = 'Highscores'
-        table.align['Name'] = 'l'
-        table.align['Score'] = 'r'
-        table.hrules = ALL
-
-        for name, score in self._highscores.items():
-            table.add_row((name, score))
-
-        print(table.get_string(sortby='Score', reversesort=True))
+        return self.table.get_string()
 
     def _clear_all(self):
-        self._highscores = {}
+        self._highscores = []

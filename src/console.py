@@ -51,7 +51,8 @@ class Console(cmd.Cmd):
 
     def do_highscore(self, _):
         """Show highscores."""
-        return True
+        scores_table = self.game.highscore_manager.get_scores_table()
+        print(scores_table)
 
     def do_rules(self, _):
         """Show game rules."""

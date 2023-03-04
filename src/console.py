@@ -132,10 +132,10 @@ class Console(cmd.Cmd):
     def _request_player_name(self, ordinal: int) -> str:
         """
         Request player's name.
-        
+
         Parameters:
             `ordinal` (`int`): player's ordinal. e.g (1)
-        
+
         Returns:
             `str`: player's chosen name.
         """
@@ -223,7 +223,7 @@ class Console(cmd.Cmd):
     def _request_player_choice(self) -> int:
         """
         Request player for an input.
-        
+
         Returns:
             `int`: player's choice input.
         """

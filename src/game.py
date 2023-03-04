@@ -58,8 +58,8 @@ class Game:
         """Load score."""
         try:
             self.highscore_manager.load_scores(SCORES_FILE_PATH)
-        except FileExistsError:
-            print("The scores file could not be found!")
+        except FileNotFoundError:
+            pass
 
     def save(self):
         """Save highscores of current player."""

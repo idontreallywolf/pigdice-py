@@ -12,7 +12,54 @@ from src.player import Player
 
 
 class HighscoreManager:
-    """Manages highscores."""
+    """
+    A class for managing highscores in a game.
+
+    Attributes:
+        _highscores (list[dict]):
+            Internal highscore table.
+
+        _scores_loaded (bool):
+            Indicator of whether scores have been loaded from file.
+
+        table (PrettyTable):
+            Table used to display highscores in a fancy ascii table.
+
+    Methods:
+        __init__():
+            Initializes internal highscore table,
+            sets _scores_loaded to False, and
+            creates a PrettyTable object for display.
+
+        prepare_table():
+            Aligns columns in the table object.
+
+        change_name(old_name: str, new_name: str) -> bool:
+            Updates player's name, including old games.
+            Returns True if successful.
+
+        name_exists(player_name: str) -> bool:
+            Checks whether player name exists/is taken.
+            Returns True if exists.
+
+        create_record(players: list[Player]):
+            Creates new highscore record.
+
+        save_scores(file_path: str):
+            Saves scores to a file,
+            overwriting old data.
+
+        load_scores(file_path: str) -> bool:
+            Loads scores from file.
+            Returns True if successful.
+
+        get_scores_table() -> str:
+            Displays highscores in a fancy ascii table.
+            Returns string representation of the table.
+
+        _clear_all():
+            Clears all highscores.
+    """
 
     def __init__(self):
         """Initialize internal highscore table."""
@@ -23,18 +70,24 @@ class HighscoreManager:
             ['P1', 'Score', 'P2', 'Score2']
         )
 
-    def prepare_table(self):
+    def prepare_table(self) -> None:
         """Prepare highscores table."""
         self.table.align['P1'] = 'l'
         self.table.align['Score'] = 'r'
         self.table.align['P2'] = 'l'
         self.table.align['Score2'] = 'r'
 
-    def change_name(self, old_name, new_name):
+    def change_name(self, old_name: str, new_name: str) -> bool:
         """
-        Update player's name, including old games.
+        Change player's name, including old games.
 
-        Return: `true` if successful.
+        Parameters:
+            `old_name` (`str`): The old name of the player.
+            `new_name` (`str`): The new name of the player.
+
+        Returns:
+            `bool`: `True` if successful.
+            `False` if `new_name` is already taken.
         """
         if self.name_exists(new_name):
             return False
@@ -54,11 +107,15 @@ class HighscoreManager:
         self._highscores = temp_list
         return True
 
-    def name_exists(self, player_name) -> bool:
+    def name_exists(self, player_name: str) -> bool:
         """
-        Check whether player name exists/ is taken.
+        Check whether player name exists/is taken.
 
-        Return: `true` if exists.
+        Parameters:
+            `player_name` (`str`): name that is to be checked.
+
+        Returns:
+            bool: True if exists.
         """
         for game in self._highscores:
             for name, _ in game.items():
@@ -66,8 +123,16 @@ class HighscoreManager:
                     return True
         return False
 
-    def create_record(self, players: list[Player]):
-        """Create new highscore record."""
+    def create_record(self, players: list[Player]) -> None:
+        """
+        Create new highscore record.
+
+        Parameters:
+            `players` (`list[Player]`): List of players in the game.
+
+        Returns:
+            `None`
+        """
         new_record = {}
 
         for player in players:
@@ -75,13 +140,33 @@ class HighscoreManager:
 
         self._highscores.append(new_record)
 
-    def save_scores(self, file_path):
-        """Save scores to a file, old data is overriden."""
+    def save_scores(self, file_path: str) -> None:
+        """
+        Save scores to a file, old data is overridden.
+
+        Parameters:
+            `file_path` (`str`): The path to the file to save the scores to.
+
+        Returns:
+            `None`
+        """
         with open(file_path, 'wb+') as file:
-            return pickle.dump(self._highscores, file)
+            pickle.dump(self._highscores, file)
 
     def load_scores(self, file_path) -> bool:
-        """Load scores from file."""
+        """
+        Load scores from a file.
+
+        Parameters:
+            `file_path` (`str`): The path to the file containing the scores.
+
+        Returns:
+            `bool`: `True` if the scores were successfully loaded,
+            `False` otherwise.
+
+        Raises:
+            `FileNotFoundError`: If the specified file could not be found.
+        """
         if not os.path.isfile(file_path):
             raise FileNotFoundError()
 
@@ -97,9 +182,10 @@ class HighscoreManager:
 
     def get_scores_table(self):
         """
-        Display highscores in a fancy ascii table.
+        Display highscores in a formatted ASCII table.
 
-        Return: String representation of the highscores table.
+        Returns:
+            `str`: A string representation of the highscores table.
         """
         self.table.clear_rows()
 
@@ -118,4 +204,5 @@ class HighscoreManager:
         return self.table.get_string()
 
     def _clear_all(self):
+        """Clear highscores."""
         self._highscores = []

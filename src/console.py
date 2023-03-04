@@ -63,15 +63,36 @@ class Console(cmd.Cmd):
         table.add_rows(GAME_RULES)
         print(table)
 
-    def do_exit(self, _):
-        """Leave the game."""
+    def do_exit(self, _) -> bool:
+        """
+        Leave the game.
+
+        Returns:
+            `bool`: True
+        """
         Console.print_danger('Exit Game.')
         return True
 
-    def _select_game_mode(self):
+    def _select_game_mode(self) -> None:
+        """
+        Request player to select a game mode.
+
+        Returns:
+            `None`
+        """
         return self._request_player_choice()
 
-    def _setup_game(self, selected_game_mode):
+    def _setup_game(self, selected_game_mode: int) -> None:
+        """
+        Prepare game depending on `selected_game_mode`.
+
+        Parameters:
+            `selected_game_mode` (`int`):
+            `GAME_MODE_VS_PLAYER` | `GAME_MODE_VS_AI`
+
+        Returns:
+            `None`
+        """
         if selected_game_mode == GAME_MODE_VS_PLAYER:
             self._setup_pvp()
             return
@@ -82,27 +103,42 @@ class Console(cmd.Cmd):
 
         print('😔 Cancel setup.')
 
-    def _setup_pvp(self):
+    def _setup_pvp(self) -> None:
         """Player vs Player setup."""
         for ordinal in range(1, 3):
             self._prepare_player(ordinal)
 
         self._game_loop()
 
-    def _setup_pva(self):
+    def _setup_pva(self) -> None:
         """Player vs AI setup."""
         self._prepare_player(ordinal=1)
         self.game.add_player(name='AI')
         self._game_loop()
 
-    def _prepare_player(self, ordinal):
-        """Prepare new player."""
+    def _prepare_player(self, ordinal: int) -> None:
+        """
+        Prepare new player.
+
+        Calls game's `add_player` method with player's chosen name as argument.
+
+        Returns:
+            `None`
+        """
         self.game.add_player(
             self._request_player_name(ordinal)
         )
 
-    def _request_player_name(self, ordinal):
-        """Request player's name."""
+    def _request_player_name(self, ordinal: int) -> str:
+        """
+        Request player's name.
+        
+        Parameters:
+            `ordinal` (`int`): player's ordinal. e.g (1)
+        
+        Returns:
+            `str`: player's chosen name.
+        """
         name = ''
         name_is_valid = Player.name_is_valid(name)
         while not name_is_valid:
@@ -155,13 +191,16 @@ class Console(cmd.Cmd):
 
         return self._game_loop()
 
-    def _confirm(self, message):
+    def _confirm(self, message: str) -> bool:
         """
         Request confirmation from player.
 
         Parameters:
-        `message`: The text which should be displayed in the prompt.
-        e.g "Are you sure?"
+            `message`: The text which should be displayed in the prompt.
+            e.g "Are you sure?"
+
+        Returns:
+            `bool`: `True` if the player chose `y`/`yes`.
         """
         print(message)
 
@@ -171,24 +210,30 @@ class Console(cmd.Cmd):
 
         return False
 
-    def _display_gameplay_options(self):
+    def _display_gameplay_options(self) -> None:
         """Show options available to the current player."""
         print(self.game.options_menu)
 
-    def _display_current_player_turn(self):
+    def _display_current_player_turn(self) -> None:
         """Display text indicating current player's turn."""
         current_player: Player = self.game.get_current_player()
         name = current_player.get_name()
         print(f'{name}\'s turn.')
 
-    def _request_player_choice(self):
+    def _request_player_choice(self) -> int:
+        """
+        Request player for an input.
+        
+        Returns:
+            `int`: player's choice input.
+        """
         while True:
             try:
                 return int(input('Option > '))
             except ValueError:
                 print('Invalid input. Try a number.')
 
-    def _display_last_roll(self):
+    def _display_last_roll(self) -> None:
         """Show which number the player rolled."""
         last_roll = self.game.get_last_roll()
         if not last_roll:
@@ -204,21 +249,42 @@ class Console(cmd.Cmd):
         Console.print_danger(text)
 
     @staticmethod
-    def print_danger(text):
-        """Print text with red background."""
+    def print_danger(text: str) -> None:
+        """
+        Print text with red background.
+
+        Parameters:
+        `text` (`str`): Text to be printed.
+        """
         Console._print(f'{Back.RED}{Fore.WHITE}', text)
 
     @staticmethod
-    def print_default(text):
-        """Print text with red background."""
+    def print_default(text: str) -> None:
+        """
+        Print text with red background.
+
+        Parameters:
+        `text` (`str`): Text to be printed.
+        """
         Console._print(f'{Back.BLACK}{Fore.CYAN}', text)
 
     @staticmethod
-    def print_success(text):
-        """Print text with green background."""
+    def print_success(text: str) -> None:
+        """
+        Print text with green background.
+
+        Parameters:
+        `text` (`str`): Text to be printed.
+        """
         Console._print(Back.GREEN, text)
 
     @staticmethod
-    def _print(style, text):
-        """Print with `style`."""
+    def _print(style: str, text: str) -> None:
+        """
+        Print `text` with `style`.
+
+        Parameters:
+            `style` (`str`): background/foreground for the text to be printed.
+            `text` (`str`): Text to be printed.
+        """
         print(f'{style}\n\n{" " * 4}{text}\n{Style.RESET_ALL}\n')

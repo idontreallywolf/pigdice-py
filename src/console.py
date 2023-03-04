@@ -35,6 +35,7 @@ class Console(cmd.Cmd):
         super().__init__()
         self.do_help(None)
         self.game = Game()
+        self.game.load()
 
     def do_start(self, _):
         """Start the game."""

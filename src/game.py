@@ -120,6 +120,7 @@ class Game:
         player.add_temporary_score(roll_result)
         if player.get_temporary_score() + player.get_score() >= 100:
             self.set_turn_status(GAME_TURN_WON)
+            self.highscore_manager.create_record(self.players)
             return
 
         self.set_turn_status(GAME_TURN_NEUTRAL)
@@ -138,6 +139,7 @@ class Game:
         player: Player = self.get_current_player()
         player.set_score(100)
         self.set_turn_status(GAME_TURN_WON)
+        self.highscore_manager.create_record(self.players)
 
     def change_name(self, new_name):
         """Change player's name during the game."""

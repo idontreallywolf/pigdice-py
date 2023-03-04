@@ -118,7 +118,9 @@ class Game:
             return
 
         player.add_temporary_score(roll_result)
-        if player.get_temporary_score() + player.get_score() >= 100:
+        total_score = player.get_temporary_score() + player.get_score()
+        if total_score >= 100:
+            player.set_score(total_score)
             self.set_turn_status(GAME_TURN_WON)
             self.highscore_manager.create_record(self.players)
             return

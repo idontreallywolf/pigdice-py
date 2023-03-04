@@ -15,7 +15,7 @@ class Dice:
         `count`: how many dice to roll. Defaults to `1`.
 
         Returns:
-        `int` or `tuple[int]` - containing dice value(s).
+        `int` | `tuple[int]`: Dice value(s).
         """
         rolls = tuple(random.randint(1, self.num_sides) for _ in range(count))
         if count == 1:

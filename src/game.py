@@ -146,7 +146,13 @@ class Game:
     def change_name(self, new_name):
         """Change player's name during the game."""
         player: Player = self.get_current_player()
+        name = player.get_name()
+        changed = self.highscore_manager.change_name(name, new_name)
+        if not changed:
+            return False
+
         player.set_name(new_name)
+        return True
 
     def quit(self):
         """Quit the game."""

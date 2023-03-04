@@ -1,6 +1,7 @@
 """Main module is responsible for starting the process.
 
-Calls Console's cmdloop method in order to start the command line input process.
+Calls Console's cmdloop method in order
+to start the command line input process.
 """
 
 import os

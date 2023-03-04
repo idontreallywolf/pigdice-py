@@ -5,15 +5,6 @@ import sys
 # Add the parent directory of the current file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from prettytable import\
-    PrettyTable,\
-    DOUBLE_BORDER,\
-    ALL
-
-from colorama import\
-    just_fix_windows_console,\
-    Fore, Style
-
 from src.player import Player
 from src.highscore_manager import HighscoreManager
 from src.dice import Dice
@@ -27,8 +18,6 @@ from src.config import\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL,\
     SCORES_FILE_PATH
-
-just_fix_windows_console()
 
 
 class Game:

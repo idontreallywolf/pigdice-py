@@ -6,7 +6,7 @@
 -   The winner is the first player to reach 100 points.
 -   The project contains a source folder with all the necessary files to build the terminal application, including a makefile.
 
-## Makefile:
+## Installation:
 -   The Makefile offers various commands for testing, building, and running the program.
 -   Users must install Git Bash on their machine and clone the repository using the provided link.
 -   Once cloned, users must navigate to the project directory and use the “make venv” command to create a virtual environment.

@@ -10,7 +10,8 @@ import sys
 # Add the parent directory of the current file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.config import GAMEPLAY_CHOICE_ROLL
+from src.config import GAMEPLAY_CHOICE_ROLL, GAMEPLAY_CHOICE_HOLD
+from src.dice import Dice
 
 
 class Player:
@@ -176,8 +177,7 @@ class Player:
         return (len(name) > 0) and (not name.isspace())
 
     def make_ai_choice(self) -> int | None:
-        """
-        Make a choice as an AI player.
+        """Make a choice as an AI player.
 
         Returns:
             `int` | `None`: Choice made by the AI player,
@@ -185,6 +185,29 @@ class Player:
         """
         if not self.is_ai():
             return None
+        threshold = 10
+        score = self.get_score()
+        expected_score = self._get_expected_score(score)
+        if expected_score <= threshold:
+            return GAMEPLAY_CHOICE_HOLD
 
         # Implement AI strategy
         return GAMEPLAY_CHOICE_ROLL
+
+    def _get_expected_score(self, current_score: int) -> float:
+        """How to do.
+
+        Calulate the expected score for the current turn.
+        Claculate the pdrobabilty of each possible outcome
+        Parameters:
+        Score: the currenet score of the AI player
+        Returns:
+        float which is the exptedted score of the current turn.
+
+        """
+        except_scord = 0.0
+        num_sides = Dice().num_sides
+        for i in range(1, num_sides + 1):
+            p = 1 / num_sides
+            except_scord += (current_score + i) * p
+        return except_scord

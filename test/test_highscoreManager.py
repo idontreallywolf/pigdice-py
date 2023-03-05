@@ -9,20 +9,39 @@ from prettytable import PrettyTable
 
 
 class Test_highscoreManager(unittest.TestCase):
-    """Docs for public class."""
+    """Tests for HighscoreManager class."""
 
     def test_init(self):
+        """
+        Test initial state of HighscoreManager.
+
+        :`_scores_loaded` should be set to `False`.
+        :`_highscores` should be a list.
+        :`table` should be an instance of PrettyTable
+        """
         highscore_manager = HighscoreManager()
         self.assertFalse(highscore_manager._scores_loaded)
         self.assertIsInstance(highscore_manager._highscores, list)
         self.assertIsInstance(highscore_manager.table, PrettyTable)
 
     def test_get_scores_table(self):
+        """
+        Test HighscoreManager.get_scores_table method.
+
+        :`scores_table` should be an instance of `str`.
+        """
         highscore_manager = HighscoreManager()
         scores_table = highscore_manager.get_scores_table()
         self.assertIsInstance(scores_table, str)
 
     def test_create_record(self):
+        """
+        Test HighscoreManager.test_create_record method.
+
+        Should create a highscore record of two players.
+        :`p1` should have a record of `25`.
+        :`p2` should have a record of `44`.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -48,6 +67,11 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertEqual(p2_score, 44)
 
     def test_name_exists_true(self):
+        """
+        Test HighscoreManager.test_name_exists method.
+
+        Should return true for `p1` and `p2`.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -62,6 +86,11 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertTrue(p2_exists)
 
     def test_name_exists_false(self):
+        """
+        Test HighscoreManager.test_name_exists method.
+
+        Should return false for `p1` and `p2`.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -76,6 +105,11 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertFalse(p4_exists)
 
     def test_change_name_success(self):
+        """
+        Test HighscoreManager.test_change_name_success method.
+
+        Should successfully change player's name `p1` to `p1_new`.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -86,6 +120,11 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertTrue(changed)
 
     def test_change_name_failure(self):
+        """
+        Test HighscoreManager.test_change_name_success method.
+
+        Should fail changing player's name `p1` to `p2`.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -96,6 +135,11 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertFalse(changed)
 
     def test_clear_all(self):
+        """
+        Test HighscoreManager.test_clear_all method.
+
+        `_highscores` should be empty after all record have been cleared.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -110,6 +154,11 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertTrue(len(highscore_manager._highscores) == 0)
 
     def test_save_scores(self):
+        """
+        Test HighscoreManager.test_save_scores.
+
+        Should save records in scores file.
+        """
         highscore_manager = HighscoreManager()
 
         p1 = Player('p1')
@@ -124,6 +173,13 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertTrue(os.path.exists(TEST_SCORES_FILE_PATH))
 
     def test_load_scores(self):
+        """
+        Test HighscoreManager.test_load_scores method.
+
+        Should load scores from scores file.
+        or
+        Should raise FileNotFoundError when the file doesn't exist.
+        """
         highscore_manager = HighscoreManager()
 
         # should raise FileNotFoundError when the file doesn't exist.

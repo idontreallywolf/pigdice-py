@@ -20,7 +20,8 @@ from config import\
     GAME_MODE_VS_AI,\
     GAME_RULES,\
     GAME_TURN_WON,\
-    GAMEPLAY_CHOICE_END_GAME
+    GAMEPLAY_CHOICE_END_GAME,\
+    GAMEPLAY_CHOICE_CHANGE_NAME
 
 just_fix_windows_console()
 
@@ -162,6 +163,23 @@ class Console(cmd.Cmd):
         # and some decision is made based on that.
         self.game.parse_choice(choice)
 
+        if choice == GAMEPLAY_CHOICE_CHANGE_NAME:
+            new_name = None
+            while True:
+                new_name = input('Enter new name: ')
+                if not Player.name_is_valid(new_name):
+                    Console.print_danger('Invalid name, try again.')
+                    continue
+
+                changed = self.game.change_name(new_name)
+                if not changed:
+                    Console.print_danger('Name is already taken. Try another.')
+                    continue
+                Console.print_success(
+                    f'Your name has been changed to "{new_name}"'
+                )
+                return self._game_loop()
+
         # In case the choice is to quit the game,
         # the player will be asked to confirm whether they
         # want to quit. When confirmed, the game will quit
@@ -171,6 +189,7 @@ class Console(cmd.Cmd):
             if confirmed:
                 self.game.quit()
                 return True
+            return self._game_loop()
 
         # After a player's turn, the turn status will be set.
         # It might be "won", "lost" or "neither".

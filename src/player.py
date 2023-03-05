@@ -12,6 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.config import GAMEPLAY_CHOICE_ROLL, GAMEPLAY_CHOICE_HOLD
 from src.dice import Dice
+from src.game import Game
 
 
 class Player:
@@ -188,6 +189,8 @@ class Player:
         threshold = 30
         score = self.get_score()
         expected_score = self._get_expected_score(score)
+        while score < expected_score:
+            return GAMEPLAY_CHOICE_ROLL
         if expected_score <= threshold:
             return GAMEPLAY_CHOICE_HOLD
 

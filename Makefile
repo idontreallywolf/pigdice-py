@@ -113,9 +113,5 @@ radon-hal:
 	@$(call MESSAGE,$@)
 	radon hal .
 
-cohesion:
-	@$(call MESSAGE,$@)
-	cohesion --directory .
-
 metrics: radon-cc radon-mi radon-raw radon-hal cohesion
 

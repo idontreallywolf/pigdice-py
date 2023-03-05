@@ -185,7 +185,7 @@ class Player:
         """
         if not self.is_ai():
             return None
-        threshold = 10
+        threshold = 30
         score = self.get_score()
         expected_score = self._get_expected_score(score)
         if expected_score <= threshold:
@@ -205,9 +205,9 @@ class Player:
         float which is the exptedted score of the current turn.
 
         """
-        except_scord = 0.0
+        excepted_scord = 0.0
         num_sides = Dice().num_sides
         for i in range(1, num_sides + 1):
             p = 1 / num_sides
-            except_scord += (current_score + i) * p
-        return except_scord
+            excepted_scord += (current_score + i) * p
+        return excepted_scord

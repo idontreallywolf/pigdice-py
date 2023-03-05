@@ -194,6 +194,7 @@ class Console(cmd.Cmd):
             if confirmed:
                 self.game.quit()
                 return True
+            return self._game_loop()
 
         # After a player's turn, the turn status will be set.
         # It might be "won", "lost" or "neither".

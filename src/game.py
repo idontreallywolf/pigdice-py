@@ -307,6 +307,10 @@ class Game:
         Returns:
             `True` if `new_name` is not taken.
         """
+        for player in self.players:
+            if player.get_name() == new_name:
+                return False
+
         player: Player = self.get_current_player()
         name = player.get_name()
         changed = self.highscore_manager.change_name(name, new_name)

@@ -1,3 +1,5 @@
+"""Contains Tests for Game class."""
+
 import unittest
 
 from unittest.mock import MagicMock, patch
@@ -10,10 +12,14 @@ from src.config import\
     GAME_TURN_WON,\
     GAME_TURN_LOST
 
+
 class Test_Game(unittest.TestCase):
+    """Tests for Game class."""
+
     def test_init(self):
+        """Test initial game state."""
         game = Game()
-        
+
         self.assertTrue(type(game.players) is list)
         self.assertEqual(len(game.players), 0)
         self.assertEqual(game.current_player, 0)
@@ -22,6 +28,11 @@ class Test_Game(unittest.TestCase):
         self.assertTrue(type(game.highscore_manager) is HighscoreManager)
 
     def test_add_player(self):
+        """
+        Test Game.add_player method.
+
+        Players that were created should be retrieved in the same order.
+        """
         game = Game()
 
         game.add_player('testPlayer')
@@ -31,8 +42,13 @@ class Test_Game(unittest.TestCase):
         game.add_player('testPlayer2')
         new_player: Player = game.players[1]
         self.assertEqual(new_player.get_name(), 'testPlayer2')
-    
+
     def test_get_current_player(self):
+        """
+        Test Game.get_current_player method.
+
+        Should retrieve the player based on `current_player` index.
+        """
         game = Game()
 
         self.assertIsNone(game.get_current_player())
@@ -41,8 +57,13 @@ class Test_Game(unittest.TestCase):
         current_player = game.get_current_player()
         self.assertIsNotNone(current_player)
         self.assertEqual(current_player.get_name(), 'testPlayer')
-    
+
     def test_get_turn_status(self):
+        """
+        Test game.get_turn_status method.
+
+        Should get the latest updated value for `turn_status`.
+        """
         game = Game()
 
         gts = game.get_turn_status()
@@ -57,6 +78,11 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(gts, GAME_TURN_WON)
 
     def test_set_turn_status(self):
+        """
+        Test Game.set_turn_status method.
+
+        Should set the correct value of `turn_status`.
+        """
         game = Game()
 
         gts = game.get_turn_status()
@@ -73,9 +99,16 @@ class Test_Game(unittest.TestCase):
         game.set_turn_status(GAME_TURN_NEUTRAL)
         gts = game.get_turn_status()
         self.assertEqual(gts, GAME_TURN_NEUTRAL)
-    
+
     @patch('src.dice.Dice.roll')
     def test_roll_loss(self, mock_dice_roll: MagicMock):
+        """
+        Test Game.roll method.
+
+        Mocks Dice.roll to return `1` in order to simulate loss.
+
+        `turn_status` should be set to `GAME_TURN_LOST`.
+        """
         game = Game()
 
         # fake the return value of Dice.roll method.
@@ -94,6 +127,13 @@ class Test_Game(unittest.TestCase):
 
     @patch('src.dice.Dice.roll')
     def test_roll_win(self, mock_dice_roll: MagicMock):
+        """
+        Test Game.roll method.
+
+        Mocks Dice.roll to return `100` in order to simulate win.
+
+        `turn_status` should be set to `GAME_TURN_WIN`.
+        """
         game = Game()
 
         # fake the return value of Dice.roll method.
@@ -106,6 +146,13 @@ class Test_Game(unittest.TestCase):
 
     @patch('src.dice.Dice.roll')
     def test_roll_neutral(self, mock_dice_roll: MagicMock):
+        """
+        Test Game.roll method.
+
+        Mocks Dice.roll to return `2` in order to simulate a neutral turn.
+
+        `turn_status` should be set to `GAME_TURN_NEUTRAL`.
+        """
         game = Game()
 
         # fake the return value of Dice.roll method.
@@ -117,6 +164,12 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(game.get_turn_status(), GAME_TURN_NEUTRAL)
 
     def test_cheat(self):
+        """
+        Test Game.cheat method.
+
+        Player should have `100` in score and
+        `turn_status` should be set to `GAME_TURN_WON`.
+        """
         game = Game()
         game.add_player('player_one')
         game.cheat()
@@ -126,14 +179,24 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(game.get_turn_status(), GAME_TURN_WON)
 
     def test_change_name(self):
+        """
+        Test Game.change_name.
+
+        Should change player's name `player_one` to `p1_new_name`.
+        """
         game = Game()
         game.add_player('player_one')
         game.change_name('p1_new_name')
-        
+
         current_player = game.get_current_player()
         self.assertEqual(current_player.get_name(), 'p1_new_name')
 
     def test_quit(self):
+        """
+        Test Game.quit method.
+
+        Should reset game's state.
+        """
         game = Game()
         game.add_player('p1')
         game.add_player('p2')
@@ -149,6 +212,11 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(game.current_player, 0)
 
     def test_get_last_roll(self):
+        """
+        Test Game.get_last_roll method.
+
+        Should return 0, 1, 0 in order.
+        """
         game = Game()
 
         self.assertEqual(game.get_last_roll(), 0)
@@ -158,6 +226,11 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(game.get_last_roll(), 0)
 
     def test_set_last_roll(self):
+        """
+        Test Game.set_last_roll method.
+
+        Should set last roll to 1, 0 in order.
+        """
         game = Game()
 
         self.assertEqual(game.last_roll, 0)
@@ -165,6 +238,7 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(game.last_roll, 1)
         game.set_last_roll(0)
         self.assertEqual(game.last_roll, 0)
+
 
 if __name__ == '__main__':
     unittest.main()

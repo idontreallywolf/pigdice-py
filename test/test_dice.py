@@ -15,7 +15,10 @@ class TestDice(unittest.TestCase):
         """Test all of the rolls are within range."""
         rolls = self.dice.roll(5)
         for roll in rolls:
-            self.assertTrue(1 <= roll <= self.dice.num_sides, f'Roll {roll} is out of range')
+            self.assertTrue(
+                1 <= roll <= self.dice.num_sides,
+                f'Roll {roll} is out of range'
+            )
 
     def test_roll_single(self):
         """Test value type and valid value."""
@@ -46,7 +49,7 @@ class TestDice(unittest.TestCase):
 
     def test_intialization(self):
         """Test that the object initializes properly."""
-        self.assertIsInstance(self.dice, Dice) 
+        self.assertIsInstance(self.dice, Dice)
 
     def test_str(self):
         """Test that str representation works."""

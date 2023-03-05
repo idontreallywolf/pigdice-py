@@ -6,14 +6,30 @@ from src.player import Player
 class Test_Player(unittest.TestCase):
     """Test Player."""
 
-    def test_init(self):
-        """Test initial state of Player."""
+    def test_init_player(self):
+        """
+        Test initial state of Player.
+
+        :`_name` should be `Smiegol`
+        :`_score` should be `0`
+        :`_temporary_score` should be `0`
+        :`_is_ai` should be `False`
+        """
         player = Player('Smiegol')
         self.assertEqual(player._name, 'Smiegol')
         self.assertEqual(player._score, 0)
         self.assertEqual(player._temporary_score, 0)
         self.assertFalse(player._is_ai)
 
+    def test_init_AI(self):
+        """
+        Test initial state of Player.
+
+        :`_name` should be `AI`
+        :`_score` should be `0`
+        :`_temporary_score` should be `0`
+        :`_is_ai` should be `True`
+        """
         player = Player('AI')
         self.assertEqual(player._name, 'AI')
         self.assertEqual(player._score, 0)
@@ -21,12 +37,20 @@ class Test_Player(unittest.TestCase):
         self.assertTrue(player._is_ai)
 
     def test_get_name(self):
-        """Test get_name."""
+        """
+        Test Player.get_name method.
+
+        Should return `Jack`.
+        """
         player = Player(name='Jack')
         self.assertEqual(player.get_name(), 'Jack')
 
     def test_set_name(self):
-        """Pass for valid names, 'Jack', 'Frodo' and 'Bilbo'."""
+        """
+        Test Player.set_name method.
+
+        Should pass for valid names; `'Jack'`, `'Frodo'` and `'Bilbo'`.
+        """
         player = Player(name='Jack')
         self.assertEqual(player.get_name(), 'Jack')
 
@@ -37,7 +61,11 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(player.get_name(), 'Bilbo')
 
     def test_set_name_invalid(self):
-        """Raise ValueError for invalid names '', ' ', '  '."""
+        """
+        Test Player.set_name method.
+
+        Shuld raise ValueError for invalid names `''`, `' '`, `'  '`.
+        """
         with self.assertRaises(ValueError):
             Player(name='')
 
@@ -47,16 +75,28 @@ class Test_Player(unittest.TestCase):
         with self.assertRaises(ValueError):
             Player(name='  ')
 
-    def test_is_ai(self):
-        """Test isAI."""
-        player = Player(name='Jack')
-        self.assertFalse(player.is_ai())
+    def test_is_ai_true(self):
+        """
+        Test Player.is_ai method.
 
-        player = Player(name='AI')
-        self.assertTrue(player.is_ai())
+        Should return `True` for player with name `AI`.
+        """
+        self.assertTrue(Player(name='AI').is_ai())
+
+    def test_is_ai_false(self):
+        """
+        Test Player.is_ai method.
+
+        Should return `False` for player with name `Jack`.
+        """
+        self.assertFalse(Player(name='Jack').is_ai())
 
     def test_get_score(self):
-        """Test get score."""
+        """
+        Test Player.get_score method.
+
+        Should return latest set score.
+        """
         player = Player(name='Jack')
         self.assertEqual(player.get_score(), 0)
 
@@ -67,60 +107,86 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(player.get_score(), 0)
 
     def test_set_score(self):
-        """Test set score."""
+        """
+        Test Player.set_score method.
+
+        Should set `_score` as expected.
+        """
         player = Player(name='Jack')
-        self.assertEqual(player.get_score(), 0)
+        self.assertEqual(player._score, 0)
 
         player.set_score(5)
-        self.assertEqual(player.get_score(), 5)
+        self.assertEqual(player._score, 5)
 
         player.set_score(-5)
-        self.assertEqual(player.get_score(), 0)
+        self.assertEqual(player._score, 0)
 
     def test_get_temporary_score_initial(self):
-        """Test get score."""
+        """
+        Test Player.get_temporary_score method.
+
+        Should return the initial temporary score, `0`.
+        """
         player = Player(name='Jack')
         self.assertEqual(player.get_temporary_score(), 0)
 
     def test_add_temporary_score(self):
-        """Test get score."""
+        """
+        Test Player.add_temporary_score method.
+
+        Should add temporary scores as expected.
+        """
         player = Player(name='Jack')
-        self.assertEqual(player.get_temporary_score(), 0)
+        self.assertEqual(player._temporary_score, 0)
 
         player.add_temporary_score(5)
-        self.assertEqual(player.get_temporary_score(), 5)
+        self.assertEqual(player._temporary_score, 5)
 
         player.add_temporary_score(5)
-        self.assertEqual(player.get_temporary_score(), 10)
+        self.assertEqual(player._temporary_score, 10)
 
         player.add_temporary_score(5)
-        self.assertEqual(player.get_temporary_score(), 15)
+        self.assertEqual(player._temporary_score, 15)
 
         player.add_temporary_score(-5)
-        self.assertEqual(player.get_temporary_score(), 15)
+        self.assertEqual(player._temporary_score, 15)
 
     def test_reset_temporary_score(self):
-        """Test get score."""
+        """
+        Test Player.reset_temporary_score method.
+
+        Should reset temporary score to `0`.
+        """
         player = Player(name='Jack')
-        player.add_temporary_score(5)
-        self.assertEqual(player.get_temporary_score(), 5)
+        player._temporary_score = 5
+        self.assertEqual(player._temporary_score, 5)
 
         player.reset_temporary_score()
-        self.assertEqual(player.get_temporary_score(), 0)
+        self.assertEqual(player._temporary_score, 0)
 
     def test_hold_score(self):
-        """Test hold score."""
-        player = Player(name='Jack')
-        self.assertEqual(player.get_score(), 0)
-        self.assertEqual(player.get_temporary_score(), 0)
+        """
+        Test Player.hold_score method.
 
-        player.add_temporary_score(5)
+        Should add temporary score to player's total score.
+        """
+        player = Player(name='Jack')
+        self.assertEqual(player._score, 0)
+        self.assertEqual(player._temporary_score, 0)
+
+        player._temporary_score = 5
         player.hold_score()
 
-        self.assertEqual(player.get_score(), 5)
+        self.assertEqual(player._score, 5)
 
     def test_name_is_valid(self):
-        """Test _name_is_valid."""
+        """
+        Test Player.name_is_valid method.
+
+        :Should return `False` for invalid names (`''`,`' '`,`'  '`).
+        :Should return `True` for valid names
+        (`'John'`,`'Frodo'`,`'Gandalf The Gray'`).
+        """
         self.assertFalse(Player.name_is_valid(''))
         self.assertFalse(Player.name_is_valid(' '))
         self.assertFalse(Player.name_is_valid('  '))

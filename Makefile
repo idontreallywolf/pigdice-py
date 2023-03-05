@@ -112,6 +112,3 @@ radon-raw:
 radon-hal:
 	@$(call MESSAGE,$@)
 	radon hal .
-
-metrics: radon-cc radon-mi radon-raw radon-hal cohesion
-

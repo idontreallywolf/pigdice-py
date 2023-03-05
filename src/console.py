@@ -56,12 +56,7 @@ class Console(cmd.Cmd):
 
     def do_rules(self, _):
         """Show game rules."""
-        table = make_table(
-            'Game Rules',
-            ['ID', 'Rule', 'Icon']
-        )
-        table.add_rows(GAME_RULES)
-        print(table)
+        print(GAME_RULES)
 
     def do_exit(self, _) -> bool:
         """

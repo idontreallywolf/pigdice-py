@@ -5,11 +5,17 @@ import pathlib
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
 
-GAME_RULES = (
-    (1, 'Rule one.', '⚠️ '),
-    (2, 'Rule two.', '⚠️ '),
-    (3, 'Rule three.', '⚠️ ')
-)
+GAME_RULES = """
+Welcome to Pig Dice! 🎉 Be a cute 🐷, score tasty 🍭🍭🍭, and win big! 🏆 Roll on! 🎲🐽
+Follow these steps for tasty victory!🍭
+1. Roll 🎲 and hope you get a good number.
+2. If you roll a 1️⃣, that's a piggy pooper! 🐷💩
+2. Get a 5 or 6 and you'll be in candy heaven! 🍭🍭🍭 Roll on, piggy friend! 🎲🐷
+3. Got yummy 🍭? Hit 'hold' and munch on! 🤤 Let your piggy pals play! 🎲🐷
+4. Keep playing 🎲, collect 🍭, and win at 💯 points to be crowned piggy champ!🐷🏆
+5.Hog heaven alert! 🚨 Tie at 💯 points means wild showdown! 🎲🐽
+Snacks ready? 🍿 Roll those dice! 🎲 Be the top piggy! 🏆🐷 Oink-tastic fun! 🐽😎
+"""
 
 GAME_MODE_MENU = (
     (1, 'Player vs Player', '😀'),

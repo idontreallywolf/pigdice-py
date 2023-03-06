@@ -1,29 +1,95 @@
 # Pig-Dice Game
 
 ## Project Description:
--   The project aims to provide installation and usage instructions for a terminal-based game called “Pig Dice Game”.
--   The game can be played through a Command Line Interface (CLI) and involves players taking turns rolling a single die and accumulating points.
--   The winner is the first player to reach 100 points.
--   The project contains a source folder with all the necessary files to build the terminal application, including a makefile.
+The purpose of the project is to learn how to collabrate in a team and exercise writing clean and testable code. 
 
-## Installation:
--   The Makefile offers various commands for testing, building, and running the program.
--   Users must install Git Bash on their machine and clone the repository using the provided link.
--   Once cloned, users must navigate to the project directory and use the “make venv” command to create a virtual environment.
--   Users must then activate the virtual environment and use the “make install” command to install the necessary modules.
--   The game can be launched using the “make run” command.
--   The Makefile also offers various commands to interact with the game, such as “make test”, “make pyreverse” and “make pdoc” .
+## Installation
 
-## Game Options:
--   The game offers five options: exit, help, highscore, rules, and start
--   The “exit” option closes the game, “help” provides instructions on how to play the game, “highscore” displays the current high score, “rules” provides the rules of the game, and “start” begins the game. • Each player can change their name whenever it”s their turn.
--   If the user rolls a 1, they will lose all their acquired options for their current turn, but this can be avoided by finding the cheat code implemented in the game or the hold option.
--   After someone has won, the winner will be placed at the top of the highscore board, wich can be viewed from the CLI by typing “highschore”.
+### 1. Clone repository
+```sh
+git clone https://github.com/idontreallywolf/pigdice-py
+```
+
+### 2. Navigate to the repository
+```sh
+cd pigdice-py
+```
+
+
+### 3. Setup virtual env.
+```sh
+make venv
+```
+
+### 4. Activate virutal env.
+#### On windows
+```sh
+.venv/Scripts/activate
+```
+
+#### Linux/OSX
+```sh
+source .venv/bin/activate
+```
+
+### 5. Install dependencies
+```sh
+make install
+```
+
+### 6. Run the application
+```sh
+make run
+```
+
+## Tests
+#### Run all tests
+```sh
+make test
+```
+
+#### Run specific tests
+```
+make pylint
+```
+```
+make flake8
+```
+.. or both pylint and flake8:
+```sh
+make lint
+```
+
+## Command Options:
+
+The game offers five options: exit, help, highscore, rules, and start
+
+The `exit` option closes the application, `help` provides inforamtion on commands, `highscore` displays the high score table, `rules` provides the rules of the game, and `start` begins the game. 
+
+## About the game
+### Game Options:
+|Options|Description |
+|----|--|
+| Hold | Save the turn socre to total score |
+| Roll| Roll the dice|
+| Cheat | Win the game |
+| End Game|  |
+| Change Name| Change the current player's name |
+
+### Game description
+Each turn, a player repeatedly rolls a dice until either a 1 is rolled or the player decides to "hold":
+
+-   If the player rolls a 1, they score nothing and it becomes the next player's turn.
+-   If the player rolls any other number, it is added to their turn total and the player's turn continues.
+-   If a player chooses to "hold", their turn total is added to their score, and it becomes the next player's turn.
+
+The first player to score 100 or more points wins.
+[Wikipedia (Pig dice game)](https://en.wikipedia.org/wiki/Pig_%28dice_game%29)
 
 ### AI Player:
--   The AI player uses a strategy to calculate the player’s expected score for the current turn in the game of Pig Dice.
--   It looks at the number of points the player has already scored that turn and calculates the probability of getting different numbers on the dice.
--   Based on this calculation, the player can decide whether to roll the dice again or stop and keep the points they have already earned.
+
+The AI player will choose to roll as long as it's current score is less than threshold score. 
 
 ## Project Creators:
+
 The project was created by Beilan Guo and Nedim Kanat, who attended the "Methods for Sustainable Programming" course at Kristianstad University.

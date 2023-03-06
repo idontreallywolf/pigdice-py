@@ -6,15 +6,21 @@ processing user input while maintaining a loop.
 """
 import cmd
 
+import os
+import sys
+
+# Add the parent directory of the current file to the Python path :whygod:
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from colorama import\
     just_fix_windows_console,\
     Fore, Back, Style
 
-from game import Game
-from player import Player
+from src.game import Game
+from src.player import Player
 from src.utils import make_table, animate_loading
 
-from config import\
+from src.config import\
     GAME_MODE_MENU,\
     GAME_MODE_VS_PLAYER,\
     GAME_MODE_VS_AI,\

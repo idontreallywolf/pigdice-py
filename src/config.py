@@ -5,6 +5,8 @@ import pathlib
 CHOICE_ROLL = 1
 CHOICE_HOLD = 2
 
+AI_THRESHOLD = 10
+
 GAME_RULES = """
 Welcome to Pig Dice! 🎉 Be a cute 🐷, score tasty 🍭🍭🍭, and win big! 🏆 Roll on! 🎲🐽
 Follow these steps for tasty victory!🍭

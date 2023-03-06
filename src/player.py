@@ -10,7 +10,10 @@ import sys
 # Add the parent directory of the current file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.config import GAMEPLAY_CHOICE_ROLL
+from src.config import\
+    GAMEPLAY_CHOICE_ROLL,\
+    GAMEPLAY_CHOICE_HOLD,\
+    AI_THRESHOLD
 
 
 class Player:
@@ -186,5 +189,9 @@ class Player:
         if not self.is_ai():
             return None
 
-        # Implement AI strategy
-        return GAMEPLAY_CHOICE_ROLL
+        threshold = AI_THRESHOLD
+        score = self.get_temporary_score()
+        if score < threshold:
+            return GAMEPLAY_CHOICE_ROLL
+
+        return GAMEPLAY_CHOICE_HOLD

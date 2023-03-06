@@ -81,15 +81,13 @@ pydoc:
 	mv *.html doc/pydoc
 
 pdoc:
-	@$(call MESSAGE,$@)
-	pdoc --force --html --output-dir doc/pdoc .
+	pdoc -o doc/api $(SRC)
 
 pyreverse:
-	@$(call MESSAGE,$@)
-	install -d doc/pyreverse
-	pyreverse *.py -a1 -s1
-	dot -Tpng classes.dot -o doc/pyreverse/classes.png
-	dot -Tpng packages.dot -o doc/pyreverse/packages.png
+	install -d doc/uml
+	pyreverse $(SRC)
+	dot -Tpng classes.dot -o doc/uml/classes.png
+	dot -Tpng packages.dot -o doc/uml/packages.png
 	rm -f classes.dot packages.dot
 
 doc: pdoc pyreverse #pydoc sphinx

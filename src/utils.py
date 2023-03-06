@@ -1,5 +1,7 @@
 """Contains utility functions."""
 
+import time
+
 from prettytable import\
     PrettyTable,\
     DOUBLE_BORDER,\
@@ -33,3 +35,32 @@ def make_table(title, columns: list[str]) -> PrettyTable:
     table.hrules = ALL
 
     return table
+
+
+def animate_loading():
+    """Display loading animation."""
+    animation = [
+        '🎲🎲🎲🎲🎲🎲🎲',
+        '🐷🎲🎲🎲🎲🎲🎲',
+        '🐷🐷🎲🎲🎲🎲🎲',
+        '🐷🐷🐷🎲🎲🎲🎲',
+        '🐷🐷🐷🐷🎲🎲🎲',
+        '🐷🐷🐷🐷🐷🎲🎲',
+        '🎲🐷🐷🐷🐷🐷🎲',
+        '🎲🎲🐷🐷🐷🐷🐷',
+        '🎲🎲🎲🐷🐷🐷🐷',
+        '🎲🎲🎲🎲🐷🐷🐷',
+        '🎲🎲🎲🎲🎲🐷🐷',
+        '🎲🎲🎲🎲🎲🎲🐷'
+    ]
+
+    not_complete = True
+    i = 0
+
+    while not_complete:
+        # \r starts on the same line.
+        print(' ', animation[i % len(animation)], end='\r')
+        time.sleep(.1)
+        i += 1
+        if i == 30:
+            break

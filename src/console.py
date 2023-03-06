@@ -12,7 +12,7 @@ from colorama import\
 
 from game import Game
 from player import Player
-from src.utils import make_table
+from src.utils import make_table, animate_loading
 
 from config import\
     GAME_MODE_MENU,\
@@ -155,6 +155,8 @@ class Console(cmd.Cmd):
         current_player: Player = self.game.get_current_player()
         choice = None
         if current_player.is_ai():
+            print("🤖 is thinking!!!")
+            animate_loading()
             choice = current_player.make_ai_choice()
         else:
             choice = self._request_player_choice()

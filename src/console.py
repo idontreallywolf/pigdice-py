@@ -234,7 +234,11 @@ class Console(cmd.Cmd):
         """Display text indicating current player's turn."""
         current_player: Player = self.game.get_current_player()
         name = current_player.get_name()
+
         print(f'{name}\'s turn.')
+        temp_score = current_player.get_temporary_score()
+        total_score = current_player.get_score()
+        print(f'Your score: {temp_score}/{total_score}')
 
     def _request_player_choice(self) -> int:
         """

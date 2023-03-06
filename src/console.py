@@ -143,7 +143,7 @@ class Console(cmd.Cmd):
         """
         name = ''
         name_is_valid = Player.name_is_valid(name)
-        while not name_is_valid:
+        while (not name_is_valid) or (name == "AI"):
             name = input(f'Player {ordinal}\'s name: ')
             name_is_valid = Player.name_is_valid(name)
 

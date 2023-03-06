@@ -10,7 +10,7 @@ import sys
 # Add the parent directory of the current file to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from console import Console
+from src.console import Console
 
 
 def main():

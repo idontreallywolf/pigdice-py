@@ -5,9 +5,11 @@ Console module is responsible for receiving and
 processing user input while maintaining a loop.
 """
 import cmd
+import itertools
 
 import os
 import sys
+import time
 
 # Add the parent directory of the current file to the Python path :whygod:
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -63,7 +65,7 @@ class Console(cmd.Cmd):
 
     def do_rules(self, _):
         """Show game rules."""
-        print(GAME_RULES)
+        Console.print_rainbow(GAME_RULES)
 
     def do_exit(self, _) -> bool:
         """
@@ -314,3 +316,17 @@ class Console(cmd.Cmd):
             `text` (`str`): Text to be printed.
         """
         print(f'{style}\n\n{" " * 4}{text}\n{Style.RESET_ALL}\n')
+
+    def print_rainbow(text):
+        """Print rainbow text of rules."""
+        colors = [Fore.RED,
+                  Fore.YELLOW,
+                  Fore.GREEN,
+                  Fore.LIGHTCYAN_EX,
+                  Fore.BLUE,
+                  Fore.MAGENTA]
+        cycle = itertools.cycle(colors)
+        for char in text:
+            color = next(cycle)
+            print(color + char, end='', flush=True)
+            time.sleep(0.1)

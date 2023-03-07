@@ -8,7 +8,8 @@ CHOICE_HOLD = 2
 AI_THRESHOLD = 10
 
 GAME_RULES = """
-Welcome to Pig Dice! 🎉 Be a cute 🐷, score tasty 🍭🍭🍭, and win big! 🏆 Roll on! 🎲🐽
+Welcome to Pig Dice! 🎉 
+Be a cute 🐷, score tasty 🍭🍭🍭, and win big! 🏆 Roll on! 🎲🐽
 Follow these steps for tasty victory!🍭
 1. Roll 🎲 and hope you get a good number.
 2. If you roll a 1️⃣, that's a piggy pooper! 🐷💩

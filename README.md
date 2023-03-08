@@ -38,6 +38,7 @@ make install
 ```
 
 ### 6. Run the application
+Best performance in PowerShell or Unix Terminal 
 ```sh
 make run
 ```
@@ -74,9 +75,13 @@ make coverage-report
 ```sh
 make pdoc
 ```
-#### Generate UML diagram
+#### Generate UML diagram (Execute only in Git Bash)
 ```sh
 make pyreverse
+```
+#### Generate Metrics (Execute only in Git Bash)
+```sh
+make metrics
 ```
 
 ## Command Options:

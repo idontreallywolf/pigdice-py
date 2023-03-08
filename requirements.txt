@@ -8,5 +8,7 @@ flake8-docstrings
 flake8-polyfill
 pylint
 pdoc
+radon
+
 # test packages
 coverage

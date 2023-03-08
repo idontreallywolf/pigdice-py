@@ -59,6 +59,15 @@ make flake8
 ```sh
 make lint
 ```
+#### unittests
+```sh
+make unittest
+```
+
+#### show coverage report
+```sh
+make coverage-report
+```
 
 ## Documentation
 #### Generate HTML documentatiion
@@ -68,7 +77,7 @@ make pdoc
 #### Generate UML diagram
 ```sh
 make pyreverse
-```
+
 
 ## Command Options:
 

@@ -9,17 +9,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.player import Player
 from src.highscore_manager import HighscoreManager
-from src.dice import Dice
-from src.utils import make_table
+from src.utils import prepare_options_menu
 
 from src.config import\
-    GAMEPLAY_OPTIONS_MENU,\
     GAMEPLAY_CHOICE_ROLL,\
     GAMEPLAY_CHOICE_HOLD,\
     GAMEPLAY_CHOICE_CHEAT,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL,\
+    SCORES_FILE_PATH,\
     DICE_SIDES
 
 
@@ -102,7 +101,7 @@ class Game:
     def __init__(self):
         """Initialize a new Game instance."""
         self.highscore_manager = HighscoreManager()
-        self.options_menu = Game._prepare_options_menu()
+        self.options_menu = prepare_options_menu()
         self.players = []
         self.current_player = 0
         self.last_roll = 0
@@ -370,21 +369,3 @@ class Game:
             `int`: latest dice's value.
         """
         return self.last_roll
-
-    @staticmethod
-    def _prepare_options_menu():
-        """
-        Prepare options menu.
-
-        Returns:
-            an ASCII table containing gameplay options menu.
-        """
-        table = make_table(
-            title="Options",
-            columns=['ID', 'Label', 'Icon']
-        )
-
-        for option in GAMEPLAY_OPTIONS_MENU:
-            table.add_row(option)
-
-        return table

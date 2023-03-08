@@ -58,6 +58,12 @@ flake8:
 
 lint: flake8 pylint
 
+unittest:
+	coverage run -m unittest discover
+
+coverage-report:
+	coverage report
+
 .PHONY: test
 
 test:

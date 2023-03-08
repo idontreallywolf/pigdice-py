@@ -60,6 +60,16 @@ make flake8
 make lint
 ```
 
+#### unittests
+```sh
+make unittest
+```
+
+#### show coverage report
+```sh
+make coverage-report
+```
+
 ## Command Options:
 
 The game offers five options: exit, help, highscore, rules, and start

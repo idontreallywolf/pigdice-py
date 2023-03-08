@@ -317,6 +317,7 @@ class Console(cmd.Cmd):
         """
         print(f'{style}\n\n{" " * 4}{text}\n{Style.RESET_ALL}\n')
 
+    @staticmethod
     def print_rainbow(text):
         """Print rainbow text of rules."""
         colors = [Fore.RED,

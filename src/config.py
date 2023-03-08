@@ -7,6 +7,8 @@ CHOICE_HOLD = 2
 
 AI_THRESHOLD = 10
 
+DICE_SIDES = 6
+
 GAME_RULES = """
 Welcome to Pig Dice! 🎉
 Be a cute 🐷, score tasty 🍭🍭🍭, and win big! 🏆 Roll on! 🎲🐽

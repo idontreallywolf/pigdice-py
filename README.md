@@ -60,6 +60,16 @@ make flake8
 make lint
 ```
 
+## Documentation
+#### Generate HTML documentatiion
+```sh
+make pdoc
+```
+#### Generate UML diagram
+```sh
+make pyreverse
+```
+
 ## Command Options:
 
 The game offers five options: exit, help, highscore, rules, and start

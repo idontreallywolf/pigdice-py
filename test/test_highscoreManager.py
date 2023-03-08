@@ -24,13 +24,17 @@ class Test_highscoreManager(unittest.TestCase):
         self.assertIsInstance(highscore_manager._highscores, list)
         self.assertIsInstance(highscore_manager.table, PrettyTable)
 
-    def test_get_scores_table(self):
+    def test_get_scores_table_empty(self):
         """
         Test HighscoreManager.get_scores_table method.
 
         :`scores_table` should be an instance of `str`.
         """
         highscore_manager = HighscoreManager()
+        scores_table = highscore_manager.get_scores_table()
+        self.assertIsInstance(scores_table, str)
+
+        highscore_manager._highscores.append({'p1': 25, 'p2': 44})
         scores_table = highscore_manager.get_scores_table()
         self.assertIsInstance(scores_table, str)
 

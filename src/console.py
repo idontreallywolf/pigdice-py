@@ -330,4 +330,4 @@ class Console(cmd.Cmd):
         for char in text:
             color = next(cycle)
             print(color + char, end='', flush=True)
-            time.sleep(0.05)
+            time.sleep(0.02)

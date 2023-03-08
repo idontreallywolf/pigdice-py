@@ -64,6 +64,9 @@
                                 <a class="function" href="#Game.roll">roll</a>
                         </li>
                         <li>
+                                <a class="function" href="#Game.roll_dice">roll_dice</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#Game.hold">hold</a>
                         </li>
                         <li>
@@ -110,25 +113,25 @@
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;exports Game class.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">import</span> <span class="nn">os</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">import</span> <span class="nn">sys</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="c1"># Add the parent directory of the current file to the Python path :whygod:</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;..&quot;</span><span class="p">)))</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="kn">from</span> <span class="nn">src.player</span> <span class="kn">import</span> <span class="n">Player</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="kn">from</span> <span class="nn">src.highscore_manager</span> <span class="kn">import</span> <span class="n">HighscoreManager</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="kn">from</span> <span class="nn">src.dice</span> <span class="kn">import</span> <span class="n">Dice</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="kn">from</span> <span class="nn">src.utils</span> <span class="kn">import</span> <span class="n">make_table</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">import</span> <span class="nn">random</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">import</span> <span class="nn">sys</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="c1"># Add the parent directory of the current file to the Python path :whygod:</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;..&quot;</span><span class="p">)))</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="kn">from</span> <span class="nn">src.player</span> <span class="kn">import</span> <span class="n">Player</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="kn">from</span> <span class="nn">src.highscore_manager</span> <span class="kn">import</span> <span class="n">HighscoreManager</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="kn">from</span> <span class="nn">src.utils</span> <span class="kn">import</span> <span class="n">prepare_options_menu</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span>\
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>    <span class="n">GAMEPLAY_OPTIONS_MENU</span><span class="p">,</span>\
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>    <span class="n">GAMEPLAY_CHOICE_ROLL</span><span class="p">,</span>\
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>    <span class="n">GAMEPLAY_CHOICE_HOLD</span><span class="p">,</span>\
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="n">GAMEPLAY_CHOICE_CHEAT</span><span class="p">,</span>\
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="n">GAME_TURN_WON</span><span class="p">,</span>\
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="n">GAME_TURN_LOST</span><span class="p">,</span>\
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>    <span class="n">GAME_TURN_NEUTRAL</span><span class="p">,</span>\
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    <span class="n">SCORES_FILE_PATH</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>    <span class="n">GAMEPLAY_CHOICE_ROLL</span><span class="p">,</span>\
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>    <span class="n">GAMEPLAY_CHOICE_HOLD</span><span class="p">,</span>\
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>    <span class="n">GAMEPLAY_CHOICE_CHEAT</span><span class="p">,</span>\
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="n">GAME_TURN_WON</span><span class="p">,</span>\
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="n">GAME_TURN_LOST</span><span class="p">,</span>\
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="n">GAME_TURN_NEUTRAL</span><span class="p">,</span>\
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>    <span class="n">SCORES_FILE_PATH</span><span class="p">,</span>\
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    <span class="n">DICE_SIDES</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>
 </span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="k">class</span> <span class="nc">Game</span><span class="p">:</span>
@@ -210,7 +213,7 @@
 </span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new Game instance.&quot;&quot;&quot;</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span> <span class="o">=</span> <span class="n">HighscoreManager</span><span class="p">()</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">options_menu</span> <span class="o">=</span> <span class="n">Game</span><span class="o">.</span><span class="n">_prepare_options_menu</span><span class="p">()</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">options_menu</span> <span class="o">=</span> <span class="n">prepare_options_menu</span><span class="p">()</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
@@ -347,7 +350,7 @@
 </span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
 </span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>
-</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="n">roll_result</span> <span class="o">=</span> <span class="n">Dice</span><span class="p">()</span><span class="o">.</span><span class="n">roll</span><span class="p">()</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="n">roll_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll_dice</span><span class="p">()</span>
 </span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="n">roll_result</span><span class="p">)</span>
 </span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>
 </span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>        <span class="k">if</span> <span class="n">roll_result</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -366,121 +369,118 @@
 </span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>
 </span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
 </span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>
-</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>    <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>    <span class="k">def</span> <span class="nf">roll_dice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a><span class="sd">        Hold player&#39;s current turn-based score.</span>
+</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a><span class="sd">        Roll a random number, `1` to `6` inclusive.</span>
 </span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>
-</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a><span class="sd">        Calls current player&#39;s `hold_score` method which adds</span>
-</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a><span class="sd">        player&#39;s turn-score to their total-score.</span>
+</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a><span class="sd">        Parameters:</span>
+</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a><span class="sd">        `count`: how many dice to roll. Defaults to `1`.</span>
 </span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>
-</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a><span class="sd">        Sets `last_roll` to `None`.</span>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>
-</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a><span class="sd">        Calls `change_turn`.</span>
-</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>
-</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a><span class="sd">        Returns:</span>
-</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a><span class="sd">            `None`</span>
-</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">hold_score</span><span class="p">()</span>
-</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">reset_temporary_score</span><span class="p">()</span>
-</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
-</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">change_turn</span><span class="p">()</span>
-</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a>
-</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a><span class="sd">        Grant maximum score to current player.</span>
-</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a>
-</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a><span class="sd">        Sets player&#39;s total-score to `100`,</span>
-</span><span id="L-286"><a href="#L-286"><span class="linenos">286</span></a><span class="sd">        updates `turn_status` to `GAME_TURN_WON`</span>
-</span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a><span class="sd">        and creates a highscore record by calling</span>
-</span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a><span class="sd">        HighscoreManager&#39;s create_record method.</span>
-</span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-</span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_WON</span><span class="p">)</span>
-</span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">create_record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span>
-</span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>
-</span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>    <span class="k">def</span> <span class="nf">change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a><span class="sd">        Change player&#39;s name during the game.</span>
-</span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>
-</span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a><span class="sd">        Attempts to change player&#39;s name to `new_name`.</span>
-</span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a>
-</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a><span class="sd">        If `new_name` is already taken by another player,</span>
-</span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a><span class="sd">        then the process will fail.</span>
-</span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>
-</span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a><span class="sd">        Parameters:</span>
-</span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a><span class="sd">            `new_name` (`str`): player&#39;s new name.</span>
-</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>
-</span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a><span class="sd">        Returns:</span>
-</span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a><span class="sd">            `True` if `new_name` is not taken.</span>
-</span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-310"><a href="#L-310"><span class="linenos">310</span></a>        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
-</span><span id="L-311"><a href="#L-311"><span class="linenos">311</span></a>            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
-</span><span id="L-312"><a href="#L-312"><span class="linenos">312</span></a>                <span class="k">return</span> <span class="kc">False</span>
+</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a><span class="sd">        Returns:</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a><span class="sd">        `int` | `tuple[int]`: Dice value(s).</span>
+</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>        <span class="n">rolls</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">DICE_SIDES</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>            <span class="k">return</span> <span class="n">rolls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a>        <span class="k">return</span> <span class="n">rolls</span>
+</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>
+</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a>    <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a><span class="sd">        Hold player&#39;s current turn-based score.</span>
+</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a>
+</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a><span class="sd">        Calls current player&#39;s `hold_score` method which adds</span>
+</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a><span class="sd">        player&#39;s turn-score to their total-score.</span>
+</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>
+</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a><span class="sd">        Sets `last_roll` to `None`.</span>
+</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a>
+</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a><span class="sd">        Calls `change_turn`.</span>
+</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a>
+</span><span id="L-286"><a href="#L-286"><span class="linenos">286</span></a><span class="sd">        Returns:</span>
+</span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a><span class="sd">            `None`</span>
+</span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">hold_score</span><span class="p">()</span>
+</span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">reset_temporary_score</span><span class="p">()</span>
+</span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
+</span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">change_turn</span><span class="p">()</span>
+</span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>
+</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a><span class="sd">        Grant maximum score to current player.</span>
+</span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a>
+</span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a><span class="sd">        Sets player&#39;s total-score to `100`,</span>
+</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a><span class="sd">        updates `turn_status` to `GAME_TURN_WON`</span>
+</span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a><span class="sd">        and creates a highscore record by calling</span>
+</span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a><span class="sd">        HighscoreManager&#39;s create_record method.</span>
+</span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_WON</span><span class="p">)</span>
+</span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">create_record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span>
+</span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a>
+</span><span id="L-310"><a href="#L-310"><span class="linenos">310</span></a>    <span class="k">def</span> <span class="nf">change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-311"><a href="#L-311"><span class="linenos">311</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-312"><a href="#L-312"><span class="linenos">312</span></a><span class="sd">        Change player&#39;s name during the game.</span>
 </span><span id="L-313"><a href="#L-313"><span class="linenos">313</span></a>
-</span><span id="L-314"><a href="#L-314"><span class="linenos">314</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="L-315"><a href="#L-315"><span class="linenos">315</span></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
-</span><span id="L-316"><a href="#L-316"><span class="linenos">316</span></a>        <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">change_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
-</span><span id="L-317"><a href="#L-317"><span class="linenos">317</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
-</span><span id="L-318"><a href="#L-318"><span class="linenos">318</span></a>            <span class="k">return</span> <span class="kc">False</span>
-</span><span id="L-319"><a href="#L-319"><span class="linenos">319</span></a>
-</span><span id="L-320"><a href="#L-320"><span class="linenos">320</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
-</span><span id="L-321"><a href="#L-321"><span class="linenos">321</span></a>        <span class="k">return</span> <span class="kc">True</span>
-</span><span id="L-322"><a href="#L-322"><span class="linenos">322</span></a>
-</span><span id="L-323"><a href="#L-323"><span class="linenos">323</span></a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-324"><a href="#L-324"><span class="linenos">324</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-325"><a href="#L-325"><span class="linenos">325</span></a><span class="sd">        Quit the game.</span>
-</span><span id="L-326"><a href="#L-326"><span class="linenos">326</span></a>
-</span><span id="L-327"><a href="#L-327"><span class="linenos">327</span></a><span class="sd">        Resets game state.</span>
+</span><span id="L-314"><a href="#L-314"><span class="linenos">314</span></a><span class="sd">        Attempts to change player&#39;s name to `new_name`.</span>
+</span><span id="L-315"><a href="#L-315"><span class="linenos">315</span></a>
+</span><span id="L-316"><a href="#L-316"><span class="linenos">316</span></a><span class="sd">        If `new_name` is already taken by another player,</span>
+</span><span id="L-317"><a href="#L-317"><span class="linenos">317</span></a><span class="sd">        then the process will fail.</span>
+</span><span id="L-318"><a href="#L-318"><span class="linenos">318</span></a>
+</span><span id="L-319"><a href="#L-319"><span class="linenos">319</span></a><span class="sd">        Parameters:</span>
+</span><span id="L-320"><a href="#L-320"><span class="linenos">320</span></a><span class="sd">            `new_name` (`str`): player&#39;s new name.</span>
+</span><span id="L-321"><a href="#L-321"><span class="linenos">321</span></a>
+</span><span id="L-322"><a href="#L-322"><span class="linenos">322</span></a><span class="sd">        Returns:</span>
+</span><span id="L-323"><a href="#L-323"><span class="linenos">323</span></a><span class="sd">            `True` if `new_name` is not taken.</span>
+</span><span id="L-324"><a href="#L-324"><span class="linenos">324</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-325"><a href="#L-325"><span class="linenos">325</span></a>        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
+</span><span id="L-326"><a href="#L-326"><span class="linenos">326</span></a>            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
+</span><span id="L-327"><a href="#L-327"><span class="linenos">327</span></a>                <span class="k">return</span> <span class="kc">False</span>
 </span><span id="L-328"><a href="#L-328"><span class="linenos">328</span></a>
-</span><span id="L-329"><a href="#L-329"><span class="linenos">329</span></a><span class="sd">        Returns:</span>
-</span><span id="L-330"><a href="#L-330"><span class="linenos">330</span></a><span class="sd">            `None`</span>
-</span><span id="L-331"><a href="#L-331"><span class="linenos">331</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-332"><a href="#L-332"><span class="linenos">332</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-333"><a href="#L-333"><span class="linenos">333</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="L-334"><a href="#L-334"><span class="linenos">334</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">turn_status</span> <span class="o">=</span> <span class="n">GAME_TURN_NEUTRAL</span>
-</span><span id="L-335"><a href="#L-335"><span class="linenos">335</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="L-336"><a href="#L-336"><span class="linenos">336</span></a>
-</span><span id="L-337"><a href="#L-337"><span class="linenos">337</span></a>    <span class="k">def</span> <span class="nf">set_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-338"><a href="#L-338"><span class="linenos">338</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-339"><a href="#L-339"><span class="linenos">339</span></a><span class="sd">        Set the last dice number.</span>
-</span><span id="L-340"><a href="#L-340"><span class="linenos">340</span></a>
-</span><span id="L-341"><a href="#L-341"><span class="linenos">341</span></a><span class="sd">        Parameters:</span>
-</span><span id="L-342"><a href="#L-342"><span class="linenos">342</span></a><span class="sd">        `number` (`int`): last rolled dice&#39;s value.</span>
+</span><span id="L-329"><a href="#L-329"><span class="linenos">329</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="L-330"><a href="#L-330"><span class="linenos">330</span></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+</span><span id="L-331"><a href="#L-331"><span class="linenos">331</span></a>        <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">change_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
+</span><span id="L-332"><a href="#L-332"><span class="linenos">332</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
+</span><span id="L-333"><a href="#L-333"><span class="linenos">333</span></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="L-334"><a href="#L-334"><span class="linenos">334</span></a>
+</span><span id="L-335"><a href="#L-335"><span class="linenos">335</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+</span><span id="L-336"><a href="#L-336"><span class="linenos">336</span></a>        <span class="k">return</span> <span class="kc">True</span>
+</span><span id="L-337"><a href="#L-337"><span class="linenos">337</span></a>
+</span><span id="L-338"><a href="#L-338"><span class="linenos">338</span></a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-339"><a href="#L-339"><span class="linenos">339</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-340"><a href="#L-340"><span class="linenos">340</span></a><span class="sd">        Quit the game.</span>
+</span><span id="L-341"><a href="#L-341"><span class="linenos">341</span></a>
+</span><span id="L-342"><a href="#L-342"><span class="linenos">342</span></a><span class="sd">        Resets game state.</span>
 </span><span id="L-343"><a href="#L-343"><span class="linenos">343</span></a>
 </span><span id="L-344"><a href="#L-344"><span class="linenos">344</span></a><span class="sd">        Returns:</span>
 </span><span id="L-345"><a href="#L-345"><span class="linenos">345</span></a><span class="sd">            `None`</span>
 </span><span id="L-346"><a href="#L-346"><span class="linenos">346</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-347"><a href="#L-347"><span class="linenos">347</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="n">number</span>
-</span><span id="L-348"><a href="#L-348"><span class="linenos">348</span></a>
-</span><span id="L-349"><a href="#L-349"><span class="linenos">349</span></a>    <span class="k">def</span> <span class="nf">get_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-350"><a href="#L-350"><span class="linenos">350</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-351"><a href="#L-351"><span class="linenos">351</span></a><span class="sd">        Get the latest dice number stored.</span>
-</span><span id="L-352"><a href="#L-352"><span class="linenos">352</span></a>
-</span><span id="L-353"><a href="#L-353"><span class="linenos">353</span></a><span class="sd">        Returns:</span>
-</span><span id="L-354"><a href="#L-354"><span class="linenos">354</span></a><span class="sd">            `int`: latest dice&#39;s value.</span>
-</span><span id="L-355"><a href="#L-355"><span class="linenos">355</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-356"><a href="#L-356"><span class="linenos">356</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span>
-</span><span id="L-357"><a href="#L-357"><span class="linenos">357</span></a>
-</span><span id="L-358"><a href="#L-358"><span class="linenos">358</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="L-359"><a href="#L-359"><span class="linenos">359</span></a>    <span class="k">def</span> <span class="nf">_prepare_options_menu</span><span class="p">():</span>
-</span><span id="L-360"><a href="#L-360"><span class="linenos">360</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-361"><a href="#L-361"><span class="linenos">361</span></a><span class="sd">        Prepare options menu.</span>
-</span><span id="L-362"><a href="#L-362"><span class="linenos">362</span></a>
-</span><span id="L-363"><a href="#L-363"><span class="linenos">363</span></a><span class="sd">        Returns:</span>
-</span><span id="L-364"><a href="#L-364"><span class="linenos">364</span></a><span class="sd">            an ASCII table containing gameplay options menu.</span>
-</span><span id="L-365"><a href="#L-365"><span class="linenos">365</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-366"><a href="#L-366"><span class="linenos">366</span></a>        <span class="n">table</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span>
-</span><span id="L-367"><a href="#L-367"><span class="linenos">367</span></a>            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Options&quot;</span><span class="p">,</span>
-</span><span id="L-368"><a href="#L-368"><span class="linenos">368</span></a>            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Label&#39;</span><span class="p">,</span> <span class="s1">&#39;Icon&#39;</span><span class="p">]</span>
-</span><span id="L-369"><a href="#L-369"><span class="linenos">369</span></a>        <span class="p">)</span>
-</span><span id="L-370"><a href="#L-370"><span class="linenos">370</span></a>
-</span><span id="L-371"><a href="#L-371"><span class="linenos">371</span></a>        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">GAMEPLAY_OPTIONS_MENU</span><span class="p">:</span>
-</span><span id="L-372"><a href="#L-372"><span class="linenos">372</span></a>            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
-</span><span id="L-373"><a href="#L-373"><span class="linenos">373</span></a>
-</span><span id="L-374"><a href="#L-374"><span class="linenos">374</span></a>        <span class="k">return</span> <span class="n">table</span>
+</span><span id="L-347"><a href="#L-347"><span class="linenos">347</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-348"><a href="#L-348"><span class="linenos">348</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-349"><a href="#L-349"><span class="linenos">349</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">turn_status</span> <span class="o">=</span> <span class="n">GAME_TURN_NEUTRAL</span>
+</span><span id="L-350"><a href="#L-350"><span class="linenos">350</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-351"><a href="#L-351"><span class="linenos">351</span></a>
+</span><span id="L-352"><a href="#L-352"><span class="linenos">352</span></a>    <span class="k">def</span> <span class="nf">set_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-353"><a href="#L-353"><span class="linenos">353</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-354"><a href="#L-354"><span class="linenos">354</span></a><span class="sd">        Set the last dice number.</span>
+</span><span id="L-355"><a href="#L-355"><span class="linenos">355</span></a>
+</span><span id="L-356"><a href="#L-356"><span class="linenos">356</span></a><span class="sd">        Parameters:</span>
+</span><span id="L-357"><a href="#L-357"><span class="linenos">357</span></a><span class="sd">        `number` (`int`): last rolled dice&#39;s value.</span>
+</span><span id="L-358"><a href="#L-358"><span class="linenos">358</span></a>
+</span><span id="L-359"><a href="#L-359"><span class="linenos">359</span></a><span class="sd">        Returns:</span>
+</span><span id="L-360"><a href="#L-360"><span class="linenos">360</span></a><span class="sd">            `None`</span>
+</span><span id="L-361"><a href="#L-361"><span class="linenos">361</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-362"><a href="#L-362"><span class="linenos">362</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="n">number</span>
+</span><span id="L-363"><a href="#L-363"><span class="linenos">363</span></a>
+</span><span id="L-364"><a href="#L-364"><span class="linenos">364</span></a>    <span class="k">def</span> <span class="nf">get_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-365"><a href="#L-365"><span class="linenos">365</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-366"><a href="#L-366"><span class="linenos">366</span></a><span class="sd">        Get the latest dice number stored.</span>
+</span><span id="L-367"><a href="#L-367"><span class="linenos">367</span></a>
+</span><span id="L-368"><a href="#L-368"><span class="linenos">368</span></a><span class="sd">        Returns:</span>
+</span><span id="L-369"><a href="#L-369"><span class="linenos">369</span></a><span class="sd">            `int`: latest dice&#39;s value.</span>
+</span><span id="L-370"><a href="#L-370"><span class="linenos">370</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-371"><a href="#L-371"><span class="linenos">371</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span>
 </span></pre></div>
 
 
@@ -575,7 +575,7 @@
 </span><span id="Game-102"><a href="#Game-102"><span class="linenos">102</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="Game-103"><a href="#Game-103"><span class="linenos">103</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new Game instance.&quot;&quot;&quot;</span>
 </span><span id="Game-104"><a href="#Game-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span> <span class="o">=</span> <span class="n">HighscoreManager</span><span class="p">()</span>
-</span><span id="Game-105"><a href="#Game-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">options_menu</span> <span class="o">=</span> <span class="n">Game</span><span class="o">.</span><span class="n">_prepare_options_menu</span><span class="p">()</span>
+</span><span id="Game-105"><a href="#Game-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">options_menu</span> <span class="o">=</span> <span class="n">prepare_options_menu</span><span class="p">()</span>
 </span><span id="Game-106"><a href="#Game-106"><span class="linenos">106</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="Game-107"><a href="#Game-107"><span class="linenos">107</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span id="Game-108"><a href="#Game-108"><span class="linenos">108</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
@@ -712,7 +712,7 @@
 </span><span id="Game-239"><a href="#Game-239"><span class="linenos">239</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Game-240"><a href="#Game-240"><span class="linenos">240</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
 </span><span id="Game-241"><a href="#Game-241"><span class="linenos">241</span></a>
-</span><span id="Game-242"><a href="#Game-242"><span class="linenos">242</span></a>        <span class="n">roll_result</span> <span class="o">=</span> <span class="n">Dice</span><span class="p">()</span><span class="o">.</span><span class="n">roll</span><span class="p">()</span>
+</span><span id="Game-242"><a href="#Game-242"><span class="linenos">242</span></a>        <span class="n">roll_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll_dice</span><span class="p">()</span>
 </span><span id="Game-243"><a href="#Game-243"><span class="linenos">243</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="n">roll_result</span><span class="p">)</span>
 </span><span id="Game-244"><a href="#Game-244"><span class="linenos">244</span></a>
 </span><span id="Game-245"><a href="#Game-245"><span class="linenos">245</span></a>        <span class="k">if</span> <span class="n">roll_result</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -731,121 +731,118 @@
 </span><span id="Game-258"><a href="#Game-258"><span class="linenos">258</span></a>
 </span><span id="Game-259"><a href="#Game-259"><span class="linenos">259</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
 </span><span id="Game-260"><a href="#Game-260"><span class="linenos">260</span></a>
-</span><span id="Game-261"><a href="#Game-261"><span class="linenos">261</span></a>    <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game-261"><a href="#Game-261"><span class="linenos">261</span></a>    <span class="k">def</span> <span class="nf">roll_dice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </span><span id="Game-262"><a href="#Game-262"><span class="linenos">262</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-263"><a href="#Game-263"><span class="linenos">263</span></a><span class="sd">        Hold player&#39;s current turn-based score.</span>
+</span><span id="Game-263"><a href="#Game-263"><span class="linenos">263</span></a><span class="sd">        Roll a random number, `1` to `6` inclusive.</span>
 </span><span id="Game-264"><a href="#Game-264"><span class="linenos">264</span></a>
-</span><span id="Game-265"><a href="#Game-265"><span class="linenos">265</span></a><span class="sd">        Calls current player&#39;s `hold_score` method which adds</span>
-</span><span id="Game-266"><a href="#Game-266"><span class="linenos">266</span></a><span class="sd">        player&#39;s turn-score to their total-score.</span>
+</span><span id="Game-265"><a href="#Game-265"><span class="linenos">265</span></a><span class="sd">        Parameters:</span>
+</span><span id="Game-266"><a href="#Game-266"><span class="linenos">266</span></a><span class="sd">        `count`: how many dice to roll. Defaults to `1`.</span>
 </span><span id="Game-267"><a href="#Game-267"><span class="linenos">267</span></a>
-</span><span id="Game-268"><a href="#Game-268"><span class="linenos">268</span></a><span class="sd">        Sets `last_roll` to `None`.</span>
-</span><span id="Game-269"><a href="#Game-269"><span class="linenos">269</span></a>
-</span><span id="Game-270"><a href="#Game-270"><span class="linenos">270</span></a><span class="sd">        Calls `change_turn`.</span>
-</span><span id="Game-271"><a href="#Game-271"><span class="linenos">271</span></a>
-</span><span id="Game-272"><a href="#Game-272"><span class="linenos">272</span></a><span class="sd">        Returns:</span>
-</span><span id="Game-273"><a href="#Game-273"><span class="linenos">273</span></a><span class="sd">            `None`</span>
-</span><span id="Game-274"><a href="#Game-274"><span class="linenos">274</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-275"><a href="#Game-275"><span class="linenos">275</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="Game-276"><a href="#Game-276"><span class="linenos">276</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">hold_score</span><span class="p">()</span>
-</span><span id="Game-277"><a href="#Game-277"><span class="linenos">277</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">reset_temporary_score</span><span class="p">()</span>
-</span><span id="Game-278"><a href="#Game-278"><span class="linenos">278</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
-</span><span id="Game-279"><a href="#Game-279"><span class="linenos">279</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-</span><span id="Game-280"><a href="#Game-280"><span class="linenos">280</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">change_turn</span><span class="p">()</span>
-</span><span id="Game-281"><a href="#Game-281"><span class="linenos">281</span></a>
-</span><span id="Game-282"><a href="#Game-282"><span class="linenos">282</span></a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game-283"><a href="#Game-283"><span class="linenos">283</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-284"><a href="#Game-284"><span class="linenos">284</span></a><span class="sd">        Grant maximum score to current player.</span>
-</span><span id="Game-285"><a href="#Game-285"><span class="linenos">285</span></a>
-</span><span id="Game-286"><a href="#Game-286"><span class="linenos">286</span></a><span class="sd">        Sets player&#39;s total-score to `100`,</span>
-</span><span id="Game-287"><a href="#Game-287"><span class="linenos">287</span></a><span class="sd">        updates `turn_status` to `GAME_TURN_WON`</span>
-</span><span id="Game-288"><a href="#Game-288"><span class="linenos">288</span></a><span class="sd">        and creates a highscore record by calling</span>
-</span><span id="Game-289"><a href="#Game-289"><span class="linenos">289</span></a><span class="sd">        HighscoreManager&#39;s create_record method.</span>
-</span><span id="Game-290"><a href="#Game-290"><span class="linenos">290</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-291"><a href="#Game-291"><span class="linenos">291</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="Game-292"><a href="#Game-292"><span class="linenos">292</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-</span><span id="Game-293"><a href="#Game-293"><span class="linenos">293</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_WON</span><span class="p">)</span>
-</span><span id="Game-294"><a href="#Game-294"><span class="linenos">294</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">create_record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span>
-</span><span id="Game-295"><a href="#Game-295"><span class="linenos">295</span></a>
-</span><span id="Game-296"><a href="#Game-296"><span class="linenos">296</span></a>    <span class="k">def</span> <span class="nf">change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="Game-297"><a href="#Game-297"><span class="linenos">297</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-298"><a href="#Game-298"><span class="linenos">298</span></a><span class="sd">        Change player&#39;s name during the game.</span>
-</span><span id="Game-299"><a href="#Game-299"><span class="linenos">299</span></a>
-</span><span id="Game-300"><a href="#Game-300"><span class="linenos">300</span></a><span class="sd">        Attempts to change player&#39;s name to `new_name`.</span>
-</span><span id="Game-301"><a href="#Game-301"><span class="linenos">301</span></a>
-</span><span id="Game-302"><a href="#Game-302"><span class="linenos">302</span></a><span class="sd">        If `new_name` is already taken by another player,</span>
-</span><span id="Game-303"><a href="#Game-303"><span class="linenos">303</span></a><span class="sd">        then the process will fail.</span>
-</span><span id="Game-304"><a href="#Game-304"><span class="linenos">304</span></a>
-</span><span id="Game-305"><a href="#Game-305"><span class="linenos">305</span></a><span class="sd">        Parameters:</span>
-</span><span id="Game-306"><a href="#Game-306"><span class="linenos">306</span></a><span class="sd">            `new_name` (`str`): player&#39;s new name.</span>
-</span><span id="Game-307"><a href="#Game-307"><span class="linenos">307</span></a>
-</span><span id="Game-308"><a href="#Game-308"><span class="linenos">308</span></a><span class="sd">        Returns:</span>
-</span><span id="Game-309"><a href="#Game-309"><span class="linenos">309</span></a><span class="sd">            `True` if `new_name` is not taken.</span>
-</span><span id="Game-310"><a href="#Game-310"><span class="linenos">310</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-311"><a href="#Game-311"><span class="linenos">311</span></a>        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
-</span><span id="Game-312"><a href="#Game-312"><span class="linenos">312</span></a>            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
-</span><span id="Game-313"><a href="#Game-313"><span class="linenos">313</span></a>                <span class="k">return</span> <span class="kc">False</span>
+</span><span id="Game-268"><a href="#Game-268"><span class="linenos">268</span></a><span class="sd">        Returns:</span>
+</span><span id="Game-269"><a href="#Game-269"><span class="linenos">269</span></a><span class="sd">        `int` | `tuple[int]`: Dice value(s).</span>
+</span><span id="Game-270"><a href="#Game-270"><span class="linenos">270</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game-271"><a href="#Game-271"><span class="linenos">271</span></a>        <span class="n">rolls</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">DICE_SIDES</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+</span><span id="Game-272"><a href="#Game-272"><span class="linenos">272</span></a>        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="Game-273"><a href="#Game-273"><span class="linenos">273</span></a>            <span class="k">return</span> <span class="n">rolls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="Game-274"><a href="#Game-274"><span class="linenos">274</span></a>        <span class="k">return</span> <span class="n">rolls</span>
+</span><span id="Game-275"><a href="#Game-275"><span class="linenos">275</span></a>
+</span><span id="Game-276"><a href="#Game-276"><span class="linenos">276</span></a>    <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game-277"><a href="#Game-277"><span class="linenos">277</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game-278"><a href="#Game-278"><span class="linenos">278</span></a><span class="sd">        Hold player&#39;s current turn-based score.</span>
+</span><span id="Game-279"><a href="#Game-279"><span class="linenos">279</span></a>
+</span><span id="Game-280"><a href="#Game-280"><span class="linenos">280</span></a><span class="sd">        Calls current player&#39;s `hold_score` method which adds</span>
+</span><span id="Game-281"><a href="#Game-281"><span class="linenos">281</span></a><span class="sd">        player&#39;s turn-score to their total-score.</span>
+</span><span id="Game-282"><a href="#Game-282"><span class="linenos">282</span></a>
+</span><span id="Game-283"><a href="#Game-283"><span class="linenos">283</span></a><span class="sd">        Sets `last_roll` to `None`.</span>
+</span><span id="Game-284"><a href="#Game-284"><span class="linenos">284</span></a>
+</span><span id="Game-285"><a href="#Game-285"><span class="linenos">285</span></a><span class="sd">        Calls `change_turn`.</span>
+</span><span id="Game-286"><a href="#Game-286"><span class="linenos">286</span></a>
+</span><span id="Game-287"><a href="#Game-287"><span class="linenos">287</span></a><span class="sd">        Returns:</span>
+</span><span id="Game-288"><a href="#Game-288"><span class="linenos">288</span></a><span class="sd">            `None`</span>
+</span><span id="Game-289"><a href="#Game-289"><span class="linenos">289</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game-290"><a href="#Game-290"><span class="linenos">290</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="Game-291"><a href="#Game-291"><span class="linenos">291</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">hold_score</span><span class="p">()</span>
+</span><span id="Game-292"><a href="#Game-292"><span class="linenos">292</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">reset_temporary_score</span><span class="p">()</span>
+</span><span id="Game-293"><a href="#Game-293"><span class="linenos">293</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
+</span><span id="Game-294"><a href="#Game-294"><span class="linenos">294</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="Game-295"><a href="#Game-295"><span class="linenos">295</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">change_turn</span><span class="p">()</span>
+</span><span id="Game-296"><a href="#Game-296"><span class="linenos">296</span></a>
+</span><span id="Game-297"><a href="#Game-297"><span class="linenos">297</span></a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game-298"><a href="#Game-298"><span class="linenos">298</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game-299"><a href="#Game-299"><span class="linenos">299</span></a><span class="sd">        Grant maximum score to current player.</span>
+</span><span id="Game-300"><a href="#Game-300"><span class="linenos">300</span></a>
+</span><span id="Game-301"><a href="#Game-301"><span class="linenos">301</span></a><span class="sd">        Sets player&#39;s total-score to `100`,</span>
+</span><span id="Game-302"><a href="#Game-302"><span class="linenos">302</span></a><span class="sd">        updates `turn_status` to `GAME_TURN_WON`</span>
+</span><span id="Game-303"><a href="#Game-303"><span class="linenos">303</span></a><span class="sd">        and creates a highscore record by calling</span>
+</span><span id="Game-304"><a href="#Game-304"><span class="linenos">304</span></a><span class="sd">        HighscoreManager&#39;s create_record method.</span>
+</span><span id="Game-305"><a href="#Game-305"><span class="linenos">305</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game-306"><a href="#Game-306"><span class="linenos">306</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="Game-307"><a href="#Game-307"><span class="linenos">307</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="Game-308"><a href="#Game-308"><span class="linenos">308</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_WON</span><span class="p">)</span>
+</span><span id="Game-309"><a href="#Game-309"><span class="linenos">309</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">create_record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span>
+</span><span id="Game-310"><a href="#Game-310"><span class="linenos">310</span></a>
+</span><span id="Game-311"><a href="#Game-311"><span class="linenos">311</span></a>    <span class="k">def</span> <span class="nf">change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="Game-312"><a href="#Game-312"><span class="linenos">312</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game-313"><a href="#Game-313"><span class="linenos">313</span></a><span class="sd">        Change player&#39;s name during the game.</span>
 </span><span id="Game-314"><a href="#Game-314"><span class="linenos">314</span></a>
-</span><span id="Game-315"><a href="#Game-315"><span class="linenos">315</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="Game-316"><a href="#Game-316"><span class="linenos">316</span></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
-</span><span id="Game-317"><a href="#Game-317"><span class="linenos">317</span></a>        <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">change_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
-</span><span id="Game-318"><a href="#Game-318"><span class="linenos">318</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
-</span><span id="Game-319"><a href="#Game-319"><span class="linenos">319</span></a>            <span class="k">return</span> <span class="kc">False</span>
-</span><span id="Game-320"><a href="#Game-320"><span class="linenos">320</span></a>
-</span><span id="Game-321"><a href="#Game-321"><span class="linenos">321</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
-</span><span id="Game-322"><a href="#Game-322"><span class="linenos">322</span></a>        <span class="k">return</span> <span class="kc">True</span>
-</span><span id="Game-323"><a href="#Game-323"><span class="linenos">323</span></a>
-</span><span id="Game-324"><a href="#Game-324"><span class="linenos">324</span></a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game-325"><a href="#Game-325"><span class="linenos">325</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-326"><a href="#Game-326"><span class="linenos">326</span></a><span class="sd">        Quit the game.</span>
-</span><span id="Game-327"><a href="#Game-327"><span class="linenos">327</span></a>
-</span><span id="Game-328"><a href="#Game-328"><span class="linenos">328</span></a><span class="sd">        Resets game state.</span>
+</span><span id="Game-315"><a href="#Game-315"><span class="linenos">315</span></a><span class="sd">        Attempts to change player&#39;s name to `new_name`.</span>
+</span><span id="Game-316"><a href="#Game-316"><span class="linenos">316</span></a>
+</span><span id="Game-317"><a href="#Game-317"><span class="linenos">317</span></a><span class="sd">        If `new_name` is already taken by another player,</span>
+</span><span id="Game-318"><a href="#Game-318"><span class="linenos">318</span></a><span class="sd">        then the process will fail.</span>
+</span><span id="Game-319"><a href="#Game-319"><span class="linenos">319</span></a>
+</span><span id="Game-320"><a href="#Game-320"><span class="linenos">320</span></a><span class="sd">        Parameters:</span>
+</span><span id="Game-321"><a href="#Game-321"><span class="linenos">321</span></a><span class="sd">            `new_name` (`str`): player&#39;s new name.</span>
+</span><span id="Game-322"><a href="#Game-322"><span class="linenos">322</span></a>
+</span><span id="Game-323"><a href="#Game-323"><span class="linenos">323</span></a><span class="sd">        Returns:</span>
+</span><span id="Game-324"><a href="#Game-324"><span class="linenos">324</span></a><span class="sd">            `True` if `new_name` is not taken.</span>
+</span><span id="Game-325"><a href="#Game-325"><span class="linenos">325</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game-326"><a href="#Game-326"><span class="linenos">326</span></a>        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
+</span><span id="Game-327"><a href="#Game-327"><span class="linenos">327</span></a>            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
+</span><span id="Game-328"><a href="#Game-328"><span class="linenos">328</span></a>                <span class="k">return</span> <span class="kc">False</span>
 </span><span id="Game-329"><a href="#Game-329"><span class="linenos">329</span></a>
-</span><span id="Game-330"><a href="#Game-330"><span class="linenos">330</span></a><span class="sd">        Returns:</span>
-</span><span id="Game-331"><a href="#Game-331"><span class="linenos">331</span></a><span class="sd">            `None`</span>
-</span><span id="Game-332"><a href="#Game-332"><span class="linenos">332</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-333"><a href="#Game-333"><span class="linenos">333</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="Game-334"><a href="#Game-334"><span class="linenos">334</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="Game-335"><a href="#Game-335"><span class="linenos">335</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">turn_status</span> <span class="o">=</span> <span class="n">GAME_TURN_NEUTRAL</span>
-</span><span id="Game-336"><a href="#Game-336"><span class="linenos">336</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="Game-337"><a href="#Game-337"><span class="linenos">337</span></a>
-</span><span id="Game-338"><a href="#Game-338"><span class="linenos">338</span></a>    <span class="k">def</span> <span class="nf">set_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game-339"><a href="#Game-339"><span class="linenos">339</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-340"><a href="#Game-340"><span class="linenos">340</span></a><span class="sd">        Set the last dice number.</span>
-</span><span id="Game-341"><a href="#Game-341"><span class="linenos">341</span></a>
-</span><span id="Game-342"><a href="#Game-342"><span class="linenos">342</span></a><span class="sd">        Parameters:</span>
-</span><span id="Game-343"><a href="#Game-343"><span class="linenos">343</span></a><span class="sd">        `number` (`int`): last rolled dice&#39;s value.</span>
+</span><span id="Game-330"><a href="#Game-330"><span class="linenos">330</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="Game-331"><a href="#Game-331"><span class="linenos">331</span></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+</span><span id="Game-332"><a href="#Game-332"><span class="linenos">332</span></a>        <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">change_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
+</span><span id="Game-333"><a href="#Game-333"><span class="linenos">333</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
+</span><span id="Game-334"><a href="#Game-334"><span class="linenos">334</span></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="Game-335"><a href="#Game-335"><span class="linenos">335</span></a>
+</span><span id="Game-336"><a href="#Game-336"><span class="linenos">336</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+</span><span id="Game-337"><a href="#Game-337"><span class="linenos">337</span></a>        <span class="k">return</span> <span class="kc">True</span>
+</span><span id="Game-338"><a href="#Game-338"><span class="linenos">338</span></a>
+</span><span id="Game-339"><a href="#Game-339"><span class="linenos">339</span></a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game-340"><a href="#Game-340"><span class="linenos">340</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game-341"><a href="#Game-341"><span class="linenos">341</span></a><span class="sd">        Quit the game.</span>
+</span><span id="Game-342"><a href="#Game-342"><span class="linenos">342</span></a>
+</span><span id="Game-343"><a href="#Game-343"><span class="linenos">343</span></a><span class="sd">        Resets game state.</span>
 </span><span id="Game-344"><a href="#Game-344"><span class="linenos">344</span></a>
 </span><span id="Game-345"><a href="#Game-345"><span class="linenos">345</span></a><span class="sd">        Returns:</span>
 </span><span id="Game-346"><a href="#Game-346"><span class="linenos">346</span></a><span class="sd">            `None`</span>
 </span><span id="Game-347"><a href="#Game-347"><span class="linenos">347</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-348"><a href="#Game-348"><span class="linenos">348</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="n">number</span>
-</span><span id="Game-349"><a href="#Game-349"><span class="linenos">349</span></a>
-</span><span id="Game-350"><a href="#Game-350"><span class="linenos">350</span></a>    <span class="k">def</span> <span class="nf">get_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="Game-351"><a href="#Game-351"><span class="linenos">351</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-352"><a href="#Game-352"><span class="linenos">352</span></a><span class="sd">        Get the latest dice number stored.</span>
-</span><span id="Game-353"><a href="#Game-353"><span class="linenos">353</span></a>
-</span><span id="Game-354"><a href="#Game-354"><span class="linenos">354</span></a><span class="sd">        Returns:</span>
-</span><span id="Game-355"><a href="#Game-355"><span class="linenos">355</span></a><span class="sd">            `int`: latest dice&#39;s value.</span>
-</span><span id="Game-356"><a href="#Game-356"><span class="linenos">356</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-357"><a href="#Game-357"><span class="linenos">357</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span>
-</span><span id="Game-358"><a href="#Game-358"><span class="linenos">358</span></a>
-</span><span id="Game-359"><a href="#Game-359"><span class="linenos">359</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="Game-360"><a href="#Game-360"><span class="linenos">360</span></a>    <span class="k">def</span> <span class="nf">_prepare_options_menu</span><span class="p">():</span>
-</span><span id="Game-361"><a href="#Game-361"><span class="linenos">361</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game-362"><a href="#Game-362"><span class="linenos">362</span></a><span class="sd">        Prepare options menu.</span>
-</span><span id="Game-363"><a href="#Game-363"><span class="linenos">363</span></a>
-</span><span id="Game-364"><a href="#Game-364"><span class="linenos">364</span></a><span class="sd">        Returns:</span>
-</span><span id="Game-365"><a href="#Game-365"><span class="linenos">365</span></a><span class="sd">            an ASCII table containing gameplay options menu.</span>
-</span><span id="Game-366"><a href="#Game-366"><span class="linenos">366</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game-367"><a href="#Game-367"><span class="linenos">367</span></a>        <span class="n">table</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span>
-</span><span id="Game-368"><a href="#Game-368"><span class="linenos">368</span></a>            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Options&quot;</span><span class="p">,</span>
-</span><span id="Game-369"><a href="#Game-369"><span class="linenos">369</span></a>            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Label&#39;</span><span class="p">,</span> <span class="s1">&#39;Icon&#39;</span><span class="p">]</span>
-</span><span id="Game-370"><a href="#Game-370"><span class="linenos">370</span></a>        <span class="p">)</span>
-</span><span id="Game-371"><a href="#Game-371"><span class="linenos">371</span></a>
-</span><span id="Game-372"><a href="#Game-372"><span class="linenos">372</span></a>        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">GAMEPLAY_OPTIONS_MENU</span><span class="p">:</span>
-</span><span id="Game-373"><a href="#Game-373"><span class="linenos">373</span></a>            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
-</span><span id="Game-374"><a href="#Game-374"><span class="linenos">374</span></a>
-</span><span id="Game-375"><a href="#Game-375"><span class="linenos">375</span></a>        <span class="k">return</span> <span class="n">table</span>
+</span><span id="Game-348"><a href="#Game-348"><span class="linenos">348</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="Game-349"><a href="#Game-349"><span class="linenos">349</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="Game-350"><a href="#Game-350"><span class="linenos">350</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">turn_status</span> <span class="o">=</span> <span class="n">GAME_TURN_NEUTRAL</span>
+</span><span id="Game-351"><a href="#Game-351"><span class="linenos">351</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="Game-352"><a href="#Game-352"><span class="linenos">352</span></a>
+</span><span id="Game-353"><a href="#Game-353"><span class="linenos">353</span></a>    <span class="k">def</span> <span class="nf">set_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game-354"><a href="#Game-354"><span class="linenos">354</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game-355"><a href="#Game-355"><span class="linenos">355</span></a><span class="sd">        Set the last dice number.</span>
+</span><span id="Game-356"><a href="#Game-356"><span class="linenos">356</span></a>
+</span><span id="Game-357"><a href="#Game-357"><span class="linenos">357</span></a><span class="sd">        Parameters:</span>
+</span><span id="Game-358"><a href="#Game-358"><span class="linenos">358</span></a><span class="sd">        `number` (`int`): last rolled dice&#39;s value.</span>
+</span><span id="Game-359"><a href="#Game-359"><span class="linenos">359</span></a>
+</span><span id="Game-360"><a href="#Game-360"><span class="linenos">360</span></a><span class="sd">        Returns:</span>
+</span><span id="Game-361"><a href="#Game-361"><span class="linenos">361</span></a><span class="sd">            `None`</span>
+</span><span id="Game-362"><a href="#Game-362"><span class="linenos">362</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game-363"><a href="#Game-363"><span class="linenos">363</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="n">number</span>
+</span><span id="Game-364"><a href="#Game-364"><span class="linenos">364</span></a>
+</span><span id="Game-365"><a href="#Game-365"><span class="linenos">365</span></a>    <span class="k">def</span> <span class="nf">get_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Game-366"><a href="#Game-366"><span class="linenos">366</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game-367"><a href="#Game-367"><span class="linenos">367</span></a><span class="sd">        Get the latest dice number stored.</span>
+</span><span id="Game-368"><a href="#Game-368"><span class="linenos">368</span></a>
+</span><span id="Game-369"><a href="#Game-369"><span class="linenos">369</span></a><span class="sd">        Returns:</span>
+</span><span id="Game-370"><a href="#Game-370"><span class="linenos">370</span></a><span class="sd">            `int`: latest dice&#39;s value.</span>
+</span><span id="Game-371"><a href="#Game-371"><span class="linenos">371</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game-372"><a href="#Game-372"><span class="linenos">372</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span>
 </span></pre></div>
 
 
@@ -939,7 +936,7 @@ Returns the result of the last dice roll.
             <div class="pdoc-code codehilite"><pre><span></span><span id="Game.__init__-102"><a href="#Game.__init__-102"><span class="linenos">102</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="Game.__init__-103"><a href="#Game.__init__-103"><span class="linenos">103</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new Game instance.&quot;&quot;&quot;</span>
 </span><span id="Game.__init__-104"><a href="#Game.__init__-104"><span class="linenos">104</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span> <span class="o">=</span> <span class="n">HighscoreManager</span><span class="p">()</span>
-</span><span id="Game.__init__-105"><a href="#Game.__init__-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">options_menu</span> <span class="o">=</span> <span class="n">Game</span><span class="o">.</span><span class="n">_prepare_options_menu</span><span class="p">()</span>
+</span><span id="Game.__init__-105"><a href="#Game.__init__-105"><span class="linenos">105</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">options_menu</span> <span class="o">=</span> <span class="n">prepare_options_menu</span><span class="p">()</span>
 </span><span id="Game.__init__-106"><a href="#Game.__init__-106"><span class="linenos">106</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="Game.__init__-107"><a href="#Game.__init__-107"><span class="linenos">107</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span id="Game.__init__-108"><a href="#Game.__init__-108"><span class="linenos">108</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1276,7 +1273,7 @@ Returns the result of the last dice roll.
 </span><span id="Game.roll-239"><a href="#Game.roll-239"><span class="linenos">239</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Game.roll-240"><a href="#Game.roll-240"><span class="linenos">240</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
 </span><span id="Game.roll-241"><a href="#Game.roll-241"><span class="linenos">241</span></a>
-</span><span id="Game.roll-242"><a href="#Game.roll-242"><span class="linenos">242</span></a>        <span class="n">roll_result</span> <span class="o">=</span> <span class="n">Dice</span><span class="p">()</span><span class="o">.</span><span class="n">roll</span><span class="p">()</span>
+</span><span id="Game.roll-242"><a href="#Game.roll-242"><span class="linenos">242</span></a>        <span class="n">roll_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll_dice</span><span class="p">()</span>
 </span><span id="Game.roll-243"><a href="#Game.roll-243"><span class="linenos">243</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="n">roll_result</span><span class="p">)</span>
 </span><span id="Game.roll-244"><a href="#Game.roll-244"><span class="linenos">244</span></a>
 </span><span id="Game.roll-245"><a href="#Game.roll-245"><span class="linenos">245</span></a>        <span class="k">if</span> <span class="n">roll_result</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -1314,6 +1311,45 @@ in which case the <code>turn_status</code> is set to <code>GAME_TURN_WON.</code>
 
 
                             </div>
+                            <div id="Game.roll_dice" class="classattr">
+                                        <input id="Game.roll_dice-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">roll_dice</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></span><span class="return-annotation">) -> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="Game.roll_dice-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#Game.roll_dice"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.roll_dice-261"><a href="#Game.roll_dice-261"><span class="linenos">261</span></a>    <span class="k">def</span> <span class="nf">roll_dice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="Game.roll_dice-262"><a href="#Game.roll_dice-262"><span class="linenos">262</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.roll_dice-263"><a href="#Game.roll_dice-263"><span class="linenos">263</span></a><span class="sd">        Roll a random number, `1` to `6` inclusive.</span>
+</span><span id="Game.roll_dice-264"><a href="#Game.roll_dice-264"><span class="linenos">264</span></a>
+</span><span id="Game.roll_dice-265"><a href="#Game.roll_dice-265"><span class="linenos">265</span></a><span class="sd">        Parameters:</span>
+</span><span id="Game.roll_dice-266"><a href="#Game.roll_dice-266"><span class="linenos">266</span></a><span class="sd">        `count`: how many dice to roll. Defaults to `1`.</span>
+</span><span id="Game.roll_dice-267"><a href="#Game.roll_dice-267"><span class="linenos">267</span></a>
+</span><span id="Game.roll_dice-268"><a href="#Game.roll_dice-268"><span class="linenos">268</span></a><span class="sd">        Returns:</span>
+</span><span id="Game.roll_dice-269"><a href="#Game.roll_dice-269"><span class="linenos">269</span></a><span class="sd">        `int` | `tuple[int]`: Dice value(s).</span>
+</span><span id="Game.roll_dice-270"><a href="#Game.roll_dice-270"><span class="linenos">270</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.roll_dice-271"><a href="#Game.roll_dice-271"><span class="linenos">271</span></a>        <span class="n">rolls</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">DICE_SIDES</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+</span><span id="Game.roll_dice-272"><a href="#Game.roll_dice-272"><span class="linenos">272</span></a>        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="Game.roll_dice-273"><a href="#Game.roll_dice-273"><span class="linenos">273</span></a>            <span class="k">return</span> <span class="n">rolls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="Game.roll_dice-274"><a href="#Game.roll_dice-274"><span class="linenos">274</span></a>        <span class="k">return</span> <span class="n">rolls</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Roll a random number, <code>1</code> to <code>6</code> inclusive.</p>
+
+<p>Parameters:
+<code>count</code>: how many dice to roll. Defaults to <code>1</code>.</p>
+
+<p>Returns:
+<code>int</code> | <code>tuple[int]</code>: Dice value(s).</p>
+</div>
+
+
+                            </div>
                             <div id="Game.hold" class="classattr">
                                         <input id="Game.hold-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -1325,26 +1361,26 @@ in which case the <code>turn_status</code> is set to <code>GAME_TURN_WON.</code>
 
     </div>
     <a class="headerlink" href="#Game.hold"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.hold-261"><a href="#Game.hold-261"><span class="linenos">261</span></a>    <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game.hold-262"><a href="#Game.hold-262"><span class="linenos">262</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game.hold-263"><a href="#Game.hold-263"><span class="linenos">263</span></a><span class="sd">        Hold player&#39;s current turn-based score.</span>
-</span><span id="Game.hold-264"><a href="#Game.hold-264"><span class="linenos">264</span></a>
-</span><span id="Game.hold-265"><a href="#Game.hold-265"><span class="linenos">265</span></a><span class="sd">        Calls current player&#39;s `hold_score` method which adds</span>
-</span><span id="Game.hold-266"><a href="#Game.hold-266"><span class="linenos">266</span></a><span class="sd">        player&#39;s turn-score to their total-score.</span>
-</span><span id="Game.hold-267"><a href="#Game.hold-267"><span class="linenos">267</span></a>
-</span><span id="Game.hold-268"><a href="#Game.hold-268"><span class="linenos">268</span></a><span class="sd">        Sets `last_roll` to `None`.</span>
-</span><span id="Game.hold-269"><a href="#Game.hold-269"><span class="linenos">269</span></a>
-</span><span id="Game.hold-270"><a href="#Game.hold-270"><span class="linenos">270</span></a><span class="sd">        Calls `change_turn`.</span>
-</span><span id="Game.hold-271"><a href="#Game.hold-271"><span class="linenos">271</span></a>
-</span><span id="Game.hold-272"><a href="#Game.hold-272"><span class="linenos">272</span></a><span class="sd">        Returns:</span>
-</span><span id="Game.hold-273"><a href="#Game.hold-273"><span class="linenos">273</span></a><span class="sd">            `None`</span>
-</span><span id="Game.hold-274"><a href="#Game.hold-274"><span class="linenos">274</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game.hold-275"><a href="#Game.hold-275"><span class="linenos">275</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="Game.hold-276"><a href="#Game.hold-276"><span class="linenos">276</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">hold_score</span><span class="p">()</span>
-</span><span id="Game.hold-277"><a href="#Game.hold-277"><span class="linenos">277</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">reset_temporary_score</span><span class="p">()</span>
-</span><span id="Game.hold-278"><a href="#Game.hold-278"><span class="linenos">278</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
-</span><span id="Game.hold-279"><a href="#Game.hold-279"><span class="linenos">279</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-</span><span id="Game.hold-280"><a href="#Game.hold-280"><span class="linenos">280</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">change_turn</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.hold-276"><a href="#Game.hold-276"><span class="linenos">276</span></a>    <span class="k">def</span> <span class="nf">hold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game.hold-277"><a href="#Game.hold-277"><span class="linenos">277</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.hold-278"><a href="#Game.hold-278"><span class="linenos">278</span></a><span class="sd">        Hold player&#39;s current turn-based score.</span>
+</span><span id="Game.hold-279"><a href="#Game.hold-279"><span class="linenos">279</span></a>
+</span><span id="Game.hold-280"><a href="#Game.hold-280"><span class="linenos">280</span></a><span class="sd">        Calls current player&#39;s `hold_score` method which adds</span>
+</span><span id="Game.hold-281"><a href="#Game.hold-281"><span class="linenos">281</span></a><span class="sd">        player&#39;s turn-score to their total-score.</span>
+</span><span id="Game.hold-282"><a href="#Game.hold-282"><span class="linenos">282</span></a>
+</span><span id="Game.hold-283"><a href="#Game.hold-283"><span class="linenos">283</span></a><span class="sd">        Sets `last_roll` to `None`.</span>
+</span><span id="Game.hold-284"><a href="#Game.hold-284"><span class="linenos">284</span></a>
+</span><span id="Game.hold-285"><a href="#Game.hold-285"><span class="linenos">285</span></a><span class="sd">        Calls `change_turn`.</span>
+</span><span id="Game.hold-286"><a href="#Game.hold-286"><span class="linenos">286</span></a>
+</span><span id="Game.hold-287"><a href="#Game.hold-287"><span class="linenos">287</span></a><span class="sd">        Returns:</span>
+</span><span id="Game.hold-288"><a href="#Game.hold-288"><span class="linenos">288</span></a><span class="sd">            `None`</span>
+</span><span id="Game.hold-289"><a href="#Game.hold-289"><span class="linenos">289</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.hold-290"><a href="#Game.hold-290"><span class="linenos">290</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="Game.hold-291"><a href="#Game.hold-291"><span class="linenos">291</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">hold_score</span><span class="p">()</span>
+</span><span id="Game.hold-292"><a href="#Game.hold-292"><span class="linenos">292</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">reset_temporary_score</span><span class="p">()</span>
+</span><span id="Game.hold-293"><a href="#Game.hold-293"><span class="linenos">293</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_NEUTRAL</span><span class="p">)</span>
+</span><span id="Game.hold-294"><a href="#Game.hold-294"><span class="linenos">294</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_last_roll</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="Game.hold-295"><a href="#Game.hold-295"><span class="linenos">295</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">change_turn</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -1374,19 +1410,19 @@ player's turn-score to their total-score.</p>
 
     </div>
     <a class="headerlink" href="#Game.cheat"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.cheat-282"><a href="#Game.cheat-282"><span class="linenos">282</span></a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game.cheat-283"><a href="#Game.cheat-283"><span class="linenos">283</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game.cheat-284"><a href="#Game.cheat-284"><span class="linenos">284</span></a><span class="sd">        Grant maximum score to current player.</span>
-</span><span id="Game.cheat-285"><a href="#Game.cheat-285"><span class="linenos">285</span></a>
-</span><span id="Game.cheat-286"><a href="#Game.cheat-286"><span class="linenos">286</span></a><span class="sd">        Sets player&#39;s total-score to `100`,</span>
-</span><span id="Game.cheat-287"><a href="#Game.cheat-287"><span class="linenos">287</span></a><span class="sd">        updates `turn_status` to `GAME_TURN_WON`</span>
-</span><span id="Game.cheat-288"><a href="#Game.cheat-288"><span class="linenos">288</span></a><span class="sd">        and creates a highscore record by calling</span>
-</span><span id="Game.cheat-289"><a href="#Game.cheat-289"><span class="linenos">289</span></a><span class="sd">        HighscoreManager&#39;s create_record method.</span>
-</span><span id="Game.cheat-290"><a href="#Game.cheat-290"><span class="linenos">290</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game.cheat-291"><a href="#Game.cheat-291"><span class="linenos">291</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="Game.cheat-292"><a href="#Game.cheat-292"><span class="linenos">292</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-</span><span id="Game.cheat-293"><a href="#Game.cheat-293"><span class="linenos">293</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_WON</span><span class="p">)</span>
-</span><span id="Game.cheat-294"><a href="#Game.cheat-294"><span class="linenos">294</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">create_record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.cheat-297"><a href="#Game.cheat-297"><span class="linenos">297</span></a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game.cheat-298"><a href="#Game.cheat-298"><span class="linenos">298</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.cheat-299"><a href="#Game.cheat-299"><span class="linenos">299</span></a><span class="sd">        Grant maximum score to current player.</span>
+</span><span id="Game.cheat-300"><a href="#Game.cheat-300"><span class="linenos">300</span></a>
+</span><span id="Game.cheat-301"><a href="#Game.cheat-301"><span class="linenos">301</span></a><span class="sd">        Sets player&#39;s total-score to `100`,</span>
+</span><span id="Game.cheat-302"><a href="#Game.cheat-302"><span class="linenos">302</span></a><span class="sd">        updates `turn_status` to `GAME_TURN_WON`</span>
+</span><span id="Game.cheat-303"><a href="#Game.cheat-303"><span class="linenos">303</span></a><span class="sd">        and creates a highscore record by calling</span>
+</span><span id="Game.cheat-304"><a href="#Game.cheat-304"><span class="linenos">304</span></a><span class="sd">        HighscoreManager&#39;s create_record method.</span>
+</span><span id="Game.cheat-305"><a href="#Game.cheat-305"><span class="linenos">305</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.cheat-306"><a href="#Game.cheat-306"><span class="linenos">306</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="Game.cheat-307"><a href="#Game.cheat-307"><span class="linenos">307</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="Game.cheat-308"><a href="#Game.cheat-308"><span class="linenos">308</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_turn_status</span><span class="p">(</span><span class="n">GAME_TURN_WON</span><span class="p">)</span>
+</span><span id="Game.cheat-309"><a href="#Game.cheat-309"><span class="linenos">309</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">create_record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1411,33 +1447,33 @@ HighscoreManager's create_record method.</p>
 
     </div>
     <a class="headerlink" href="#Game.change_name"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.change_name-296"><a href="#Game.change_name-296"><span class="linenos">296</span></a>    <span class="k">def</span> <span class="nf">change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="Game.change_name-297"><a href="#Game.change_name-297"><span class="linenos">297</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game.change_name-298"><a href="#Game.change_name-298"><span class="linenos">298</span></a><span class="sd">        Change player&#39;s name during the game.</span>
-</span><span id="Game.change_name-299"><a href="#Game.change_name-299"><span class="linenos">299</span></a>
-</span><span id="Game.change_name-300"><a href="#Game.change_name-300"><span class="linenos">300</span></a><span class="sd">        Attempts to change player&#39;s name to `new_name`.</span>
-</span><span id="Game.change_name-301"><a href="#Game.change_name-301"><span class="linenos">301</span></a>
-</span><span id="Game.change_name-302"><a href="#Game.change_name-302"><span class="linenos">302</span></a><span class="sd">        If `new_name` is already taken by another player,</span>
-</span><span id="Game.change_name-303"><a href="#Game.change_name-303"><span class="linenos">303</span></a><span class="sd">        then the process will fail.</span>
-</span><span id="Game.change_name-304"><a href="#Game.change_name-304"><span class="linenos">304</span></a>
-</span><span id="Game.change_name-305"><a href="#Game.change_name-305"><span class="linenos">305</span></a><span class="sd">        Parameters:</span>
-</span><span id="Game.change_name-306"><a href="#Game.change_name-306"><span class="linenos">306</span></a><span class="sd">            `new_name` (`str`): player&#39;s new name.</span>
-</span><span id="Game.change_name-307"><a href="#Game.change_name-307"><span class="linenos">307</span></a>
-</span><span id="Game.change_name-308"><a href="#Game.change_name-308"><span class="linenos">308</span></a><span class="sd">        Returns:</span>
-</span><span id="Game.change_name-309"><a href="#Game.change_name-309"><span class="linenos">309</span></a><span class="sd">            `True` if `new_name` is not taken.</span>
-</span><span id="Game.change_name-310"><a href="#Game.change_name-310"><span class="linenos">310</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game.change_name-311"><a href="#Game.change_name-311"><span class="linenos">311</span></a>        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
-</span><span id="Game.change_name-312"><a href="#Game.change_name-312"><span class="linenos">312</span></a>            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
-</span><span id="Game.change_name-313"><a href="#Game.change_name-313"><span class="linenos">313</span></a>                <span class="k">return</span> <span class="kc">False</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.change_name-311"><a href="#Game.change_name-311"><span class="linenos">311</span></a>    <span class="k">def</span> <span class="nf">change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="Game.change_name-312"><a href="#Game.change_name-312"><span class="linenos">312</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.change_name-313"><a href="#Game.change_name-313"><span class="linenos">313</span></a><span class="sd">        Change player&#39;s name during the game.</span>
 </span><span id="Game.change_name-314"><a href="#Game.change_name-314"><span class="linenos">314</span></a>
-</span><span id="Game.change_name-315"><a href="#Game.change_name-315"><span class="linenos">315</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
-</span><span id="Game.change_name-316"><a href="#Game.change_name-316"><span class="linenos">316</span></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
-</span><span id="Game.change_name-317"><a href="#Game.change_name-317"><span class="linenos">317</span></a>        <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">change_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
-</span><span id="Game.change_name-318"><a href="#Game.change_name-318"><span class="linenos">318</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
-</span><span id="Game.change_name-319"><a href="#Game.change_name-319"><span class="linenos">319</span></a>            <span class="k">return</span> <span class="kc">False</span>
-</span><span id="Game.change_name-320"><a href="#Game.change_name-320"><span class="linenos">320</span></a>
-</span><span id="Game.change_name-321"><a href="#Game.change_name-321"><span class="linenos">321</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
-</span><span id="Game.change_name-322"><a href="#Game.change_name-322"><span class="linenos">322</span></a>        <span class="k">return</span> <span class="kc">True</span>
+</span><span id="Game.change_name-315"><a href="#Game.change_name-315"><span class="linenos">315</span></a><span class="sd">        Attempts to change player&#39;s name to `new_name`.</span>
+</span><span id="Game.change_name-316"><a href="#Game.change_name-316"><span class="linenos">316</span></a>
+</span><span id="Game.change_name-317"><a href="#Game.change_name-317"><span class="linenos">317</span></a><span class="sd">        If `new_name` is already taken by another player,</span>
+</span><span id="Game.change_name-318"><a href="#Game.change_name-318"><span class="linenos">318</span></a><span class="sd">        then the process will fail.</span>
+</span><span id="Game.change_name-319"><a href="#Game.change_name-319"><span class="linenos">319</span></a>
+</span><span id="Game.change_name-320"><a href="#Game.change_name-320"><span class="linenos">320</span></a><span class="sd">        Parameters:</span>
+</span><span id="Game.change_name-321"><a href="#Game.change_name-321"><span class="linenos">321</span></a><span class="sd">            `new_name` (`str`): player&#39;s new name.</span>
+</span><span id="Game.change_name-322"><a href="#Game.change_name-322"><span class="linenos">322</span></a>
+</span><span id="Game.change_name-323"><a href="#Game.change_name-323"><span class="linenos">323</span></a><span class="sd">        Returns:</span>
+</span><span id="Game.change_name-324"><a href="#Game.change_name-324"><span class="linenos">324</span></a><span class="sd">            `True` if `new_name` is not taken.</span>
+</span><span id="Game.change_name-325"><a href="#Game.change_name-325"><span class="linenos">325</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.change_name-326"><a href="#Game.change_name-326"><span class="linenos">326</span></a>        <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">players</span><span class="p">:</span>
+</span><span id="Game.change_name-327"><a href="#Game.change_name-327"><span class="linenos">327</span></a>            <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">new_name</span><span class="p">:</span>
+</span><span id="Game.change_name-328"><a href="#Game.change_name-328"><span class="linenos">328</span></a>                <span class="k">return</span> <span class="kc">False</span>
+</span><span id="Game.change_name-329"><a href="#Game.change_name-329"><span class="linenos">329</span></a>
+</span><span id="Game.change_name-330"><a href="#Game.change_name-330"><span class="linenos">330</span></a>        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_player</span><span class="p">()</span>
+</span><span id="Game.change_name-331"><a href="#Game.change_name-331"><span class="linenos">331</span></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+</span><span id="Game.change_name-332"><a href="#Game.change_name-332"><span class="linenos">332</span></a>        <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highscore_manager</span><span class="o">.</span><span class="n">change_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
+</span><span id="Game.change_name-333"><a href="#Game.change_name-333"><span class="linenos">333</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
+</span><span id="Game.change_name-334"><a href="#Game.change_name-334"><span class="linenos">334</span></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="Game.change_name-335"><a href="#Game.change_name-335"><span class="linenos">335</span></a>
+</span><span id="Game.change_name-336"><a href="#Game.change_name-336"><span class="linenos">336</span></a>        <span class="n">player</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+</span><span id="Game.change_name-337"><a href="#Game.change_name-337"><span class="linenos">337</span></a>        <span class="k">return</span> <span class="kc">True</span>
 </span></pre></div>
 
 
@@ -1468,19 +1504,19 @@ then the process will fail.</p>
 
     </div>
     <a class="headerlink" href="#Game.quit"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.quit-324"><a href="#Game.quit-324"><span class="linenos">324</span></a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game.quit-325"><a href="#Game.quit-325"><span class="linenos">325</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game.quit-326"><a href="#Game.quit-326"><span class="linenos">326</span></a><span class="sd">        Quit the game.</span>
-</span><span id="Game.quit-327"><a href="#Game.quit-327"><span class="linenos">327</span></a>
-</span><span id="Game.quit-328"><a href="#Game.quit-328"><span class="linenos">328</span></a><span class="sd">        Resets game state.</span>
-</span><span id="Game.quit-329"><a href="#Game.quit-329"><span class="linenos">329</span></a>
-</span><span id="Game.quit-330"><a href="#Game.quit-330"><span class="linenos">330</span></a><span class="sd">        Returns:</span>
-</span><span id="Game.quit-331"><a href="#Game.quit-331"><span class="linenos">331</span></a><span class="sd">            `None`</span>
-</span><span id="Game.quit-332"><a href="#Game.quit-332"><span class="linenos">332</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game.quit-333"><a href="#Game.quit-333"><span class="linenos">333</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="Game.quit-334"><a href="#Game.quit-334"><span class="linenos">334</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="Game.quit-335"><a href="#Game.quit-335"><span class="linenos">335</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">turn_status</span> <span class="o">=</span> <span class="n">GAME_TURN_NEUTRAL</span>
-</span><span id="Game.quit-336"><a href="#Game.quit-336"><span class="linenos">336</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.quit-339"><a href="#Game.quit-339"><span class="linenos">339</span></a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game.quit-340"><a href="#Game.quit-340"><span class="linenos">340</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.quit-341"><a href="#Game.quit-341"><span class="linenos">341</span></a><span class="sd">        Quit the game.</span>
+</span><span id="Game.quit-342"><a href="#Game.quit-342"><span class="linenos">342</span></a>
+</span><span id="Game.quit-343"><a href="#Game.quit-343"><span class="linenos">343</span></a><span class="sd">        Resets game state.</span>
+</span><span id="Game.quit-344"><a href="#Game.quit-344"><span class="linenos">344</span></a>
+</span><span id="Game.quit-345"><a href="#Game.quit-345"><span class="linenos">345</span></a><span class="sd">        Returns:</span>
+</span><span id="Game.quit-346"><a href="#Game.quit-346"><span class="linenos">346</span></a><span class="sd">            `None`</span>
+</span><span id="Game.quit-347"><a href="#Game.quit-347"><span class="linenos">347</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.quit-348"><a href="#Game.quit-348"><span class="linenos">348</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">players</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="Game.quit-349"><a href="#Game.quit-349"><span class="linenos">349</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_player</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="Game.quit-350"><a href="#Game.quit-350"><span class="linenos">350</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">turn_status</span> <span class="o">=</span> <span class="n">GAME_TURN_NEUTRAL</span>
+</span><span id="Game.quit-351"><a href="#Game.quit-351"><span class="linenos">351</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="mi">0</span>
 </span></pre></div>
 
 
@@ -1505,17 +1541,17 @@ then the process will fail.</p>
 
     </div>
     <a class="headerlink" href="#Game.set_last_roll"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.set_last_roll-338"><a href="#Game.set_last_roll-338"><span class="linenos">338</span></a>    <span class="k">def</span> <span class="nf">set_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="Game.set_last_roll-339"><a href="#Game.set_last_roll-339"><span class="linenos">339</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game.set_last_roll-340"><a href="#Game.set_last_roll-340"><span class="linenos">340</span></a><span class="sd">        Set the last dice number.</span>
-</span><span id="Game.set_last_roll-341"><a href="#Game.set_last_roll-341"><span class="linenos">341</span></a>
-</span><span id="Game.set_last_roll-342"><a href="#Game.set_last_roll-342"><span class="linenos">342</span></a><span class="sd">        Parameters:</span>
-</span><span id="Game.set_last_roll-343"><a href="#Game.set_last_roll-343"><span class="linenos">343</span></a><span class="sd">        `number` (`int`): last rolled dice&#39;s value.</span>
-</span><span id="Game.set_last_roll-344"><a href="#Game.set_last_roll-344"><span class="linenos">344</span></a>
-</span><span id="Game.set_last_roll-345"><a href="#Game.set_last_roll-345"><span class="linenos">345</span></a><span class="sd">        Returns:</span>
-</span><span id="Game.set_last_roll-346"><a href="#Game.set_last_roll-346"><span class="linenos">346</span></a><span class="sd">            `None`</span>
-</span><span id="Game.set_last_roll-347"><a href="#Game.set_last_roll-347"><span class="linenos">347</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game.set_last_roll-348"><a href="#Game.set_last_roll-348"><span class="linenos">348</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="n">number</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.set_last_roll-353"><a href="#Game.set_last_roll-353"><span class="linenos">353</span></a>    <span class="k">def</span> <span class="nf">set_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="Game.set_last_roll-354"><a href="#Game.set_last_roll-354"><span class="linenos">354</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.set_last_roll-355"><a href="#Game.set_last_roll-355"><span class="linenos">355</span></a><span class="sd">        Set the last dice number.</span>
+</span><span id="Game.set_last_roll-356"><a href="#Game.set_last_roll-356"><span class="linenos">356</span></a>
+</span><span id="Game.set_last_roll-357"><a href="#Game.set_last_roll-357"><span class="linenos">357</span></a><span class="sd">        Parameters:</span>
+</span><span id="Game.set_last_roll-358"><a href="#Game.set_last_roll-358"><span class="linenos">358</span></a><span class="sd">        `number` (`int`): last rolled dice&#39;s value.</span>
+</span><span id="Game.set_last_roll-359"><a href="#Game.set_last_roll-359"><span class="linenos">359</span></a>
+</span><span id="Game.set_last_roll-360"><a href="#Game.set_last_roll-360"><span class="linenos">360</span></a><span class="sd">        Returns:</span>
+</span><span id="Game.set_last_roll-361"><a href="#Game.set_last_roll-361"><span class="linenos">361</span></a><span class="sd">            `None`</span>
+</span><span id="Game.set_last_roll-362"><a href="#Game.set_last_roll-362"><span class="linenos">362</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.set_last_roll-363"><a href="#Game.set_last_roll-363"><span class="linenos">363</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span> <span class="o">=</span> <span class="n">number</span>
 </span></pre></div>
 
 
@@ -1541,14 +1577,14 @@ then the process will fail.</p>
 
     </div>
     <a class="headerlink" href="#Game.get_last_roll"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.get_last_roll-350"><a href="#Game.get_last_roll-350"><span class="linenos">350</span></a>    <span class="k">def</span> <span class="nf">get_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="Game.get_last_roll-351"><a href="#Game.get_last_roll-351"><span class="linenos">351</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Game.get_last_roll-352"><a href="#Game.get_last_roll-352"><span class="linenos">352</span></a><span class="sd">        Get the latest dice number stored.</span>
-</span><span id="Game.get_last_roll-353"><a href="#Game.get_last_roll-353"><span class="linenos">353</span></a>
-</span><span id="Game.get_last_roll-354"><a href="#Game.get_last_roll-354"><span class="linenos">354</span></a><span class="sd">        Returns:</span>
-</span><span id="Game.get_last_roll-355"><a href="#Game.get_last_roll-355"><span class="linenos">355</span></a><span class="sd">            `int`: latest dice&#39;s value.</span>
-</span><span id="Game.get_last_roll-356"><a href="#Game.get_last_roll-356"><span class="linenos">356</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Game.get_last_roll-357"><a href="#Game.get_last_roll-357"><span class="linenos">357</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Game.get_last_roll-365"><a href="#Game.get_last_roll-365"><span class="linenos">365</span></a>    <span class="k">def</span> <span class="nf">get_last_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="Game.get_last_roll-366"><a href="#Game.get_last_roll-366"><span class="linenos">366</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Game.get_last_roll-367"><a href="#Game.get_last_roll-367"><span class="linenos">367</span></a><span class="sd">        Get the latest dice number stored.</span>
+</span><span id="Game.get_last_roll-368"><a href="#Game.get_last_roll-368"><span class="linenos">368</span></a>
+</span><span id="Game.get_last_roll-369"><a href="#Game.get_last_roll-369"><span class="linenos">369</span></a><span class="sd">        Returns:</span>
+</span><span id="Game.get_last_roll-370"><a href="#Game.get_last_roll-370"><span class="linenos">370</span></a><span class="sd">            `int`: latest dice&#39;s value.</span>
+</span><span id="Game.get_last_roll-371"><a href="#Game.get_last_roll-371"><span class="linenos">371</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Game.get_last_roll-372"><a href="#Game.get_last_roll-372"><span class="linenos">372</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_roll</span>
 </span></pre></div>
 
 

@@ -52,13 +52,13 @@ class Test_Player(unittest.TestCase):
         Should pass for valid names; `'Jack'`, `'Frodo'` and `'Bilbo'`.
         """
         player = Player(name='Jack')
-        self.assertEqual(player.get_name(), 'Jack')
+        self.assertEqual(player._name, 'Jack')
 
         player.set_name('Frodo')
-        self.assertEqual(player.get_name(), 'Frodo')
+        self.assertEqual(player._name, 'Frodo')
 
         player.set_name('Bilbo')
-        self.assertEqual(player.get_name(), 'Bilbo')
+        self.assertEqual(player._name, 'Bilbo')
 
     def test_set_name_invalid(self):
         """

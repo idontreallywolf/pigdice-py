@@ -59,7 +59,7 @@ make flake8
 ```sh
 make lint
 ```
-#### unittests
+#### Unittests
 ```sh
 make unittest
 ```
@@ -77,7 +77,7 @@ make pdoc
 #### Generate UML diagram
 ```sh
 make pyreverse
-
+```
 
 ## Command Options:
 

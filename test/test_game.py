@@ -10,7 +10,11 @@ from src.player import Player
 from src.config import\
     GAME_TURN_NEUTRAL,\
     GAME_TURN_WON,\
-    GAME_TURN_LOST
+    GAME_TURN_LOST,\
+    DICE_SIDES,\
+    GAMEPLAY_CHOICE_HOLD,\
+    GAMEPLAY_CHOICE_ROLL,\
+    GAMEPLAY_CHOICE_CHEAT
 
 
 class Test_Game(unittest.TestCase):
@@ -100,7 +104,7 @@ class Test_Game(unittest.TestCase):
         gts = game.get_turn_status()
         self.assertEqual(gts, GAME_TURN_NEUTRAL)
 
-    @patch('src.dice.Dice.roll')
+    @patch('src.game.Game.roll_dice')
     def test_roll_loss(self, mock_dice_roll: MagicMock):
         """
         Test Game.roll method.
@@ -125,7 +129,7 @@ class Test_Game(unittest.TestCase):
         temp_score = current_player.get_temporary_score()
         self.assertEqual(temp_score, 0)
 
-    @patch('src.dice.Dice.roll')
+    @patch('src.game.Game.roll_dice')
     def test_roll_win(self, mock_dice_roll: MagicMock):
         """
         Test Game.roll method.
@@ -144,7 +148,7 @@ class Test_Game(unittest.TestCase):
 
         self.assertEqual(game.get_turn_status(), GAME_TURN_WON)
 
-    @patch('src.dice.Dice.roll')
+    @patch('src.game.Game.roll_dice')
     def test_roll_neutral(self, mock_dice_roll: MagicMock):
         """
         Test Game.roll method.
@@ -238,6 +242,59 @@ class Test_Game(unittest.TestCase):
         self.assertEqual(game.last_roll, 1)
         game.set_last_roll(0)
         self.assertEqual(game.last_roll, 0)
+
+    def test_roll_single(self):
+        """Test value type and valid value."""
+        game = Game()   
+        result = game.roll_dice()
+        self.assertIsInstance(result, int)
+        self.assertGreaterEqual(result, 1)
+        self.assertLessEqual(result, DICE_SIDES)
+        self.assertTrue(1 <= result <= 6)
+
+    def test_parse_choice_roll(self):
+        """Test parse_choice method with roll choice."""
+        game = Game()
+        game.roll = MagicMock()
+        game.parse_choice(GAMEPLAY_CHOICE_ROLL)
+        game.roll.assert_called_once()
+
+    def test_parse_choice_hold(self):
+        """Test parse_choice method with roll choice."""
+        game = Game()
+        game.hold = MagicMock()
+        game.parse_choice(GAMEPLAY_CHOICE_HOLD)
+        game.hold.assert_called_once()
+
+    def test_parse_choice_cheat(self):
+        """Test parse_choice method with roll choice."""
+        game = Game()
+        game.cheat = MagicMock()
+        game.parse_choice(GAMEPLAY_CHOICE_CHEAT)
+        game.cheat.assert_called_once()
+
+    def test_load(self):
+        """Test load method."""
+        game = Game()
+        game.highscore_manager.load_scores = MagicMock()
+        game.load()
+        game.highscore_manager.load_scores.assert_called_once()
+
+    def test_save(self):
+        """Test save method."""
+        game = Game()
+        game.highscore_manager.save_scores = MagicMock()
+        game.save()
+        game.highscore_manager.save_scores.assert_called_once()
+
+    def test_change_turn(self):
+        """Test change_turn method."""
+        game = Game()
+        self.assertEqual(game.current_player, 0)
+        game.change_turn()
+        self.assertEqual(game.current_player, 1)
+        game.change_turn()
+        self.assertEqual(game.current_player, 0)
 
 
 if __name__ == '__main__':

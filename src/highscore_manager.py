@@ -69,9 +69,6 @@ class HighscoreManager:
             'Highscores',
             ['P1', 'Score', 'P2', 'Score2']
         )
-
-    def prepare_table(self) -> None:
-        """Prepare highscores table."""
         self.table.align['P1'] = 'l'
         self.table.align['Score'] = 'r'
         self.table.align['P2'] = 'l'

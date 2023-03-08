@@ -103,16 +103,18 @@ doc: pdoc pyreverse #pydoc sphinx
 #
 radon-cc:
 	@$(call MESSAGE,$@)
-	radon cc --show-complexity --average .
+	radon cc --show-complexity --average $(SRC)
 
 radon-mi:
 	@$(call MESSAGE,$@)
-	radon mi --show .
+	radon mi --show $(SRC)
 
 radon-raw:
 	@$(call MESSAGE,$@)
-	radon raw .
+	radon raw $(SRC)
 
 radon-hal:
 	@$(call MESSAGE,$@)
-	radon hal .
+	radon hal $(SRC)
+
+metrics: radon-cc radon-mi radon-raw radon-hal

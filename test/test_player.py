@@ -1,6 +1,7 @@
 """Test module for Player class."""
 import unittest
 from src.player import Player
+from src.config import GAMEPLAY_CHOICE_HOLD, GAMEPLAY_CHOICE_ROLL, AI_THRESHOLD
 
 
 class Test_Player(unittest.TestCase):
@@ -52,13 +53,13 @@ class Test_Player(unittest.TestCase):
         Should pass for valid names; `'Jack'`, `'Frodo'` and `'Bilbo'`.
         """
         player = Player(name='Jack')
-        self.assertEqual(player.get_name(), 'Jack')
+        self.assertEqual(player._name, 'Jack')
 
         player.set_name('Frodo')
-        self.assertEqual(player.get_name(), 'Frodo')
+        self.assertEqual(player._name, 'Frodo')
 
         player.set_name('Bilbo')
-        self.assertEqual(player.get_name(), 'Bilbo')
+        self.assertEqual(player._name, 'Bilbo')
 
     def test_set_name_invalid(self):
         """
@@ -194,3 +195,20 @@ class Test_Player(unittest.TestCase):
         self.assertTrue(Player.name_is_valid('John'))
         self.assertTrue(Player.name_is_valid('Frodo'))
         self.assertTrue(Player.name_is_valid('Grandalf The Gray'))
+
+    def test_make_ai_choice_with_non_AI_player(self):
+        """Test make_ai_choice() when player is not AI."""
+        player = Player("Alice")
+        self.assertIsNone(player.make_ai_choice())
+
+    def test_make_ai_choice_hold(self):
+        """Test make_ai_choice() when AI choice to hold."""
+        player = Player("AI")
+        player._temporary_score = AI_THRESHOLD
+        self.assertEqual(GAMEPLAY_CHOICE_HOLD, player.make_ai_choice())
+
+    def test_make_ai_choice_roll(self):
+        """Test make_ai_choice() when AI choice to roll."""
+        player = Player("AI")
+        player._temporary_score = AI_THRESHOLD - 1
+        self.assertEqual(GAMEPLAY_CHOICE_ROLL, player.make_ai_choice())

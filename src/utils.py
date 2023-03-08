@@ -11,6 +11,8 @@ from colorama import\
     just_fix_windows_console,\
     Fore, Style
 
+from src.config import GAMEPLAY_OPTIONS_MENU
+
 just_fix_windows_console()
 
 
@@ -64,3 +66,21 @@ def animate_loading():
         i += 1
         if i == 30:
             break
+
+
+def prepare_options_menu():
+    """
+    Prepare options menu.
+
+    Returns:
+        an ASCII table containing gameplay options menu.
+    """
+    table = make_table(
+        title="Options",
+        columns=['ID', 'Label', 'Icon']
+    )
+
+    for option in GAMEPLAY_OPTIONS_MENU:
+        table.add_row(option)
+
+    return table

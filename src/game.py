@@ -1,6 +1,7 @@
 """exports Game class."""
 
 import os
+import random
 import sys
 
 # Add the parent directory of the current file to the Python path :whygod:
@@ -8,18 +9,17 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.player import Player
 from src.highscore_manager import HighscoreManager
-from src.dice import Dice
-from src.utils import make_table
+from src.utils import prepare_options_menu
 
 from src.config import\
-    GAMEPLAY_OPTIONS_MENU,\
     GAMEPLAY_CHOICE_ROLL,\
     GAMEPLAY_CHOICE_HOLD,\
     GAMEPLAY_CHOICE_CHEAT,\
     GAME_TURN_WON,\
     GAME_TURN_LOST,\
     GAME_TURN_NEUTRAL,\
-    SCORES_FILE_PATH
+    SCORES_FILE_PATH,\
+    DICE_SIDES
 
 
 class Game:
@@ -101,7 +101,7 @@ class Game:
     def __init__(self):
         """Initialize a new Game instance."""
         self.highscore_manager = HighscoreManager()
-        self.options_menu = Game._prepare_options_menu()
+        self.options_menu = prepare_options_menu()
         self.players = []
         self.current_player = 0
         self.last_roll = 0
@@ -238,7 +238,7 @@ class Game:
         """
         player: Player = self.get_current_player()
 
-        roll_result = Dice().roll()
+        roll_result = self.roll_dice()
         self.set_last_roll(roll_result)
 
         if roll_result == 1:
@@ -256,6 +256,21 @@ class Game:
             return
 
         self.set_turn_status(GAME_TURN_NEUTRAL)
+
+    def roll_dice(self, count: int = 1) -> int | tuple[int]:
+        """
+        Roll a random number, `1` to `6` inclusive.
+
+        Parameters:
+        `count`: how many dice to roll. Defaults to `1`.
+
+        Returns:
+        `int` | `tuple[int]`: Dice value(s).
+        """
+        rolls = tuple(random.randint(1, DICE_SIDES) for _ in range(count))
+        if count == 1:
+            return rolls[0]
+        return rolls
 
     def hold(self) -> None:
         """
@@ -354,21 +369,3 @@ class Game:
             `int`: latest dice's value.
         """
         return self.last_roll
-
-    @staticmethod
-    def _prepare_options_menu():
-        """
-        Prepare options menu.
-
-        Returns:
-            an ASCII table containing gameplay options menu.
-        """
-        table = make_table(
-            title="Options",
-            columns=['ID', 'Label', 'Icon']
-        )
-
-        for option in GAMEPLAY_OPTIONS_MENU:
-            table.add_row(option)
-
-        return table

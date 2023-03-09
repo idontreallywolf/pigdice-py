@@ -3,7 +3,7 @@
 ## Project Description:
 The purpose of the project is to learn how to collabrate in a team and exercise writing clean and testable code. 
 
-![pigdice_image](https://raw.githubusercontent.com/idontreallywolf/pigdice-py/main/data/pigdice.png?token=GHSAT0AAAAAAB62A2PU2ZC75LJDCOJOXDBOZAIXRIQ)
+![pigdice_image](https://github.com/idontreallywolf/pigdice-py/blob/main/data/pigdice.png)
 
 ## Installation
 
